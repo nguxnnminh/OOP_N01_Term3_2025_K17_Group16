@@ -9,8 +9,6 @@ import randNum;
 import CastingTest;
 import BreakAndContinue;
 import SwitchCake;
-import com.example.TestNumber;  // Thay đổi theo đúng package của bạn
-
 
 public class App {
     public static void main(String[] args){
