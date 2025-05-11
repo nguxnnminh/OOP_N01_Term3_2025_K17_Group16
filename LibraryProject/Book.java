@@ -8,12 +8,12 @@ public class Book {
     private int publicationYear;
     private boolean available;
 
-    public Book(String id, String title, String author, String genre, int publicationYear) {
+    public Book(String id, String title, String author, String genre, int year) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.genre = genre;
-        this.publicationYear = publicationYear;
+        this.publicationYear = year;
         this.available = true;
     }
 
@@ -28,15 +28,14 @@ public class Book {
         this.publicationYear = year;
     }
 
+    public void borrow() { available = false; }
+    public void returnBook() { available = true; }
+
     public String getId() { return id; }
-    public String getTitle() { return title; }
-    public String getAuthor() { return author; }
     public boolean isAvailable() { return available; }
 
-    public void borrow() { this.available = false; }
-    public void returnBook() { this.available = true; }
-
+    @Override
     public String toString() {
-        return id + ". \"" + title + "\" by " + author + " (" + genre + ", " + publicationYear + ")" + (available ? " [Available]" : " [Borrowed]");
+        return title + " - " + author + " (" + publicationYear + ") [" + (available ? "Con" : "Da muon") + "]";
     }
 }
