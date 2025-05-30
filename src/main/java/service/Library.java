@@ -19,7 +19,7 @@ public class Library {
         try {
             loadData();
         } catch (Exception e) {
-            System.out.println("Loi khi load du lieu: " + e.getMessage());
+            System.out.println("Lỗi khi load dữ liệu: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -29,9 +29,9 @@ public class Library {
         try {
             books.add(book);
             saveData();
-            System.out.println("Da them sach thanh cong!");
+            System.out.println("Đã thêm sách thành công!");
         } catch (Exception e) {
-            System.out.println("Loi khi them sach: " + e.getMessage());
+            System.out.println("Lỗi khi thêm sách: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -57,7 +57,7 @@ public class Library {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Loi khi cap nhat sach: " + e.getMessage());
+            System.out.println("Lỗi khi cập nhật sách: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -72,7 +72,7 @@ public class Library {
                 return true;
             }
         } catch (Exception e) {
-            System.out.println("Loi khi xoa sach: " + e.getMessage());
+            System.out.println("Lỗi khi xóa sách: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -84,7 +84,7 @@ public class Library {
             readers.add(reader);
             saveData();
         } catch (Exception e) {
-            System.out.println("Loi khi them doc gia: " + e.getMessage());
+            System.out.println("Lỗi khi thêm độc giả: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -110,7 +110,7 @@ public class Library {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Loi khi cap nhat doc gia: " + e.getMessage());
+            System.out.println("Lỗi khi cập nhật độc giả: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -125,7 +125,7 @@ public class Library {
                 return true;
             }
         } catch (Exception e) {
-            System.out.println("Loi khi xoa doc gia: " + e.getMessage());
+            System.out.println("Lỗi khi xóa độc giả: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -137,7 +137,7 @@ public class Library {
             users.add(user);
             saveData();
         } catch (Exception e) {
-            System.out.println("Loi khi them user: " + e.getMessage());
+            System.out.println("Lỗi khi thêm user: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -163,7 +163,7 @@ public class Library {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Loi khi cap nhat user: " + e.getMessage());
+            System.out.println("Lỗi khi cập nhật user: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -178,7 +178,7 @@ public class Library {
                 return true;
             }
         } catch (Exception e) {
-            System.out.println("Loi khi xoa user: " + e.getMessage());
+            System.out.println("Lỗi khi xóa user: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -190,7 +190,7 @@ public class Library {
             borrowRecords.add(record);
             saveData();
         } catch (Exception e) {
-            System.out.println("Loi khi them phieu muon: " + e.getMessage());
+            System.out.println("Lỗi khi thêm phiếu mượn: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -216,7 +216,7 @@ public class Library {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Loi khi cap nhat phieu muon: " + e.getMessage());
+            System.out.println("Lỗi khi cập nhật phiếu mượn: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -231,7 +231,7 @@ public class Library {
                 return true;
             }
         } catch (Exception e) {
-            System.out.println("Loi khi xoa phieu muon: " + e.getMessage());
+            System.out.println("Lỗi khi xóa phiếu mượn: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -240,20 +240,15 @@ public class Library {
     // File IO
     @SuppressWarnings("unchecked")
     private void loadData() throws IOException, ClassNotFoundException {
-        try {
-            Object objBooks = readObject("data/book.data");
-            Object objReaders = readObject("data/reader.data");
-            Object objUsers = readObject("data/user.data");
-            Object objBorrow = readObject("data/borrow.data");
+        Object objBooks = readObject("data/book.data");
+        Object objReaders = readObject("data/reader.data");
+        Object objUsers = readObject("data/user.data");
+        Object objBorrow = readObject("data/borrow.data");
 
-            books = (objBooks != null) ? (List<Book>) objBooks : new ArrayList<>();
-            readers = (objReaders != null) ? (List<Reader>) objReaders : new ArrayList<>();
-            users = (objUsers != null) ? (List<User>) objUsers : new ArrayList<>();
-            borrowRecords = (objBorrow != null) ? (List<BorrowRecord>) objBorrow : new ArrayList<>();
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Loi khi load du lieu tu file: " + e.getMessage());
-            throw e;
-        }
+        books = (objBooks != null) ? (List<Book>) objBooks : new ArrayList<>();
+        readers = (objReaders != null) ? (List<Reader>) objReaders : new ArrayList<>();
+        users = (objUsers != null) ? (List<User>) objUsers : new ArrayList<>();
+        borrowRecords = (objBorrow != null) ? (List<BorrowRecord>) objBorrow : new ArrayList<>();
     }
 
     private void saveData() {
@@ -263,7 +258,7 @@ public class Library {
             writeObject(users, "data/user.data");
             writeObject(borrowRecords, "data/borrow.data");
         } catch (Exception e) {
-            System.out.println("Loi khi luu du lieu: " + e.getMessage());
+            System.out.println("Lỗi khi lưu dữ liệu: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -272,7 +267,7 @@ public class Library {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeObject(obj);
         } catch (IOException e) {
-            System.out.println("Loi ghi file " + filename + ": " + e.getMessage());
+            System.out.println("Lỗi ghi file " + filename + ": " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -280,8 +275,11 @@ public class Library {
     private Object readObject(String filename) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
             return ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Loi doc file " + filename + ": " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Lỗi đọc file " + filename + ": " + e.getMessage());
+            return null;
+        } catch (ClassNotFoundException e) {
+            System.out.println("Lỗi đọc file " + filename + ": " + e.getMessage());
             return null;
         }
     }
