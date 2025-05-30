@@ -16,13 +16,24 @@ public class Library {
     private List<BorrowRecord> borrowRecords = new ArrayList<>();
 
     public Library() {
-        loadData();
+        try {
+            loadData();
+        } catch (Exception e) {
+            System.out.println("Loi khi load du lieu: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
-    // CRUD for Book
+    // CRUD cho Book
     public void addBook(Book book) {
-        books.add(book);
-        saveData();
+        try {
+            books.add(book);
+            saveData();
+            System.out.println("Da them sach thanh cong!");
+        } catch (Exception e) {
+            System.out.println("Loi khi them sach: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public List<Book> getAllBooks() {
@@ -30,37 +41,52 @@ public class Library {
     }
 
     public Book getBookById(String id) {
-        for (Book book : books)
-            if (book.getId().equals(id))
-                return book;
+        for (Book book : books) {
+            if (book.getId().equals(id)) return book;
+        }
         return null;
     }
 
     public boolean updateBook(Book updatedBook) {
-        for (int i = 0; i < books.size(); i++) {
-            if (books.get(i).getId().equals(updatedBook.getId())) {
-                books.set(i, updatedBook);
-                saveData();
-                return true;
+        try {
+            for (int i = 0; i < books.size(); i++) {
+                if (books.get(i).getId().equals(updatedBook.getId())) {
+                    books.set(i, updatedBook);
+                    saveData();
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Loi khi cap nhat sach: " + e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
 
     public boolean deleteBook(String id) {
-        Book book = getBookById(id);
-        if (book != null) {
-            books.remove(book);
-            saveData();
-            return true;
+        try {
+            Book book = getBookById(id);
+            if (book != null) {
+                books.remove(book);
+                saveData();
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("Loi khi xoa sach: " + e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
 
-    // CRUD for Reader
+    // CRUD cho Reader
     public void addReader(Reader reader) {
-        readers.add(reader);
-        saveData();
+        try {
+            readers.add(reader);
+            saveData();
+        } catch (Exception e) {
+            System.out.println("Loi khi them doc gia: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public List<Reader> getAllReaders() {
@@ -68,37 +94,52 @@ public class Library {
     }
 
     public Reader getReaderById(String id) {
-        for (Reader reader : readers)
-            if (reader.getId().equals(id))
-                return reader;
+        for (Reader reader : readers) {
+            if (reader.getId().equals(id)) return reader;
+        }
         return null;
     }
 
     public boolean updateReader(Reader updatedReader) {
-        for (int i = 0; i < readers.size(); i++) {
-            if (readers.get(i).getId().equals(updatedReader.getId())) {
-                readers.set(i, updatedReader);
-                saveData();
-                return true;
+        try {
+            for (int i = 0; i < readers.size(); i++) {
+                if (readers.get(i).getId().equals(updatedReader.getId())) {
+                    readers.set(i, updatedReader);
+                    saveData();
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Loi khi cap nhat doc gia: " + e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
 
     public boolean deleteReader(String id) {
-        Reader reader = getReaderById(id);
-        if (reader != null) {
-            readers.remove(reader);
-            saveData();
-            return true;
+        try {
+            Reader reader = getReaderById(id);
+            if (reader != null) {
+                readers.remove(reader);
+                saveData();
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("Loi khi xoa doc gia: " + e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
 
-    // CRUD for User
+    // CRUD cho User
     public void addUser(User user) {
-        users.add(user);
-        saveData();
+        try {
+            users.add(user);
+            saveData();
+        } catch (Exception e) {
+            System.out.println("Loi khi them user: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public List<User> getAllUsers() {
@@ -106,37 +147,52 @@ public class Library {
     }
 
     public User getUserByUsername(String username) {
-        for (User user : users)
-            if (user.getUsername().equals(username))
-                return user;
+        for (User user : users) {
+            if (user.getUsername().equals(username)) return user;
+        }
         return null;
     }
 
     public boolean updateUser(User updatedUser) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getUsername().equals(updatedUser.getUsername())) {
-                users.set(i, updatedUser);
-                saveData();
-                return true;
+        try {
+            for (int i = 0; i < users.size(); i++) {
+                if (users.get(i).getUsername().equals(updatedUser.getUsername())) {
+                    users.set(i, updatedUser);
+                    saveData();
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Loi khi cap nhat user: " + e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
 
     public boolean deleteUser(String username) {
-        User user = getUserByUsername(username);
-        if (user != null) {
-            users.remove(user);
-            saveData();
-            return true;
+        try {
+            User user = getUserByUsername(username);
+            if (user != null) {
+                users.remove(user);
+                saveData();
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("Loi khi xoa user: " + e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
 
-    // CRUD for BorrowRecord
+    // CRUD cho BorrowRecord
     public void addBorrowRecord(BorrowRecord record) {
-        borrowRecords.add(record);
-        saveData();
+        try {
+            borrowRecords.add(record);
+            saveData();
+        } catch (Exception e) {
+            System.out.println("Loi khi them phieu muon: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public List<BorrowRecord> getAllBorrowRecords() {
@@ -144,62 +200,79 @@ public class Library {
     }
 
     public BorrowRecord getBorrowRecordById(String id) {
-        for (BorrowRecord record : borrowRecords)
-            if (record.getId().equals(id))
-                return record;
+        for (BorrowRecord record : borrowRecords) {
+            if (record.getId().equals(id)) return record;
+        }
         return null;
     }
 
     public boolean updateBorrowRecord(BorrowRecord updatedRecord) {
-        for (int i = 0; i < borrowRecords.size(); i++) {
-            if (borrowRecords.get(i).getId().equals(updatedRecord.getId())) {
-                borrowRecords.set(i, updatedRecord);
-                saveData();
-                return true;
+        try {
+            for (int i = 0; i < borrowRecords.size(); i++) {
+                if (borrowRecords.get(i).getId().equals(updatedRecord.getId())) {
+                    borrowRecords.set(i, updatedRecord);
+                    saveData();
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Loi khi cap nhat phieu muon: " + e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
 
     public boolean deleteBorrowRecord(String id) {
-        BorrowRecord record = getBorrowRecordById(id);
-        if (record != null) {
-            borrowRecords.remove(record);
-            saveData();
-            return true;
+        try {
+            BorrowRecord record = getBorrowRecordById(id);
+            if (record != null) {
+                borrowRecords.remove(record);
+                saveData();
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("Loi khi xoa phieu muon: " + e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
 
     // File IO
     @SuppressWarnings("unchecked")
-    private void loadData() {
-        books = (List<Book>) readObject("data/book.data");
-        readers = (List<Reader>) readObject("data/reader.data");
-        users = (List<User>) readObject("data/user.data");
-        borrowRecords = (List<BorrowRecord>) readObject("data/borrow.data");
+    private void loadData() throws IOException, ClassNotFoundException {
+        try {
+            Object objBooks = readObject("data/book.data");
+            Object objReaders = readObject("data/reader.data");
+            Object objUsers = readObject("data/user.data");
+            Object objBorrow = readObject("data/borrow.data");
 
-        if (books == null)
-            books = new ArrayList<>();
-        if (readers == null)
-            readers = new ArrayList<>();
-        if (users == null)
-            users = new ArrayList<>();
-        if (borrowRecords == null)
-            borrowRecords = new ArrayList<>();
+            books = (objBooks != null) ? (List<Book>) objBooks : new ArrayList<>();
+            readers = (objReaders != null) ? (List<Reader>) objReaders : new ArrayList<>();
+            users = (objUsers != null) ? (List<User>) objUsers : new ArrayList<>();
+            borrowRecords = (objBorrow != null) ? (List<BorrowRecord>) objBorrow : new ArrayList<>();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Loi khi load du lieu tu file: " + e.getMessage());
+            throw e;
+        }
     }
 
     private void saveData() {
-        writeObject(books, "data/book.data");
-        writeObject(readers, "data/reader.data");
-        writeObject(users, "data/user.data");
-        writeObject(borrowRecords, "data/borrow.data");
+        try {
+            writeObject(books, "data/book.data");
+            writeObject(readers, "data/reader.data");
+            writeObject(users, "data/user.data");
+            writeObject(borrowRecords, "data/borrow.data");
+        } catch (Exception e) {
+            System.out.println("Loi khi luu du lieu: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void writeObject(Object obj, String filename) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeObject(obj);
         } catch (IOException e) {
+            System.out.println("Loi ghi file " + filename + ": " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -208,6 +281,7 @@ public class Library {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
             return ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Loi doc file " + filename + ": " + e.getMessage());
             return null;
         }
     }
