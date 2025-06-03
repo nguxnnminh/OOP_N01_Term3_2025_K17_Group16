@@ -3,7 +3,7 @@
 ## Thành viên trong  nhóm
 - Nguyễn Nhật Minh 23010847 
 - Phạm Văn Minh 23010550 
-- Phạm Ngọc Tiến 
+- Phạm Ngọc Tiến 23010010
 
 ## Mô tả đối tượng
 1. Book – Quản lý thông tin sách
