@@ -1,4 +1,4 @@
-package test.java.thu;
+package src.test.java.thu;
 
 import model.Reader;
 
