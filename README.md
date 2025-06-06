@@ -61,3 +61,48 @@
 ![activitydiagram](https://github.com/user-attachments/assets/4a5eb344-b6cc-4f95-98fd-dfa8e37559dc)
 
 ![usecase](https://github.com/user-attachments/assets/fb57b19f-a93e-438b-a3d9-6b95259525ea)
+
+## ✅ Chức năng chính nhóm thực hiện:
+
+### Thống kê danh sách sách đang được mượn và hiển thị chi tiết
+
+#### Các bước thực hiện:
+
+1. Lấy toàn bộ danh sách phiếu mượn
+2. Kiểm tra ngày trả > ngày hiện tại => đang được mượn
+3. Thêm vào danh sách hiển thị
+4. In tổng số lượng và thông tin sách + người mượn
+
+#### Phân công công việc:
+
+- **Sinh viên A**: Lọc các phiếu mượn chưa đến hạn trả
+- **Sinh viên B**: Lấy thông tin sách và bạn đọc từ phiếu mượn
+- **Sinh viên C**: Tính tổng số sách đang mượn, in báo cáo
+- **Cả nhóm**: Kiểm thử, tạo lưu đồ, viết README
+
+#### Lưu đồ thuật toán:
++---------------------------+
+| Lấy danh sách phiếu mượn |
++------------+-------------+
+             |
+             v
++-----------------------------+
+| Duyệt từng phiếu mượn       |
+| -> parse ngày trả           |
++------------+----------------
+             |
+             v
++----------------------------+
+| Ngày trả > hôm nay?       |
++-------+---------+---------+
+        |         |
+        v         v
++------yes-----+  +--no----+
+| Thêm vào DS  |  | Bỏ qua |
++--------------+  +--------+
+        |
+        v
++----------------------------+
+| Hiển thị tổng số sách      |
+| và danh sách chi tiết      |
++----------------------------+
