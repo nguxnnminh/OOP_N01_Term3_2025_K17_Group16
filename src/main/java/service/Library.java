@@ -228,6 +228,7 @@ public class Library {
             return null;
         }
     }
+<<<<<<< HEAD
     public List<BorrowRecord> getNearDueBorrowRecords(int daysThreshold) {
         List<BorrowRecord> result = new ArrayList<>();
         LocalDate today = LocalDate.now();
@@ -241,5 +242,10 @@ public class Library {
         }
 
         return result;
+=======
+    public Book getBookInfoFromBorrowRecord(BorrowRecord record) {
+        String bookId = record.getBookId();
+        return getBookById(bookId);
+>>>>>>> 7c58081 (Initial commit or updated OOP project)
     }
 }

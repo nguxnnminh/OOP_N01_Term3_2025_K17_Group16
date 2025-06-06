@@ -1,4 +1,4 @@
-package src.test.java.thu;
+package test.java.thu;
 
 import model.Book;
 
