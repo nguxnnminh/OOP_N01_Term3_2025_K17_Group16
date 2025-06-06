@@ -10,102 +10,51 @@ public class BorrowRecord implements Serializable {
     private String returnDate;
 
     public BorrowRecord(String id, String bookId, String readerId, String borrowDate, String returnDate) {
-        try {
-            this.id = id;
-            this.bookId = bookId;
-            this.readerId = readerId;
-            this.borrowDate = borrowDate;
-            this.returnDate = returnDate;
-        } catch (Exception e) {
-            System.out.println("Loi khi tao BorrowRecord: " + e.getMessage());
-            e.printStackTrace();
-        }
+        this.id = id;
+        this.bookId = bookId;
+        this.readerId = readerId;
+        this.borrowDate = borrowDate;
+        this.returnDate = returnDate;
     }
 
     // Getter
     public String getId() {
-        try {
-            return id;
-        } catch (Exception e) {
-            System.out.println("Loi khi lay ID: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+        return id;
     }
 
     public String getBookId() {
-        try {
-            return bookId;
-        } catch (Exception e) {
-            System.out.println("Loi khi lay bookId: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+        return bookId;
     }
 
     public String getReaderId() {
-        try {
-            return readerId;
-        } catch (Exception e) {
-            System.out.println("Loi khi lay readerId: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+        return readerId;
     }
 
     public String getBorrowDate() {
-        try {
-            return borrowDate;
-        } catch (Exception e) {
-            System.out.println("Loi khi lay borrowDate: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+        return borrowDate;
     }
 
     public String getReturnDate() {
-        try {
-            return returnDate;
-        } catch (Exception e) {
-            System.out.println("Loi khi lay returnDate: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+        return returnDate;
     }
 
     // Setter
     public void setBorrowDate(String borrowDate) {
-        try {
-            this.borrowDate = borrowDate;
-        } catch (Exception e) {
-            System.out.println("Loi khi dat borrowDate: " + e.getMessage());
-            e.printStackTrace();
-        }
+        this.borrowDate = borrowDate;
     }
 
     public void setReturnDate(String returnDate) {
-        try {
-            this.returnDate = returnDate;
-        } catch (Exception e) {
-            System.out.println("Loi khi dat returnDate: " + e.getMessage());
-            e.printStackTrace();
-        }
+        this.returnDate = returnDate;
     }
 
     @Override
     public String toString() {
-        try {
-            return "BorrowRecord{" +
-                    "ID='" + id + '\'' +
-                    ", bookId='" + bookId + '\'' +
-                    ", readerId='" + readerId + '\'' +
-                    ", borrowDate='" + borrowDate + '\'' +
-                    ", returnDate='" + returnDate + '\'' +
-                    '}';
-        } catch (Exception e) {
-            System.out.println("Loi khi hien thi BorrowRecord: " + e.getMessage());
-            e.printStackTrace();
-            return "Thong tin BorrowRecord khong hop le";
-        }
+        return "Phiếu mượn{" +
+                "ID='" + id + '\'' +
+                ", Mã sách='" + bookId + '\'' +
+                ", Mã người mượn='" + readerId + '\'' +
+                ", Ngày mượn='" + borrowDate + '\'' +
+                ", Ngày trả='" + returnDate + '\'' +
+                '}';
     }
 }

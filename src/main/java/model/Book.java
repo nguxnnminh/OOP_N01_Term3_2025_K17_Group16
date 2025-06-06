@@ -8,88 +8,44 @@ public class Book implements Serializable {
     private String author;
 
     public Book(String id, String title, String author) {
-        try {
-            this.id = id;
-            this.title = title;
-            this.author = author;
-        } catch (Exception e) {
-            System.out.println("Loi khi tao Book: " + e.getMessage());
-            e.printStackTrace();
-        }
+        this.id = id;
+        this.title = title;
+        this.author = author;
     }
 
     // Getter
     public String getId() {
-        try {
-            return id;
-        } catch (Exception e) {
-            System.out.println("Loi khi lay ID: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+        return id;
     }
 
     public String getTitle() {
-        try {
-            return title;
-        } catch (Exception e) {
-            System.out.println("Loi khi lay tieu de sach: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+        return title;
     }
 
     public String getAuthor() {
-        try {
-            return author;
-        } catch (Exception e) {
-            System.out.println("Loi khi lay ten tac gia: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+        return author;
     }
 
     // Setter
     public void setId(String id) {
-        try {
-            this.id = id;
-        } catch (Exception e) {
-            System.out.println("Loi khi dat ID: " + e.getMessage());
-            e.printStackTrace();
-        }
+        this.id = id;
     }
 
     public void setTitle(String title) {
-        try {
-            this.title = title;
-        } catch (Exception e) {
-            System.out.println("Loi khi dat tieu de sach: " + e.getMessage());
-            e.printStackTrace();
-        }
+        this.title = title;
     }
 
     public void setAuthor(String author) {
-        try {
-            this.author = author;
-        } catch (Exception e) {
-            System.out.println("Loi khi dat ten tac gia: " + e.getMessage());
-            e.printStackTrace();
-        }
+        this.author = author;
     }
 
     // toString
     @Override
     public String toString() {
-        try {
-            return "Book{" +
-                    "id='" + id + '\'' +
-                    ", title='" + title + '\'' +
-                    ", author='" + author + '\'' +
-                    '}';
-        } catch (Exception e) {
-            System.out.println("Loi khi hien thi Book: " + e.getMessage());
-            e.printStackTrace();
-            return "Thong tin sach khong hop le";
-        }
+        return "Sách{" +
+                "ID='" + id + '\'' +
+                ", Tiêu đề='" + title + '\'' +
+                ", Tác giả='" + author + '\'' +
+                '}';
     }
 }
