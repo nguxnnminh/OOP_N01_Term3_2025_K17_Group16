@@ -17,201 +17,201 @@ public class Main {
 
             // Đăng nhập hoặc đăng ký
             if (!loginMenu(library)) {
-                System.out.println("Thoat chuong trinh.");
+                System.out.println("Thoát chương trình.");
                 return;
             }
 
             int luaChon;
             do {
-                System.out.println("\n===== CHUONG TRINH QUAN LY THU VIEN =====");
-                System.out.println("1. Them sach");
-                System.out.println("2. Hien thi tat ca sach");
-                System.out.println("3. Cap nhat sach");
-                System.out.println("4. Xoa sach");
+                System.out.println("\n===== CHƯƠNG TRÌNH QUẢN LÝ THƯ VIỆN =====");
+                System.out.println("1. Thêm sách");
+                System.out.println("2. Hiển thị tất cả sách");
+                System.out.println("3. Cập nhật sách");
+                System.out.println("4. Xóa sách");
 
-                System.out.println("5. Them nguoi muon");
-                System.out.println("6. Hien thi nguoi muon");
-                System.out.println("7. Cap nhat nguoi muon");
-                System.out.println("8. Xoa nguoi muon");
+                System.out.println("5. Thêm người mượn");
+                System.out.println("6. Hiển thị người mượn");
+                System.out.println("7. Cập nhật người mượn");
+                System.out.println("8. Xóa người mượn");
 
-                System.out.println("9. Them tai khoan");
-                System.out.println("10. Hien thi tai khoan");
-                System.out.println("11. Cap nhat tai khoan");
-                System.out.println("12. Xoa tai khoan");
+                System.out.println("9. Thêm tài khoản");
+                System.out.println("10. Hiển thị tài khoản");
+                System.out.println("11. Cập nhật tài khoản");
+                System.out.println("12. Xóa tài khoản");
 
-                System.out.println("13. Them phieu muon");
-                System.out.println("14. Hien thi phieu muon");
-                System.out.println("15. Cap nhat phieu muon");
-                System.out.println("16. Xoa phieu muon");
+                System.out.println("13. Thêm phiếu mượn");
+                System.out.println("14. Hiển thị phiếu mượn");
+                System.out.println("15. Cập nhật phiếu mượn");
+                System.out.println("16. Xóa phiếu mượn");
 
-                System.out.println("0. Thoat");
-                System.out.print("Nhap lua chon: ");
+                System.out.println("0. Thoát");
+                System.out.print("Nhập lựa chọn: ");
                 luaChon = Integer.parseInt(sc.nextLine());
 
                 switch (luaChon) {
                     case 1:
-                        System.out.print("Nhap ID sach: ");
+                        System.out.print("Nhập ID sách: ");
                         String id = sc.nextLine();
-                        System.out.print("Nhap ten sach: ");
+                        System.out.print("Nhập tên sách: ");
                         String ten = sc.nextLine();
-                        System.out.print("Nhap tac gia: ");
+                        System.out.print("Nhập tác giả: ");
                         String tacGia = sc.nextLine();
                         Book book = new Book(id, ten, tacGia);
                         library.addBook(book);
-                        System.out.println("Them sach thanh cong.");
+                        System.out.println("Thêm sách thành công.");
                         break;
                     case 2:
                         library.getAllBooks().forEach(System.out::println);
                         break;
                     case 3:
-                        System.out.print("Nhap ID sach can cap nhat: ");
+                        System.out.print("Nhập ID sách cần cập nhật: ");
                         String idUpdate = sc.nextLine();
                         Book bookUpdate = library.getBookById(idUpdate);
                         if (bookUpdate != null) {
-                            System.out.print("Nhap ten moi: ");
+                            System.out.print("Nhập tên mới: ");
                             bookUpdate.setTitle(sc.nextLine());
-                            System.out.print("Nhap tac gia moi: ");
+                            System.out.print("Nhập tác giả mới: ");
                             bookUpdate.setAuthor(sc.nextLine());
                             library.updateBook(bookUpdate);
-                            System.out.println("Cap nhat thanh cong.");
+                            System.out.println("Cập nhật thành công.");
                         } else {
-                            System.out.println("Khong tim thay sach.");
+                            System.out.println("Không tìm thấy sách.");
                         }
                         break;
                     case 4:
-                        System.out.print("Nhap ID sach can xoa: ");
+                        System.out.print("Nhập ID sách cần xóa: ");
                         if (library.deleteBook(sc.nextLine()))
-                            System.out.println("Da xoa.");
+                            System.out.println("Đã xóa.");
                         else
-                            System.out.println("Khong tim thay sach.");
+                            System.out.println("Không tìm thấy sách.");
                         break;
                     case 5:
-                        System.out.print("Nhap ID nguoi muon: ");
+                        System.out.print("Nhập ID người mượn: ");
                         String readerId = sc.nextLine();
-                        System.out.print("Nhap ho ten: ");
+                        System.out.print("Nhập họ tên: ");
                         String tenReader = sc.nextLine();
-                        System.out.print("Nhap so dien thoai: ");
+                        System.out.print("Nhập số điện thoại: ");
                         String sdt = sc.nextLine();
-                        System.out.print("Nhap CCCD: ");
+                        System.out.print("Nhập CCCD: ");
                         String cccd = sc.nextLine();
-                        System.out.print("Nhap ngay sinh: ");
+                        System.out.print("Nhập ngày sinh: ");
                         String ngaySinh = sc.nextLine();
                         Reader reader = new Reader(readerId, tenReader, sdt, cccd, ngaySinh);
                         library.addReader(reader);
-                        System.out.println("Them nguoi muon thanh cong.");
+                        System.out.println("Thêm người mượn thành công.");
                         break;
                     case 6:
                         library.getAllReaders().forEach(System.out::println);
                         break;
                     case 7:
-                        System.out.print("Nhap ID nguoi muon can cap nhat: ");
+                        System.out.print("Nhập ID người mượn cần cập nhật: ");
                         String readerUpdateId = sc.nextLine();
                         Reader readerUpdate = library.getReaderById(readerUpdateId);
                         if (readerUpdate != null) {
-                            System.out.print("Nhap ho ten moi: ");
+                            System.out.print("Nhập họ tên mới: ");
                             readerUpdate.setName(sc.nextLine());
-                            System.out.print("Nhap so dien thoai moi: ");
+                            System.out.print("Nhập số điện thoại mới: ");
                             readerUpdate.setPhone(sc.nextLine());
-                            System.out.print("Nhap CCCD moi: ");
+                            System.out.print("Nhập CCCD mới: ");
                             readerUpdate.setCccd(sc.nextLine());
-                            System.out.print("Nhap ngay sinh moi: ");
+                            System.out.print("Nhập ngày sinh mới: ");
                             readerUpdate.setBirthDate(sc.nextLine());
                             library.updateReader(readerUpdate);
-                            System.out.println("Cap nhat thanh cong.");
+                            System.out.println("Cập nhật thành công.");
                         } else {
-                            System.out.println("Khong tim thay nguoi muon.");
+                            System.out.println("Không tìm thấy người mượn.");
                         }
                         break;
                     case 8:
-                        System.out.print("Nhap ID nguoi muon can xoa: ");
+                        System.out.print("Nhập ID người mượn cần xóa: ");
                         if (library.deleteReader(sc.nextLine()))
-                            System.out.println("Da xoa.");
+                            System.out.println("Đã xóa.");
                         else
-                            System.out.println("Khong tim thay nguoi muon.");
+                            System.out.println("Không tìm thấy người mượn.");
                         break;
                     case 9:
-                        System.out.print("Nhap ten dang nhap: ");
+                        System.out.print("Nhập tên đăng nhập: ");
                         String username = sc.nextLine();
-                        System.out.print("Nhap mat khau: ");
+                        System.out.print("Nhập mật khẩu: ");
                         String password = sc.nextLine();
                         User user = new User(username, password);
                         library.addUser(user);
-                        System.out.println("Them tai khoan thanh cong.");
+                        System.out.println("Thêm tài khoản thành công.");
                         break;
                     case 10:
                         library.getAllUsers().forEach(System.out::println);
                         break;
                     case 11:
-                        System.out.print("Nhap ten dang nhap can cap nhat: ");
+                        System.out.print("Nhập tên đăng nhập cần cập nhật: ");
                         String usernameUpdate = sc.nextLine();
                         User userUpdate = library.getUserByUsername(usernameUpdate);
                         if (userUpdate != null) {
-                            System.out.print("Nhap mat khau moi: ");
+                            System.out.print("Nhập mật khẩu mới: ");
                             userUpdate.setPassword(sc.nextLine());
                             library.updateUser(userUpdate);
-                            System.out.println("Cap nhat thanh cong.");
+                            System.out.println("Cập nhật thành công.");
                         } else {
-                            System.out.println("Khong tim thay tai khoan.");
+                            System.out.println("Không tìm thấy tài khoản.");
                         }
                         break;
                     case 12:
-                        System.out.print("Nhap ten dang nhap can xoa: ");
+                        System.out.print("Nhập tên đăng nhập cần xóa: ");
                         if (library.deleteUser(sc.nextLine()))
-                            System.out.println("Da xoa.");
+                            System.out.println("Đã xóa.");
                         else
-                            System.out.println("Khong tim thay tai khoan.");
+                            System.out.println("Không tìm thấy tài khoản.");
                         break;
                     case 13:
-                        System.out.print("Nhap ID phieu muon: ");
+                        System.out.print("Nhập ID phiếu mượn: ");
                         String borrowId = sc.nextLine();
-                        System.out.print("Nhap ID sach: ");
+                        System.out.print("Nhập ID sách: ");
                         String bookId = sc.nextLine();
-                        System.out.print("Nhap ID nguoi muon: ");
+                        System.out.print("Nhập ID người mượn: ");
                         String readerId2 = sc.nextLine();
-                        System.out.print("Nhap ngay muon: ");
+                        System.out.print("Nhập ngày mượn: ");
                         String borrowDate = sc.nextLine();
-                        System.out.print("Nhap ngay tra: ");
+                        System.out.print("Nhập ngày trả: ");
                         String returnDate = sc.nextLine();
                         BorrowRecord record = new BorrowRecord(borrowId, bookId, readerId2, borrowDate, returnDate);
                         library.addBorrowRecord(record);
-                        System.out.println("Them phieu muon thanh cong.");
+                        System.out.println("Thêm phiếu mượn thành công.");
                         break;
                     case 14:
                         library.getAllBorrowRecords().forEach(System.out::println);
                         break;
                     case 15:
-                        System.out.print("Nhap ID phieu muon can cap nhat: ");
+                        System.out.print("Nhập ID phiếu mượn cần cập nhật: ");
                         String borrowIdUpdate = sc.nextLine();
                         BorrowRecord recordUpdate = library.getBorrowRecordById(borrowIdUpdate);
                         if (recordUpdate != null) {
-                            System.out.print("Nhap ngay muon moi: ");
+                            System.out.print("Nhập ngày mượn mới: ");
                             recordUpdate.setBorrowDate(sc.nextLine());
-                            System.out.print("Nhap ngay tra moi: ");
+                            System.out.print("Nhập ngày trả mới: ");
                             recordUpdate.setReturnDate(sc.nextLine());
                             library.updateBorrowRecord(recordUpdate);
-                            System.out.println("Cap nhat thanh cong.");
+                            System.out.println("Cập nhật thành công.");
                         } else {
-                            System.out.println("Khong tim thay phieu muon.");
+                            System.out.println("Không tìm thấy phiếu mượn.");
                         }
                         break;
                     case 16:
-                        System.out.print("Nhap ID phieu muon can xoa: ");
+                        System.out.print("Nhập ID phiếu mượn cần xóa: ");
                         if (library.deleteBorrowRecord(sc.nextLine()))
-                            System.out.println("Da xoa.");
+                            System.out.println("Đã xóa.");
                         else
-                            System.out.println("Khong tim thay phieu muon.");
+                            System.out.println("Không tìm thấy phiếu mượn.");
                         break;
                     case 0:
-                        System.out.println("Ket thuc chuong trinh.");
+                        System.out.println("Kết thúc chương trình.");
                         break;
                     default:
-                        System.out.println("Lua chon khong hop le.");
+                        System.out.println("Lựa chọn không hợp lệ.");
                         break;
                 }
             } while (luaChon != 0);
 
         } catch (Exception e) {
-            System.out.println("Da xay ra loi: " + e.getMessage());
+            System.out.println("Đã xảy ra lỗi: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -219,47 +219,47 @@ public class Main {
     // ===================== ĐĂNG NHẬP / ĐĂNG KÝ ======================
     private static boolean loginMenu(Library library) {
         while (true) {
-            System.out.println("===== DANG NHAP HE THONG =====");
-            System.out.println("1. Dang nhap");
-            System.out.println("2. Dang ky");
-            System.out.println("0. Thoat");
-            System.out.print("Lua chon: ");
+            System.out.println("===== ĐĂNG NHẬP HỆ THỐNG =====");
+            System.out.println("1. Đăng nhập");
+            System.out.println("2. Đăng ký");
+            System.out.println("0. Thoát");
+            System.out.print("Lựa chọn: ");
             String choice = sc.nextLine();
 
             switch (choice) {
                 case "1":
                     if (login(library))
-                        return true; // Dang nhap thanh cong
-                    break; // Neu that bai thi lap lai menu
+                        return true;
+                    break;
                 case "2":
                     register(library);
-                    break; // Sau khi dang ky thi quay lai menu
+                    break;
                 case "0":
                     return false;
                 default:
-                    System.out.println("Lua chon khong hop le. Vui long thu lai!");
+                    System.out.println("Lựa chọn không hợp lệ. Vui lòng thử lại!");
             }
         }
     }
 
     private static boolean login(Library library) {
         while (true) {
-            System.out.print("Ten dang nhap: ");
+            System.out.print("Tên đăng nhập: ");
             String username = sc.nextLine();
-            System.out.print("Mat khau: ");
+            System.out.print("Mật khẩu: ");
             String password = sc.nextLine();
 
             User user = library.getUserByUsername(username);
             if (user == null) {
-                System.out.println("Tai khoan khong ton tai! Vui long thu lai hoac chon 0 de quay lai menu.");
+                System.out.println("Tài khoản không tồn tại! Vui lòng thử lại hoặc chọn 0 để quay lại menu.");
             } else if (!user.getPassword().equals(password)) {
-                System.out.println("Sai mat khau! Vui long thu lai hoac chon 0 de quay lai menu.");
+                System.out.println("Sai mật khẩu! Vui lòng thử lại hoặc chọn 0 để quay lại menu.");
             } else {
-                System.out.println("Dang nhap thanh cong!");
+                System.out.println("Đăng nhập thành công!");
                 return true;
             }
 
-            System.out.print("Ban co muon thu lai? (y/n): ");
+            System.out.print("Bạn có muốn thử lại? (y/n): ");
             String again = sc.nextLine().trim().toLowerCase();
             if (!again.equals("y"))
                 return false;
@@ -268,18 +268,18 @@ public class Main {
 
     private static void register(Library library) {
         while (true) {
-            System.out.print("Ten dang nhap moi: ");
+            System.out.print("Tên đăng nhập mới: ");
             String username = sc.nextLine();
             if (library.getUserByUsername(username) != null) {
-                System.out.println("Ten dang nhap da ton tai! Vui long nhap lai.");
+                System.out.println("Tên đăng nhập đã tồn tại! Vui lòng nhập lại.");
                 continue;
             }
 
-            System.out.print("Mat khau: ");
+            System.out.print("Mật khẩu: ");
             String password = sc.nextLine();
             User user = new User(username, password);
             library.addUser(user);
-            System.out.println("Dang ky thanh cong!");
+            System.out.println("Đăng ký thành công!");
             break;
         }
     }
