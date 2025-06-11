@@ -248,4 +248,13 @@ public class Library {
         return getBookById(bookId);
 >>>>>>> 7c58081 (Initial commit or updated OOP project)
     }
+   public int countBooksBorrowed(List<BorrowRecord> records) {
+    int count = 0;
+    for (BorrowRecord record : records) {
+        if (record.getStatus().equals("chưa trả")) {
+            count++;
+        }
+    }
+    return count;
+  }
 }
