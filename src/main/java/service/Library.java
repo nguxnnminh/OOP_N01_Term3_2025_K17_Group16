@@ -242,4 +242,13 @@ public class Library {
 
         return result;
     }
+   public int countBooksBorrowed(List<BorrowRecord> records) {
+    int count = 0;
+    for (BorrowRecord record : records) {
+        if (record.getStatus().equals("chưa trả")) {
+            count++;
+        }
+    }
+    return count;
+  }
 }
