@@ -1,4 +1,4 @@
-package test;
+package thu;
 
 import model.Book;
 import model.Reader;

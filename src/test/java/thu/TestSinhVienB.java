@@ -1,4 +1,4 @@
-package test.java.thu;
+package thu;
 
 import model.Book;
 import model.BorrowRecord;

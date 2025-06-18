@@ -372,4 +372,10 @@ public class Library {
         }
         return activeRecords;
     }
+    public Book getBookInfoFromBorrowRecord(BorrowRecord record) {
+        if (record == null || record.getBookId() == null) {
+            return null;
+        }
+        return getBookById(record.getBookId());
+    }
 }

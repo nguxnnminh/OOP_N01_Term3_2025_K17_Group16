@@ -85,4 +85,45 @@ public class BorrowRecord implements Serializable {
                 ", Ngày trả='" + returnDate + '\'' +
                 '}';
     }
+    public void setId(String id) {
+    try {
+        if (id == null || id.trim().isEmpty()) {
+            throw new IllegalArgumentException("Mã phiếu mượn không được null hoặc rỗng");
+        }
+        this.id = id;
+    } catch (Exception e) {
+        System.err.println("Lỗi khi thiết lập ID: " + e.getMessage());
+        throw e;
+    } finally {
+        System.out.println("Hoàn tất thiết lập ID");
+    }
+}
+
+    public void setBookId(String bookId) {
+        try {
+            if (bookId == null || bookId.trim().isEmpty()) {
+                throw new IllegalArgumentException("Mã sách không được null hoặc rỗng");
+            }
+            this.bookId = bookId;
+        } catch (Exception e) {
+            System.err.println("Lỗi khi thiết lập mã sách: " + e.getMessage());
+            throw e;
+        } finally {
+            System.out.println("Hoàn tất thiết lập mã sách");
+        }
+    }
+
+    public void setReaderId(String readerId) {
+        try {
+            if (readerId == null || readerId.trim().isEmpty()) {
+                throw new IllegalArgumentException("Mã người mượn không được null hoặc rỗng");
+            }
+            this.readerId = readerId;
+        } catch (Exception e) {
+            System.err.println("Lỗi khi thiết lập mã người mượn: " + e.getMessage());
+            throw e;
+        } finally {
+            System.out.println("Hoàn tất thiết lập mã người mượn");
+        }
+    }
 }
