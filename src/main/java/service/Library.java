@@ -23,169 +23,274 @@ public class Library {
 
     // CRUD cho Book
     public void addBook(Book book) {
-        if (getBookById(book.getId()) != null) {
-            System.out.println("Sách với ID này đã tồn tại.");
-            return;
+        try {
+            if (getBookById(book.getId()) != null) {
+                System.out.println("Sách với ID này đã tồn tại.");
+                return;
+            }
+            books.add(book);
+            saveData();
+            System.out.println("Đã thêm sách thành công.");
+        } catch (Exception e) {
+            System.out.println("Lỗi khi thêm sách: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
         }
-        books.add(book);
-        saveData();
-        System.out.println("Đã thêm sách thành công.");
     }
 
     public List<Book> getAllBooks() {
-        return books;
+        try {
+            return books;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return new ArrayList<>();
     }
 
     public Book getBookById(String id) {
-        for (Book book : books) {
-            if (book.getId().equals(id)) return book;
+        try {
+            for (Book book : books) {
+                if (book.getId().equals(id)) return book;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
         return null;
     }
 
     public boolean updateBook(Book updatedBook) {
-        for (int i = 0; i < books.size(); i++) {
-            if (books.get(i).getId().equals(updatedBook.getId())) {
-                books.set(i, updatedBook);
-                saveData();
-                return true;
+        try {
+            for (int i = 0; i < books.size(); i++) {
+                if (books.get(i).getId().equals(updatedBook.getId())) {
+                    books.set(i, updatedBook);
+                    saveData();
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
         return false;
     }
 
     public boolean deleteBook(String id) {
-        Book book = getBookById(id);
-        if (book != null) {
-            books.remove(book);
-            saveData();
-            return true;
+        try {
+            Book book = getBookById(id);
+            if (book != null) {
+                books.remove(book);
+                saveData();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
         return false;
     }
 
     // CRUD cho Reader
     public void addReader(Reader reader) {
-        if (getReaderById(reader.getId()) != null) {
-            System.out.println("Độc giả với ID này đã tồn tại.");
-            return;
+        try {
+            if (getReaderById(reader.getId()) != null) {
+                System.out.println("Độc giả với ID này đã tồn tại.");
+                return;
+            }
+            readers.add(reader);
+            saveData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
-        readers.add(reader);
-        saveData();
     }
 
     public List<Reader> getAllReaders() {
-        return readers;
+        try {
+            return readers;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return new ArrayList<>();
     }
 
     public Reader getReaderById(String id) {
-        for (Reader reader : readers) {
-            if (reader.getId().equals(id)) return reader;
+        try {
+            for (Reader reader : readers) {
+                if (reader.getId().equals(id)) return reader;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
         return null;
     }
 
     public boolean updateReader(Reader updatedReader) {
-        for (int i = 0; i < readers.size(); i++) {
-            if (readers.get(i).getId().equals(updatedReader.getId())) {
-                readers.set(i, updatedReader);
-                saveData();
-                return true;
+        try {
+            for (int i = 0; i < readers.size(); i++) {
+                if (readers.get(i).getId().equals(updatedReader.getId())) {
+                    readers.set(i, updatedReader);
+                    saveData();
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
         return false;
     }
 
     public boolean deleteReader(String id) {
-        Reader reader = getReaderById(id);
-        if (reader != null) {
-            readers.remove(reader);
-            saveData();
-            return true;
+        try {
+            Reader reader = getReaderById(id);
+            if (reader != null) {
+                readers.remove(reader);
+                saveData();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
         return false;
     }
 
     // CRUD cho User
     public void addUser(User user) {
-        if (getUserByUsername(user.getUsername()) != null) {
-            System.out.println("Tên đăng nhập đã tồn tại.");
-            return;
+        try {
+            if (getUserByUsername(user.getUsername()) != null) {
+                System.out.println("Tên đăng nhập đã tồn tại.");
+                return;
+            }
+            users.add(user);
+            saveData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
-        users.add(user);
-        saveData();
     }
 
     public List<User> getAllUsers() {
-        return users;
+        try {
+            return users;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return new ArrayList<>();
     }
 
     public User getUserByUsername(String username) {
-        for (User user : users) {
-            if (user.getUsername().equals(username)) return user;
+        try {
+            for (User user : users) {
+                if (user.getUsername().equals(username)) return user;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
         return null;
     }
 
     public boolean updateUser(User updatedUser) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getUsername().equals(updatedUser.getUsername())) {
-                users.set(i, updatedUser);
-                saveData();
-                return true;
+        try {
+            for (int i = 0; i < users.size(); i++) {
+                if (users.get(i).getUsername().equals(updatedUser.getUsername())) {
+                    users.set(i, updatedUser);
+                    saveData();
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
         return false;
     }
 
     public boolean deleteUser(String username) {
-        User user = getUserByUsername(username);
-        if (user != null) {
-            users.remove(user);
-            saveData();
-            return true;
+        try {
+            User user = getUserByUsername(username);
+            if (user != null) {
+                users.remove(user);
+                saveData();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
         return false;
     }
 
     // CRUD cho BorrowRecord
     public void addBorrowRecord(BorrowRecord record) {
-        if (getBorrowRecordById(record.getId()) != null) {
-            System.out.println("Mã phiếu mượn đã tồn tại.");
-            return;
+        try {
+            if (getBorrowRecordById(record.getId()) != null) {
+                System.out.println("Mã phiếu mượn đã tồn tại.");
+                return;
+            }
+            borrowRecords.add(record);
+            saveData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
-        borrowRecords.add(record);
-        saveData();
     }
 
     public List<BorrowRecord> getAllBorrowRecords() {
-        return borrowRecords;
+        try {
+            return borrowRecords;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return new ArrayList<>();
     }
 
     public BorrowRecord getBorrowRecordById(String id) {
-        for (BorrowRecord record : borrowRecords) {
-            if (record.getId().equals(id)) return record;
+        try {
+            for (BorrowRecord record : borrowRecords) {
+                if (record.getId().equals(id)) return record;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
         return null;
     }
 
     public boolean updateBorrowRecord(BorrowRecord updatedRecord) {
-        for (int i = 0; i < borrowRecords.size(); i++) {
-            if (borrowRecords.get(i).getId().equals(updatedRecord.getId())) {
-                borrowRecords.set(i, updatedRecord);
-                saveData();
-                return true;
+        try {
+            for (int i = 0; i < borrowRecords.size(); i++) {
+                if (borrowRecords.get(i).getId().equals(updatedRecord.getId())) {
+                    borrowRecords.set(i, updatedRecord);
+                    saveData();
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
         return false;
     }
 
     public boolean deleteBorrowRecord(String id) {
-        BorrowRecord record = getBorrowRecordById(id);
-        if (record != null) {
-            borrowRecords.remove(record);
-            saveData();
-            return true;
+        try {
+            BorrowRecord record = getBorrowRecordById(id);
+            if (record != null) {
+                borrowRecords.remove(record);
+                saveData();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
         return false;
     }
@@ -193,22 +298,32 @@ public class Library {
     // File IO
     @SuppressWarnings("unchecked")
     private void loadData() {
-        Object objBooks = readObject("data/book.data");
-        Object objReaders = readObject("data/reader.data");
-        Object objUsers = readObject("data/user.data");
-        Object objBorrow = readObject("data/borrow.data");
+        try {
+            Object objBooks = readObject("data/book.data");
+            Object objReaders = readObject("data/reader.data");
+            Object objUsers = readObject("data/user.data");
+            Object objBorrow = readObject("data/borrow.data");
 
-        books = (objBooks != null) ? (List<Book>) objBooks : new ArrayList<>();
-        readers = (objReaders != null) ? (List<Reader>) objReaders : new ArrayList<>();
-        users = (objUsers != null) ? (List<User>) objUsers : new ArrayList<>();
-        borrowRecords = (objBorrow != null) ? (List<BorrowRecord>) objBorrow : new ArrayList<>();
+            books = (objBooks != null) ? (List<Book>) objBooks : new ArrayList<>();
+            readers = (objReaders != null) ? (List<Reader>) objReaders : new ArrayList<>();
+            users = (objUsers != null) ? (List<User>) objUsers : new ArrayList<>();
+            borrowRecords = (objBorrow != null) ? (List<BorrowRecord>) objBorrow : new ArrayList<>();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
     }
 
     private void saveData() {
-        writeObject(books, "data/book.data");
-        writeObject(readers, "data/reader.data");
-        writeObject(users, "data/user.data");
-        writeObject(borrowRecords, "data/borrow.data");
+        try {
+            writeObject(books, "data/book.data");
+            writeObject(readers, "data/reader.data");
+            writeObject(users, "data/user.data");
+            writeObject(borrowRecords, "data/borrow.data");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
     }
 
     private void writeObject(Object obj, String filename) {
@@ -217,6 +332,7 @@ public class Library {
         } catch (IOException e) {
             System.out.println("Lỗi ghi file " + filename + ": " + e.getMessage());
             e.printStackTrace();
+        } finally {
         }
     }
 
@@ -225,30 +341,26 @@ public class Library {
             return ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Lỗi đọc file " + filename + ": " + e.getMessage());
-            return null;
+        } finally {
         }
+        return null;
     }
+
     public List<BorrowRecord> getNearDueBorrowRecords(int daysThreshold) {
         List<BorrowRecord> result = new ArrayList<>();
-        LocalDate today = LocalDate.now();
-
-        for (BorrowRecord record : borrowRecords) {
-            LocalDate returnDate = LocalDate.parse(record.getReturnDate());
-            long daysBetween = ChronoUnit.DAYS.between(today, returnDate);
-            if (daysBetween >= 0 && daysBetween <= daysThreshold) {
-             result.add(record);
+        try {
+            LocalDate today = LocalDate.now();
+            for (BorrowRecord record : borrowRecords) {
+                LocalDate returnDate = LocalDate.parse(record.getReturnDate());
+                long daysBetween = ChronoUnit.DAYS.between(today, returnDate);
+                if (daysBetween >= 0 && daysBetween <= daysThreshold) {
+                    result.add(record);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
         }
-
         return result;
     }
-   public int countBooksBorrowed(List<BorrowRecord> records) {
-    int count = 0;
-    for (BorrowRecord record : records) {
-        if (record.getStatus().equals("chưa trả")) {
-            count++;
-        }
-    }
-    return count;
-  }
 }
