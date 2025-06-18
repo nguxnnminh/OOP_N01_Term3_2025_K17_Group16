@@ -10,14 +10,29 @@ public class BorrowRecord implements Serializable {
     private String returnDate;
 
     public BorrowRecord(String id, String bookId, String readerId, String borrowDate, String returnDate) {
-        this.id = id;
-        this.bookId = bookId;
-        this.readerId = readerId;
-        this.borrowDate = borrowDate;
-        this.returnDate = returnDate;
+        try {
+            if (id == null || id.trim().isEmpty()) {
+                throw new IllegalArgumentException("Mã phiếu mượn không được null hoặc rỗng");
+            }
+            if (bookId == null || bookId.trim().isEmpty()) {
+                throw new IllegalArgumentException("Mã sách không được null hoặc rỗng");
+            }
+            if (readerId == null || readerId.trim().isEmpty()) {
+                throw new IllegalArgumentException("Mã người mượn không được null hoặc rỗng");
+            }
+            this.id = id;
+            this.bookId = bookId;
+            this.readerId = readerId;
+            this.borrowDate = borrowDate;
+            this.returnDate = returnDate;
+        } catch (IllegalArgumentException e) {
+            System.err.println("Lỗi khi tạo BorrowRecord: " + e.getMessage());
+            throw e;
+        } finally {
+            System.out.println("Hoàn tất khởi tạo BorrowRecord");
+        }
     }
 
-    // Getter
     public String getId() {
         return id;
     }
@@ -38,13 +53,26 @@ public class BorrowRecord implements Serializable {
         return returnDate;
     }
 
-    // Setter
     public void setBorrowDate(String borrowDate) {
-        this.borrowDate = borrowDate;
+        try {
+            this.borrowDate = borrowDate;
+        } catch (Exception e) {
+            System.err.println("Lỗi khi thiết lập ngày mượn: " + e.getMessage());
+            throw e;
+        } finally {
+            System.out.println("Hoàn tất thiết lập ngày mượn");
+        }
     }
 
     public void setReturnDate(String returnDate) {
-        this.returnDate = returnDate;
+        try {
+            this.returnDate = returnDate;
+        } catch (Exception e) {
+            System.err.println("Lỗi khi thiết lập ngày trả: " + e.getMessage());
+            throw e;
+        } finally {
+            System.out.println("Hoàn tất thiết lập ngày trả");
+        }
     }
 
     @Override

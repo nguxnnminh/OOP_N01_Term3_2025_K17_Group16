@@ -11,8 +11,21 @@ public class User implements Serializable {
     }
 
     public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+        try {
+            if (username == null || username.trim().isEmpty()) {
+                throw new IllegalArgumentException("Tên đăng nhập không được null hoặc rỗng");
+            }
+            if (password == null || password.trim().isEmpty()) {
+                throw new IllegalArgumentException("Mật khẩu không được null hoặc rỗng");
+            }
+            this.username = username;
+            this.password = password;
+        } catch (IllegalArgumentException e) {
+            System.err.println("Lỗi khi tạo User: " + e.getMessage());
+            throw e;
+        } finally {
+            System.out.println("Hoàn tất khởi tạo User");
+        }
     }
 
     public String getUsername() {
@@ -20,7 +33,17 @@ public class User implements Serializable {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        try {
+            if (username == null || username.trim().isEmpty()) {
+                throw new IllegalArgumentException("Tên đăng nhập không được null hoặc rỗng");
+            }
+            this.username = username;
+        } catch (IllegalArgumentException e) {
+            System.err.println("Lỗi khi thiết lập tên đăng nhập: " + e.getMessage());
+            throw e;
+        } finally {
+            System.out.println("Hoàn tất thiết lập tên đăng nhập");
+        }
     }
 
     public String getPassword() {
@@ -28,7 +51,17 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        try {
+            if (password == null || password.trim().isEmpty()) {
+                throw new IllegalArgumentException("Mật khẩu không được null hoặc rỗng");
+            }
+            this.password = password;
+        } catch (IllegalArgumentException e) {
+            System.err.println("Lỗi khi thiết lập mật khẩu: " + e.getMessage());
+            throw e;
+        } finally {
+            System.out.println("Hoàn tất thiết lập mật khẩu");
+        }
     }
 
     @Override
