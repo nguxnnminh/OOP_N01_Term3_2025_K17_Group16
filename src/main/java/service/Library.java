@@ -363,4 +363,13 @@ public class Library {
         }
         return result;
     }
+    public List<BorrowRecord> getActiveBorrowRecords() {
+        List<BorrowRecord> activeRecords = new ArrayList<>();
+        for (BorrowRecord record : borrowRecords) {
+            if (record.getReturnDate() == null || record.getReturnDate().trim().isEmpty()) {
+                activeRecords.add(record);
+            }
+        }
+        return activeRecords;
+    }
 }
