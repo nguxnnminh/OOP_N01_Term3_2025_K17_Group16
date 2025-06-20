@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách độc giả</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        a { display: block; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Danh sách độc giả</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Mã độc giả</th>
+                <th>Tên</th>
+                <th>CCCD</th>
+                <th>Số điện thoại</th>
+                <th>Ngày sinh</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="reader : ${readers}">
+                <td th:text="${reader.id}"></td>
+                <td th:text="${reader.name}"></td>
+                <td th:text="${reader.cccd}"></td>
+                <td th:text="${reader.phone}"></td>
+                <td th:text="${reader.birthDate}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="/">Quay về trang chủ</a>
+    <a href="/books">Xem danh sách sách</a>
+    <a href="/borrow-records">Xem danh sách phiếu mượn</a>
+</body>
+</html>
