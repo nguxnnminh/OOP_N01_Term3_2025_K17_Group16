@@ -7,11 +7,42 @@
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid black; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
-        a { display: block; margin-top: 10px; }
+        a { margin-right: 10px; text-decoration: none; color: #007bff; }
+        a:hover { color: #0056b3; }
+        form { margin:  20px 0; }
+        input { margin: 5px; padding: 5px; }
+        .error { color: red; }
+        button { padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 3px; }
+        button:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
     <h1>Danh sách độc giả</h1>
+    
+    <!-- Thông báo lỗi -->
+    <div th:if="${param.error}" class="error" th:text="${param.error}"></div>
+    
+    <!-- Form thêm/sửa độc giả -->
+    <form th:action="@{${reader.id} != '' ? '/readers/update' : '/readers/add'}" th:object="${reader}" method="post">
+        <label>Mã độc giả: </label>
+        <input type="text" th:field="*{id}" th:disabled="${reader.id != ''}" />
+        <br>
+        <label>Tên: </label>
+        <input type="text" th:field="*{name}" />
+        <br>
+        <label>CCCD: </label>
+        <input type="text" th:field="*{cccd}" />
+        <br>
+        <label>Số điện thoại: </label>
+        <input type="text" th:field="*{phone}" />
+        <br>
+        <label>Ngày sinh: </label>
+        <input type="text" th:field="*{birthDate}" />
+        <br>
+        <button type="submit" th:text="${reader.id} != '' ? 'Cập nhật' : 'Thêm độc giả'"></button>
+    </form>
+
+    <!-- Bảng danh sách độc giả -->
     <table>
         <thead>
             <tr>
@@ -20,6 +51,7 @@
                 <th>CCCD</th>
                 <th>Số điện thoại</th>
                 <th>Ngày sinh</th>
+                <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +61,10 @@
                 <td th:text="${reader.cccd}"></td>
                 <td th:text="${reader.phone}"></td>
                 <td th:text="${reader.birthDate}"></td>
+                <td>
+                    <a th:href="@{/readers/edit/{id}(id=${reader.id})}">Sửa</a>
+                    <a th:href="@{/readers/delete/{id}(id=${reader.id})}" onclick="return confirm('Bạn chắc chắn muốn xóa?')">Xóa</a>
+                </td>
             </tr>
         </tbody>
     </table>

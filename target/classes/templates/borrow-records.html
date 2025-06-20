@@ -7,18 +7,51 @@
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid black; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
+        a { margin-right: 10px; text-decoration: none; color: #007bff; }
+        a:hover { color: #0056b3; }
+        form { margin: 20px 0; }
+        input { margin: 5px; padding: 5px; }
+        .error { color: red; }
+        button { padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 3px; }
+        button:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
     <h1>Danh sách phiếu mượn</h1>
+    
+    <!-- Thông báo lỗi -->
+    <div th:if="${param.error}" class="error" th:text="${param.error}"></div>
+    
+    <!-- Form thêm/sửa phiếu mượn -->
+    <form th:action="@{${record.id} != '' ? '/borrow-records/update' : '/borrow-records/add'}" th:object="${record}" method="post">
+        <label>ID phiếu mượn: </label>
+        <input type="text" th:field="*{id}" th:disabled="${record.id != ''}" />
+        <br>
+        <label>Mã sách: </label>
+        <input type="text" th:field="*{bookId}" />
+        <br>
+        <label>Mã độc giả: </label>
+        <input type="text" th:field="*{readerId}" />
+        <br>
+        <label>Ngày mượn: </label>
+        <input type="text" th:field="*{borrowDate}" />
+        <br>
+        <label>Ngày trả: </label>
+        <input type="text" th:field="*{returnDate}" />
+        <br>
+        <button type="submit" th:text="${record.id} != '' ? 'Cập nhật' : 'Thêm phiếu mượn'"></button>
+    </form>
+
+    <!-- Bảng danh sách phiếu mượn -->
     <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Mã sách</th>
-                <th>Mã người mượn</th>
+                <th>Mã độc giả</th>
                 <th>Ngày mượn</th>
                 <th>Ngày trả</th>
+                <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
@@ -28,8 +61,15 @@
                 <td th:text="${record.readerId}"></td>
                 <td th:text="${record.borrowDate}"></td>
                 <td th:text="${record.returnDate}"></td>
+                <td>
+                    <a th:href="@{/borrow-records/edit/{id}(id=${record.id})}">Sửa</a>
+                    <a th:href="@{/borrow-records/delete/{id}(id=${record.id})}" onclick="return confirm('Bạn chắc chắn muốn xóa?')">Xóa</a>
+                </td>
             </tr>
         </tbody>
     </table>
+    <a href="/">Quay về trang chủ</a>
+    <a href="/books">Xem danh sách sách</a>
+    <a href="/readers">Xem danh sách độc giả</a>
 </body>
 </html>

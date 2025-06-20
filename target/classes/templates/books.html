@@ -7,17 +7,43 @@
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid black; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
-        a { display: block; margin-top: 10px; }
+        a { margin-right: 10px; text-decoration: none; color: #007bff; }
+        a:hover { color: #0056b3; }
+        form { margin: 20px 0; }
+        input { margin: 5px; padding: 5px; }
+        .error { color: red; }
+        button { padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 3px; }
+        button:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
     <h1>Danh sách sách</h1>
+    
+    <!-- Thông báo lỗi -->
+    <div th:if="${param.error}" class="error" th:text="${param.error}"></div>
+    
+    <!-- Form thêm/sửa sách -->
+    <form th:action="@{${book.id} != '' ? '/books/update' : '/books/add'}" th:object="${book}" method="post">
+        <label>Mã sách: </label>
+        <input type="text" th:field="*{id}" th:disabled="${book.id != ''}" />
+        <br>
+        <label>Tiêu đề: </label>
+        <input type="text" th:field="*{title}" />
+        <br>
+        <label>Tác giả: </label>
+        <input type="text" th:field="*{author}" />
+        <br>
+        <button type="submit" th:text="${book.id} != '' ? 'Cập nhật' : 'Thêm sách'"></button>
+    </form>
+
+    <!-- Bảng danh sách sách -->
     <table>
         <thead>
             <tr>
                 <th>Mã sách</th>
                 <th>Tiêu đề</th>
                 <th>Tác giả</th>
+                <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
@@ -25,10 +51,15 @@
                 <td th:text="${book.id}"></td>
                 <td th:text="${book.title}"></td>
                 <td th:text="${book.author}"></td>
+                <td>
+                    <a th:href="@{/books/edit/{id}(id=${book.id})}">Sửa</a>
+                    <a th:href="@{/books/delete/{id}(id=${book.id})}" onclick="return confirm('Bạn chắc chắn muốn xóa?')">Xóa</a>
+                </td>
             </tr>
         </tbody>
     </table>
     <a href="/">Quay về trang chủ</a>
-    <a href="/books">Xem danh sách phiếu mượn</a>
+    <a href="/readers">Xem danh sách độc giả</a>
+    <a href="/borrow-records">Xem danh sách phiếu mượn</a>
 </body>
 </html>

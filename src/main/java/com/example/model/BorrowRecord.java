@@ -11,6 +11,7 @@ public class BorrowRecord implements Serializable {
         this.readerId = readerId;
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
+        System.out.println("Hoàn tất khởi tạo BorrowRecord");
     }
 
     // Getter
@@ -20,14 +21,32 @@ public class BorrowRecord implements Serializable {
     public String getBorrowDate() { return borrowDate; }
     public String getReturnDate() { return returnDate; }
 
-    // Setter (Bổ sung để sửa lỗi bạn đang gặp)
-    public void setId(String id) { this.id = id; }
-    public void setBookId(String bookId) { this.bookId = bookId; }
-    public void setReaderId(String readerId) { this.readerId = readerId; }
-    public void setBorrowDate(String borrowDate) { this.borrowDate = borrowDate; }
-    public void setReturnDate(String returnDate) { this.returnDate = returnDate; }
+    // Setter
+    public void setId(String id) {
+        this.id = id;
+        System.out.println("Hoàn tất thiết lập ID phiếu mượn");
+    }
 
-    // Nếu trong test có gọi toCSV()
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
+        System.out.println("Hoàn tất thiết lập ID sách");
+    }
+
+    public void setReaderId(String readerId) {
+        this.readerId = readerId;
+        System.out.println("Hoàn tất thiết lập ID độc giả");
+    }
+
+    public void setBorrowDate(String borrowDate) {
+        this.borrowDate = borrowDate;
+        System.out.println("Hoàn tất thiết lập ngày mượn");
+    }
+
+    public void setReturnDate(String returnDate) {
+        this.returnDate = returnDate;
+        System.out.println("Hoàn tất thiết lập ngày trả");
+    }
+
     public String toCSV() {
         return id + "," + bookId + "," + readerId + "," + borrowDate + "," + returnDate;
     }
