@@ -1,15 +1,15 @@
 package service;
 
-import model.Book;
-import model.Reader;
-import model.User;
-import model.BorrowRecord;
-
 import java.io.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.model.Book;
+import com.example.model.BorrowRecord;
+import com.example.model.Reader;
+import com.example.model.User;
 
 public class Library {
     private List<Book> books = new ArrayList<>();

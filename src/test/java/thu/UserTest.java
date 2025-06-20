@@ -1,6 +1,6 @@
 package thu;
 
-import model.User;
+import com.example.model.User;
 
 public class UserTest {
     public static void main(String[] args) {

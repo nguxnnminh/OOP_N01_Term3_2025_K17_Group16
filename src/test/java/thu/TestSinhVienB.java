@@ -1,7 +1,8 @@
 package thu;
 
-import model.Book;
-import model.BorrowRecord;
+import com.example.model.Book;
+import com.example.model.BorrowRecord;
+
 import service.Library;
 
 public class TestSinhVienB {

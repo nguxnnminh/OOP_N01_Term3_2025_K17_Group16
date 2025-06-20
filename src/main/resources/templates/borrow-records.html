@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách phiếu mượn</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Danh sách phiếu mượn</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Mã sách</th>
+                <th>Mã người mượn</th>
+                <th>Ngày mượn</th>
+                <th>Ngày trả</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="record : ${records}">
+                <td th:text="${record.id}"></td>
+                <td th:text="${record.bookId}"></td>
+                <td th:text="${record.readerId}"></td>
+                <td th:text="${record.borrowDate}"></td>
+                <td th:text="${record.returnDate}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

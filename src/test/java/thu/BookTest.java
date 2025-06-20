@@ -1,6 +1,6 @@
 package thu;
 
-import model.Book;
+import com.example.model.Book;
 
 public class BookTest {
     public static void main(String[] args) {

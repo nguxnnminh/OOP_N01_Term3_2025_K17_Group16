@@ -1,10 +1,13 @@
 package thu;
 
-import model.BorrowRecord;
 import org.junit.jupiter.api.Test;
+
+import com.example.model.BorrowRecord;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BorrowRecordTest {
+
     @Test
     public void testConstructorAndGetters() {
         try {
@@ -40,13 +43,13 @@ public class BorrowRecordTest {
     }
 
     @Test
-    public void testToString() {
+    public void testToCSV() {
         try {
             BorrowRecord record = new BorrowRecord("1", "B1", "R1", "2023-01-01", "2023-01-10");
             String expected = "1,B1,R1,2023-01-01,2023-01-10";
-            assertEquals(expected, record.toString());
+            assertEquals(expected, record.toCSV());
         } catch (Exception e) {
-            fail("toString test failed with exception: " + e.getMessage());
+            fail("toCSV test failed with exception: " + e.getMessage());
         }
     }
 }

@@ -1,12 +1,13 @@
 package thu;
 
-import model.Book;
-import model.Reader;
-import model.BorrowRecord;
 import service.Library;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import com.example.model.Book;
+import com.example.model.BorrowRecord;
+import com.example.model.Reader;
 
 public class LibraryTest {
     public static void main(String[] args) {
