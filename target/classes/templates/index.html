@@ -2,18 +2,22 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Hệ thống quản lý thư viện</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        h1 { color: #333; }
-        a { display: inline-block; margin: 10px; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; }
-        a:hover { background-color: #0056b3; }
-    </style>
+    <title>Chào mừng đến với Hệ thống Quản lý Thư viện</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Chào mừng đến với Hệ thống Quản lý Thư viện</h1>
-    <a href="/books">Xem danh sách sách</a>
-    <a href="/readers">Xem danh sách người đọc</a>
-    <a href="/borrow-records">Xem danh sách phiếu mượn</a>
+    <div class="container mt-5">
+        <h1 class="text-center">Chào mừng đến với Hệ thống Quản lý Thư viện</h1>
+        <div class="text-center mt-4">
+            <p>Chào mừng bạn đến với hệ thống quản lý thư viện trực tuyến! Hệ thống này giúp bạn dễ dàng quản lý danh sách sách, thông tin độc giả và các phiếu mượn một cách hiệu quả. Hãy khám phá các tính năng của chúng tôi ngay hôm nay!</p>
+        </div>
+        <div class="text-center mt-4">
+            <a th:href="@{/books}" class="btn btn-primary mr-2">Xem danh sách sách</a>
+            <a th:href="@{/readers}" class="btn btn-primary mr-2">Xem danh sách độc giả</a>
+            <a th:href="@{/borrow-records}" class="btn btn-primary">Xem danh sách phiếu mượn</a>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

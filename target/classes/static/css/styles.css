@@ -1,0 +1,137 @@
+body {
+    background-color: #f5ece0; /* Màu be đồng nhất */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+    text-align: center;
+    padding: 1rem;
+}
+
+.header {
+    background: none;
+    box-shadow: none;
+    margin-bottom: 1rem;
+}
+
+.header h1 {
+    font-size: 2.3rem;
+    font-weight: 600;
+    color: #22543d;
+    padding-bottom: 0.2rem;
+    display: inline-block;
+    border-bottom: 1px solid #38a169;
+}
+
+.content {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    border: 1px solid #e6e8e6;
+}
+
+.intro {
+    margin-bottom: 1.5rem;
+    color: #4a5568;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.nav-buttons a {
+    flex: 1;
+    min-width: 180px;
+    padding: 0.8rem 1.2rem;
+    font-size: 0.95rem;
+    border-radius: 5px;
+    background-color: #2dd4bf;
+    text-decoration: none;
+    color: white;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.nav-buttons a:hover {
+    background-color: #14b8a6;
+    transform: translateY(-1px);
+}
+
+.form-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5e5;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.table-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+    background-color: #f9fafb;
+    font-weight: 600;
+    color: #374151;
+}
+
+tr:hover {
+    background-color: #f9fafb;
+}

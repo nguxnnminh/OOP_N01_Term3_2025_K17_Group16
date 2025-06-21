@@ -15,9 +15,19 @@ public class BookController {
     private List<Book> books = new ArrayList<>();
 
     public BookController() {
-        books.add(new Book("B1", "Lập trình Java", "Nguyễn Văn A"));
-        books.add(new Book("B2", "Cấu trúc dữ liệu", "Trần Thị B"));
-        books.add(new Book("B3", "Thuật toán", "Lê Văn C"));
+        try {
+            books.add(new Book("B1", "Lập trình Java", "Nguyễn Văn A"));
+            books.add(new Book("B2", "Cấu trúc dữ liệu", "Trần Thị B"));
+            books.add(new Book("B3", "Thuật toán", "Lê Văn C"));
+        } catch (Exception e) {
+            System.err.println("Lỗi khi khởi tạo danh sách sách: " + e.getMessage());
+        } finally {
+            System.out.println("Hoàn tất khởi tạo BookController");
+        }
+    }
+
+    public List<Book> getBooks() {
+        return books;
     }
 
     @GetMapping("/")
@@ -27,64 +37,106 @@ public class BookController {
 
     @GetMapping("/books")
     public String showBooks(Model model) {
-        model.addAttribute("books", books);
-        model.addAttribute("book", new Book("", "", ""));
-        return "books";
+        try {
+            model.addAttribute("books", books);
+            model.addAttribute("book", new Book("", "", ""));
+            return "books";
+        } catch (Exception e) {
+            model.addAttribute("error", "Lỗi khi hiển thị danh sách sách: " + e.getMessage());
+            return "books";
+        } finally {
+            System.out.println("Hoàn tất hiển thị danh sách sách");
+        }
     }
 
     @PostMapping("/books/add")
     public String addBook(@ModelAttribute("book") Book book, RedirectAttributes redirectAttributes) {
-        if (book.getId() == null || book.getId().trim().isEmpty() ||
-            book.getTitle() == null || book.getTitle().trim().isEmpty() ||
-            book.getAuthor() == null || book.getAuthor().trim().isEmpty()) {
-            redirectAttributes.addAttribute("error", "Vui lòng điền đầy đủ thông tin sách");
-            return "redirect:/books";
+        try {
+            if (book.getId() == null || book.getId().trim().isEmpty() ||
+                book.getTitle() == null || book.getTitle().trim().isEmpty() ||
+                book.getAuthor() == null || book.getAuthor().trim().isEmpty()) {
+                throw new IllegalArgumentException("Vui lòng điền đầy đủ thông tin sách");
+            }
+            if (books.stream().anyMatch(b -> b.getId().equals(book.getId()))) {
+                throw new IllegalArgumentException("ID sách đã tồn tại");
+            }
+            books.add(book);
+            redirectAttributes.addFlashAttribute("success", "Thêm sách thành công");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Lỗi khi thêm sách: " + e.getMessage());
+        } finally {
+            System.out.println("Hoàn tất thao tác thêm sách");
         }
-        if (books.stream().anyMatch(b -> b.getId().equals(book.getId()))) {
-            redirectAttributes.addAttribute("error", "ID sách đã tồn tại");
-            return "redirect:/books";
-        }
-        books.add(book);
         return "redirect:/books";
     }
 
     @GetMapping("/books/edit/{id}")
     public String showEditBookForm(@PathVariable("id") String id, Model model, RedirectAttributes redirectAttributes) {
-        Book book = books.stream()
-                .filter(b -> b.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-        if (book == null) {
-            redirectAttributes.addAttribute("error", "Sách không tồn tại");
+        try {
+            Book book = books.stream()
+                    .filter(b -> b.getId().equals(id))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Sách không tồn tại"));
+            model.addAttribute("book", book);
+            model.addAttribute("books", books);
+            return "books";
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/books";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Lỗi khi hiển thị form sửa sách: " + e.getMessage());
+            return "redirect:/books";
+        } finally {
+            System.out.println("Hoàn tất thao tác hiển thị form sửa sách");
         }
-        model.addAttribute("book", book);
-        model.addAttribute("books", books);
-        return "books";
     }
 
     @PostMapping("/books/update")
     public String updateBook(@ModelAttribute("book") Book updatedBook, RedirectAttributes redirectAttributes) {
-        if (updatedBook.getId() == null || updatedBook.getId().trim().isEmpty() ||
-            updatedBook.getTitle() == null || updatedBook.getTitle().trim().isEmpty() ||
-            updatedBook.getAuthor() == null || updatedBook.getAuthor().trim().isEmpty()) {
-            redirectAttributes.addAttribute("error", "Vui lòng điền đầy đủ thông tin sách");
-            return "redirect:/books";
-        }
-        for (int i = 0; i < books.size(); i++) {
-            if (books.get(i).getId().equals(updatedBook.getId())) {
-                books.set(i, updatedBook);
-                break;
+        try {
+            if (updatedBook.getId() == null || updatedBook.getId().trim().isEmpty() ||
+                updatedBook.getTitle() == null || updatedBook.getTitle().trim().isEmpty() ||
+                updatedBook.getAuthor() == null || updatedBook.getAuthor().trim().isEmpty()) {
+                throw new IllegalArgumentException("Vui lòng điền đầy đủ thông tin sách");
             }
+            boolean found = false;
+            for (int i = 0; i < books.size(); i++) {
+                if (books.get(i).getId().equals(updatedBook.getId())) {
+                    books.set(i, updatedBook);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                throw new IllegalArgumentException("Sách không tồn tại");
+            }
+            redirectAttributes.addFlashAttribute("success", "Cập nhật sách thành công");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Lỗi khi cập nhật sách: " + e.getMessage());
+        } finally {
+            System.out.println("Hoàn tất thao tác cập nhật sách");
         }
         return "redirect:/books";
     }
 
     @GetMapping("/books/delete/{id}")
     public String deleteBook(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
-        boolean removed = books.removeIf(b -> b.getId().equals(id));
-        if (!removed) {
-            redirectAttributes.addAttribute("error", "Sách không tồn tại");
+        try {
+            boolean removed = books.removeIf(b -> b.getId().equals(id));
+            if (!removed) {
+                throw new IllegalArgumentException("Sách không tồn tại");
+            }
+            redirectAttributes.addFlashAttribute("success", "Xóa sách thành công");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Lỗi khi xóa sách: " + e.getMessage());
+        } finally {
+            System.out.println("Hoàn tất thao tác xóa sách");
         }
         return "redirect:/books";
     }
