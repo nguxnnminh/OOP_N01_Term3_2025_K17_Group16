@@ -1,10 +1,8 @@
 com/example/model/BorrowRecord.class
 com/example/OOPApplication.class
 com/example/controller/BookController.class
-control/Main.class
 com/example/controller/ReaderController.class
 com/example/controller/BorrowRecordController.class
 com/example/model/User.class
-service/Library.class
 com/example/model/Reader.class
 com/example/model/Book.class

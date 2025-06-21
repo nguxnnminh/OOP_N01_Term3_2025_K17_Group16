@@ -1,6 +1,3 @@
-thu/TestSinhVienB.class
-thu/BookTest.class
-thu/UserTest.class
-thu/LibraryTest.class
-thu/ReaderTest.class
-thu/BorrowRecordTest.class
+com/example/controller/BookControllerTest.class
+com/example/controller/BorrowRecordControllerTest.class
+com/example/controller/ReaderControllerTest.class

@@ -30,7 +30,9 @@ public class ReaderController {
     public String showReaders(Model model) {
         try {
             model.addAttribute("readers", readers);
-            model.addAttribute("reader", new Reader("", "", "", "", ""));
+            if (!model.containsAttribute("reader")) {
+                model.addAttribute("reader", new Reader("", "", "", "", ""));
+            }
             return "readers";
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi khi hiển thị danh sách độc giả: " + e.getMessage());
@@ -58,6 +60,7 @@ public class ReaderController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Lỗi khi thêm độc giả: " + e.getMessage());
         } finally {
+            redirectAttributes.addFlashAttribute("reader", null); // reset form về trạng thái thêm
             System.out.println("Hoàn tất thao tác thêm độc giả");
         }
         return "redirect:/readers";
@@ -75,13 +78,12 @@ public class ReaderController {
             return "readers";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/readers";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Lỗi khi hiển thị form sửa độc giả: " + e.getMessage());
-            return "redirect:/readers";
         } finally {
             System.out.println("Hoàn tất thao tác hiển thị form sửa độc giả");
         }
+        return "redirect:/readers";
     }
 
     @PostMapping("/readers/update")
@@ -109,6 +111,7 @@ public class ReaderController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Lỗi khi cập nhật độc giả: " + e.getMessage());
         } finally {
+            redirectAttributes.addFlashAttribute("reader", null); // reset về chế độ thêm
             System.out.println("Hoàn tất thao tác cập nhật độc giả");
         }
         return "redirect:/readers";
@@ -127,6 +130,7 @@ public class ReaderController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Lỗi khi xóa độc giả: " + e.getMessage());
         } finally {
+            redirectAttributes.addFlashAttribute("reader", null); // reset về chế độ thêm
             System.out.println("Hoàn tất thao tác xóa độc giả");
         }
         return "redirect:/readers";

@@ -1,0 +1,24 @@
+-------------------------------------------------------------------------------
+Test set: com.example.controller.BorrowRecordControllerTest
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 4, Errors: 1, Skipped: 0, Time elapsed: 1.891 s <<< FAILURE! - in com.example.controller.BorrowRecordControllerTest
+testAddBorrowRecord_InvalidId  Time elapsed: 0.065 s  <<< FAILURE!
+java.lang.AssertionError: Redirected URL expected:</borrow-records> but was:</rl-records>
+	at com.example.controller.BorrowRecordControllerTest.testAddBorrowRecord_InvalidId(BorrowRecordControllerTest.java:72)
+
+testAddBorrowRecord_BookNotExist  Time elapsed: 0.037 s  <<< FAILURE!
+java.lang.AssertionError: Redirected URL expected:</borrow-records> but was:</rl-records>
+	at com.example.controller.BorrowRecordControllerTest.testAddBorrowRecord_BookNotExist(BorrowRecordControllerTest.java:85)
+
+testAddBorrowRecord_BookBorrowed  Time elapsed: 0.035 s  <<< FAILURE!
+java.lang.AssertionError: Redirected URL expected:</borrow-records> but was:</rl-records>
+	at com.example.controller.BorrowRecordControllerTest.testAddBorrowRecord_BookBorrowed(BorrowRecordControllerTest.java:99)
+
+testAddBorrowRecord_Valid  Time elapsed: 0.048 s  <<< FAILURE!
+java.lang.AssertionError: Redirected URL expected:</borrow-records> but was:</rl-records>
+	at com.example.controller.BorrowRecordControllerTest.testAddBorrowRecord_Valid(BorrowRecordControllerTest.java:59)
+
+testShowBorrowRecords  Time elapsed: 0.023 s  <<< ERROR!
+javax.servlet.ServletException: Circular view path [borrow-records]: would dispatch back to the current handler URL [/borrow-records] again. Check your ViewResolver setup! (Hint: This may be the result of an unspecified view, due to default view name generation.)
+	at com.example.controller.BorrowRecordControllerTest.testShowBorrowRecords(BorrowRecordControllerTest.java:43)
+
