@@ -9,11 +9,11 @@
 <div class="container mt-5">
     <h1 class="text-center">Danh sách sách</h1>
 
-    <!-- Hiển thị thông báo lỗi hoặc thành công -->
+    <!-- Thông báo -->
     <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
     <div th:if="${success}" class="alert alert-success mt-3" th:text="${success}"></div>
 
-    <!-- FORM THÊM SÁCH -->
+    <!-- Form thêm -->
     <div th:if="${#strings.isEmpty(book.id)}">
         <h4>Thêm sách mới</h4>
         <form th:object="${book}" th:action="@{/books/add}" method="post" class="mt-4">
@@ -29,11 +29,15 @@
                 <label for="author">Tác giả:</label>
                 <input type="text" th:field="*{author}" id="author" class="form-control"/>
             </div>
+            <div class="form-group">
+                <label for="genre">Thể loại:</label>
+                <input type="text" th:field="*{genre}" id="genre" class="form-control"/>
+            </div>
             <button type="submit" class="btn btn-primary">Thêm sách</button>
         </form>
     </div>
 
-    <!-- FORM CẬP NHẬT SÁCH -->
+    <!-- Form cập nhật -->
     <div th:if="${!#strings.isEmpty(book.id)}">
         <h4>Cập nhật sách</h4>
         <form th:object="${book}" th:action="@{/books/update}" method="post" class="mt-4">
@@ -49,36 +53,52 @@
                 <label for="author">Tác giả:</label>
                 <input type="text" th:field="*{author}" id="author" class="form-control"/>
             </div>
+            <div class="form-group">
+                <label for="genre">Thể loại:</label>
+                <input type="text" th:field="*{genre}" id="genre" class="form-control"/>
+            </div>
             <button type="submit" class="btn btn-warning">Cập nhật sách</button>
             <a th:href="@{/books}" class="btn btn-secondary ml-2">Hủy</a>
         </form>
     </div>
 
-    <!-- Danh sách sách -->
+    <!-- Form tìm kiếm -->
+    <div class="mt-5">
+        <form class="form-inline" method="get" th:action="@{/books}">
+            <input type="text" name="searchTitle" class="form-control mr-2" placeholder="Nhập tiêu đề cần tìm"
+                   th:value="${searchTitle}">
+            <button type="submit" class="btn btn-success">Tìm kiếm</button>
+            <a th:href="@{/books}" class="btn btn-outline-secondary ml-2">Hiện tất cả</a>
+        </form>
+    </div>
+
+    <!-- Bảng -->
     <table class="table table-bordered mt-4">
         <thead class="thead-dark">
-            <tr>
-                <th>Mã sách</th>
-                <th>Tiêu đề</th>
-                <th>Tác giả</th>
-                <th>Thao tác</th>
-            </tr>
+        <tr>
+            <th>Mã sách</th>
+            <th>Tiêu đề</th>
+            <th>Tác giả</th>
+            <th>Thể loại</th>
+            <th>Thao tác</th>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="book : ${books}">
-                <td th:text="${book.id}"></td>
-                <td th:text="${book.title}"></td>
-                <td th:text="${book.author}"></td>
-                <td>
-                    <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn btn-warning btn-sm">Sửa</a>
-                    <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-danger btn-sm"
-                       onclick="return confirm('Bạn có chắc chắn muốn xóa sách này?')">Xóa</a>
-                </td>
-            </tr>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}"></td>
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.genre}"></td>
+            <td>
+                <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn btn-warning btn-sm">Sửa</a>
+                <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('Bạn có chắc chắn muốn xóa sách này?')">Xóa</a>
+            </td>
+        </tr>
         </tbody>
     </table>
 
-    <!-- Liên kết điều hướng -->
+    <!-- Liên kết -->
     <div class="mt-4">
         <a th:href="@{/readers}" class="btn btn-info mr-2">Xem danh sách độc giả</a>
         <a th:href="@{/borrow-records}" class="btn btn-info mr-2">Xem danh sách phiếu mượn</a>

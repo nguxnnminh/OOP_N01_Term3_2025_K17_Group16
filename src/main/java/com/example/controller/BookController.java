@@ -1,33 +1,24 @@
 package com.example.controller;
 
 import com.example.model.Book;
+import com.example.repository.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class BookController {
 
-    private List<Book> books = new ArrayList<>();
-
-    public BookController() {
-        try {
-            books.add(new Book("B1", "Lập trình Java", "Nguyễn Văn A"));
-            books.add(new Book("B2", "Cấu trúc dữ liệu", "Trần Thị B"));
-            books.add(new Book("B3", "Thuật toán", "Lê Văn C"));
-        } catch (Exception e) {
-            System.err.println("Lỗi khi khởi tạo danh sách sách: " + e.getMessage());
-        } finally {
-            System.out.println("Hoàn tất khởi tạo BookController");
-        }
-    }
+    @Autowired
+    private BookRepository bookRepository;
 
     public List<Book> getBooks() {
-        return books;
+        return bookRepository.findAll();
     }
 
     @GetMapping("/")
@@ -36,10 +27,17 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public String showBooks(Model model) {
+    public String showBooks(Model model, @RequestParam(value = "searchTitle", required = false) String searchTitle) {
         try {
-            model.addAttribute("books", books);
-            model.addAttribute("book", new Book("", "", ""));
+            List<Book> filteredBooks;
+            if (searchTitle != null && !searchTitle.trim().isEmpty()) {
+                filteredBooks = bookRepository.findByTitleContainingIgnoreCase(searchTitle.trim());
+            } else {
+                filteredBooks = bookRepository.findAll();
+            }
+            model.addAttribute("books", filteredBooks);
+            model.addAttribute("searchTitle", searchTitle);
+            model.addAttribute("book", new Book("", "", "", ""));
             return "books";
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi khi hiển thị danh sách sách: " + e.getMessage());
@@ -54,13 +52,16 @@ public class BookController {
         try {
             if (book.getId() == null || book.getId().trim().isEmpty() ||
                 book.getTitle() == null || book.getTitle().trim().isEmpty() ||
-                book.getAuthor() == null || book.getAuthor().trim().isEmpty()) {
+                book.getAuthor() == null || book.getAuthor().trim().isEmpty() ||
+                book.getGenre() == null || book.getGenre().trim().isEmpty()) {
                 throw new IllegalArgumentException("Vui lòng điền đầy đủ thông tin sách");
             }
-            if (books.stream().anyMatch(b -> b.getId().equals(book.getId()))) {
+
+            if (bookRepository.existsById(book.getId())) {
                 throw new IllegalArgumentException("ID sách đã tồn tại");
             }
-            books.add(book);
+
+            bookRepository.save(book);
             redirectAttributes.addFlashAttribute("success", "Thêm sách thành công");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
@@ -75,12 +76,12 @@ public class BookController {
     @GetMapping("/books/edit/{id}")
     public String showEditBookForm(@PathVariable("id") String id, Model model, RedirectAttributes redirectAttributes) {
         try {
-            Book book = books.stream()
-                    .filter(b -> b.getId().equals(id))
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("Sách không tồn tại"));
-            model.addAttribute("book", book);
-            model.addAttribute("books", books);
+            Optional<Book> optionalBook = bookRepository.findById(id);
+            if (!optionalBook.isPresent()) {
+                throw new IllegalArgumentException("Sách không tồn tại");
+            }
+            model.addAttribute("book", optionalBook.get());
+            model.addAttribute("books", bookRepository.findAll());
             return "books";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
@@ -98,20 +99,16 @@ public class BookController {
         try {
             if (updatedBook.getId() == null || updatedBook.getId().trim().isEmpty() ||
                 updatedBook.getTitle() == null || updatedBook.getTitle().trim().isEmpty() ||
-                updatedBook.getAuthor() == null || updatedBook.getAuthor().trim().isEmpty()) {
+                updatedBook.getAuthor() == null || updatedBook.getAuthor().trim().isEmpty() ||
+                updatedBook.getGenre() == null || updatedBook.getGenre().trim().isEmpty()) {
                 throw new IllegalArgumentException("Vui lòng điền đầy đủ thông tin sách");
             }
-            boolean found = false;
-            for (int i = 0; i < books.size(); i++) {
-                if (books.get(i).getId().equals(updatedBook.getId())) {
-                    books.set(i, updatedBook);
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
+
+            if (!bookRepository.existsById(updatedBook.getId())) {
                 throw new IllegalArgumentException("Sách không tồn tại");
             }
+
+            bookRepository.save(updatedBook);
             redirectAttributes.addFlashAttribute("success", "Cập nhật sách thành công");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
@@ -126,10 +123,11 @@ public class BookController {
     @GetMapping("/books/delete/{id}")
     public String deleteBook(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
         try {
-            boolean removed = books.removeIf(b -> b.getId().equals(id));
-            if (!removed) {
+            if (!bookRepository.existsById(id)) {
                 throw new IllegalArgumentException("Sách không tồn tại");
             }
+
+            bookRepository.deleteById(id);
             redirectAttributes.addFlashAttribute("success", "Xóa sách thành công");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());

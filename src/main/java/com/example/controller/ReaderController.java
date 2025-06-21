@@ -1,38 +1,39 @@
 package com.example.controller;
 
 import com.example.model.Reader;
+import com.example.repository.ReaderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ReaderController {
 
-    private List<Reader> readers = new ArrayList<>();
-
-    public ReaderController() {
-        try {
-            readers.add(new Reader("R1", "Nguyễn Văn A", "123456789012", "0901234567", "1990-01-01"));
-            readers.add(new Reader("R2", "Trần Thị B", "987654321098", "0912345678", "1992-02-02"));
-            readers.add(new Reader("R3", "Lê Văn C", "456789123456", "0923456789", "1995-03-03"));
-        } catch (Exception e) {
-            System.err.println("Lỗi khi khởi tạo danh sách độc giả: " + e.getMessage());
-        } finally {
-            System.out.println("Hoàn tất khởi tạo ReaderController");
-        }
-    }
+    @Autowired
+    private ReaderRepository readerRepo;
 
     @GetMapping("/readers")
-    public String showReaders(Model model) {
+    public String showReaders(Model model,
+                              @RequestParam(value = "searchName", required = false) String searchName) {
         try {
-            model.addAttribute("readers", readers);
+            List<Reader> filteredReaders;
+            if (searchName != null && !searchName.trim().isEmpty()) {
+                filteredReaders = readerRepo.findByNameContainingIgnoreCase(searchName.trim());
+            } else {
+                filteredReaders = readerRepo.findAll();
+            }
+
+            model.addAttribute("readers", filteredReaders);
+            model.addAttribute("searchName", searchName);
+
             if (!model.containsAttribute("reader")) {
                 model.addAttribute("reader", new Reader("", "", "", "", ""));
             }
+
             return "readers";
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi khi hiển thị danh sách độc giả: " + e.getMessage());
@@ -43,96 +44,95 @@ public class ReaderController {
     }
 
     @PostMapping("/readers/add")
-    public String addReader(@ModelAttribute("reader") Reader reader, RedirectAttributes redirectAttributes) {
+    public String addReader(@ModelAttribute("reader") Reader reader,
+                            RedirectAttributes redirectAttributes) {
         try {
-            if (reader.getId() == null || reader.getId().trim().isEmpty() ||
-                reader.getName() == null || reader.getName().trim().isEmpty() ||
-                reader.getCccd() == null || reader.getCccd().trim().isEmpty()) {
+            if (reader.getId().isBlank() || reader.getName().isBlank() || reader.getCccd().isBlank()) {
                 throw new IllegalArgumentException("Vui lòng điền đầy đủ mã độc giả, tên và CCCD");
             }
-            if (readers.stream().anyMatch(r -> r.getId().equals(reader.getId()))) {
+
+            if (readerRepo.existsById(reader.getId())) {
                 throw new IllegalArgumentException("ID độc giả đã tồn tại");
             }
-            readers.add(reader);
+
+            readerRepo.save(reader);
             redirectAttributes.addFlashAttribute("success", "Thêm độc giả thành công");
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Lỗi khi thêm độc giả: " + e.getMessage());
         } finally {
-            redirectAttributes.addFlashAttribute("reader", null); // reset form về trạng thái thêm
+            redirectAttributes.addFlashAttribute("reader", null);
             System.out.println("Hoàn tất thao tác thêm độc giả");
         }
+
         return "redirect:/readers";
     }
 
     @GetMapping("/readers/edit/{id}")
-    public String showEditReaderForm(@PathVariable("id") String id, Model model, RedirectAttributes redirectAttributes) {
+    public String showEditReaderForm(@PathVariable("id") String id,
+                                     Model model, RedirectAttributes redirectAttributes) {
         try {
-            Reader reader = readers.stream()
-                    .filter(r -> r.getId().equals(id))
-                    .findFirst()
+            Reader reader = readerRepo.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Độc giả không tồn tại"));
+
             model.addAttribute("reader", reader);
-            model.addAttribute("readers", readers);
+            model.addAttribute("readers", readerRepo.findAll());
             return "readers";
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Lỗi khi hiển thị form sửa độc giả: " + e.getMessage());
+            return "redirect:/readers";
         } finally {
             System.out.println("Hoàn tất thao tác hiển thị form sửa độc giả");
         }
-        return "redirect:/readers";
     }
 
     @PostMapping("/readers/update")
-    public String updateReader(@ModelAttribute("reader") Reader updatedReader, RedirectAttributes redirectAttributes) {
+    public String updateReader(@ModelAttribute("reader") Reader updatedReader,
+                               RedirectAttributes redirectAttributes) {
         try {
-            if (updatedReader.getId() == null || updatedReader.getId().trim().isEmpty() ||
-                updatedReader.getName() == null || updatedReader.getName().trim().isEmpty() ||
-                updatedReader.getCccd() == null || updatedReader.getCccd().trim().isEmpty()) {
+            if (updatedReader.getId().isBlank() ||
+                updatedReader.getName().isBlank() ||
+                updatedReader.getCccd().isBlank()) {
                 throw new IllegalArgumentException("Vui lòng điền đầy đủ mã độc giả, tên và CCCD");
             }
-            boolean found = false;
-            for (int i = 0; i < readers.size(); i++) {
-                if (readers.get(i).getId().equals(updatedReader.getId())) {
-                    readers.set(i, updatedReader);
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
+
+            if (!readerRepo.existsById(updatedReader.getId())) {
                 throw new IllegalArgumentException("Độc giả không tồn tại");
             }
+
+            readerRepo.save(updatedReader);
             redirectAttributes.addFlashAttribute("success", "Cập nhật độc giả thành công");
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Lỗi khi cập nhật độc giả: " + e.getMessage());
         } finally {
-            redirectAttributes.addFlashAttribute("reader", null); // reset về chế độ thêm
+            redirectAttributes.addFlashAttribute("reader", null);
             System.out.println("Hoàn tất thao tác cập nhật độc giả");
         }
+
         return "redirect:/readers";
     }
 
     @GetMapping("/readers/delete/{id}")
-    public String deleteReader(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
+    public String deleteReader(@PathVariable("id") String id,
+                               RedirectAttributes redirectAttributes) {
         try {
-            boolean removed = readers.removeIf(r -> r.getId().equals(id));
-            if (!removed) {
+            if (!readerRepo.existsById(id)) {
                 throw new IllegalArgumentException("Độc giả không tồn tại");
             }
+
+            readerRepo.deleteById(id);
             redirectAttributes.addFlashAttribute("success", "Xóa độc giả thành công");
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Lỗi khi xóa độc giả: " + e.getMessage());
         } finally {
-            redirectAttributes.addFlashAttribute("reader", null); // reset về chế độ thêm
+            redirectAttributes.addFlashAttribute("reader", null);
             System.out.println("Hoàn tất thao tác xóa độc giả");
         }
+
         return "redirect:/readers";
+    }
+
+    // Cho phép các controller khác gọi để lấy danh sách độc giả
+    public List<Reader> getReaders() {
+        return readerRepo.findAll();
     }
 }

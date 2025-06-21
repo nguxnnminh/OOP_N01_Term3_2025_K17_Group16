@@ -1,10 +1,25 @@
 package com.example.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.io.Serializable;
 
+@Entity
 public class BorrowRecord implements Serializable {
-    private String id, bookId, readerId, borrowDate, returnDate;
 
+    @Id
+    private String id;
+
+    private String bookId;
+    private String readerId;
+    private String borrowDate;
+    private String returnDate;
+
+    // Constructor mặc định bắt buộc (JPA cần)
+    public BorrowRecord() {
+    }
+
+    // Constructor đầy đủ
     public BorrowRecord(String id, String bookId, String readerId, String borrowDate, String returnDate) {
         this.id = id;
         this.bookId = bookId;
@@ -15,11 +30,25 @@ public class BorrowRecord implements Serializable {
     }
 
     // Getter
-    public String getId() { return id; }
-    public String getBookId() { return bookId; }
-    public String getReaderId() { return readerId; }
-    public String getBorrowDate() { return borrowDate; }
-    public String getReturnDate() { return returnDate; }
+    public String getId() {
+        return id;
+    }
+
+    public String getBookId() {
+        return bookId;
+    }
+
+    public String getReaderId() {
+        return readerId;
+    }
+
+    public String getBorrowDate() {
+        return borrowDate;
+    }
+
+    public String getReturnDate() {
+        return returnDate;
+    }
 
     // Setter
     public void setId(String id) {

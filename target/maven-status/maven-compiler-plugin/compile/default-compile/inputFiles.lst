@@ -1,4 +1,7 @@
+/workspaces/OOP_N01_Term3_2025_K17_Group16/src/main/java/com/example/repository/BorrowRecordRepository.java
 /workspaces/OOP_N01_Term3_2025_K17_Group16/src/main/java/com/example/controller/BookController.java
+/workspaces/OOP_N01_Term3_2025_K17_Group16/src/main/java/com/example/repository/ReaderRepository.java
+/workspaces/OOP_N01_Term3_2025_K17_Group16/src/main/java/com/example/repository/BookRepository.java
 /workspaces/OOP_N01_Term3_2025_K17_Group16/src/main/java/com/example/model/Book.java
 /workspaces/OOP_N01_Term3_2025_K17_Group16/src/main/java/com/example/controller/BorrowRecordController.java
 /workspaces/OOP_N01_Term3_2025_K17_Group16/src/main/java/com/example/OOPApplication.java

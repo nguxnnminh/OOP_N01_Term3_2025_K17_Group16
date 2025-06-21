@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.example.controller.ReaderControllerTest
 -------------------------------------------------------------------------------
-Tests run: 9, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.326 s <<< FAILURE! - in com.example.controller.ReaderControllerTest
-testShowReaders  Time elapsed: 0.057 s  <<< ERROR!
+Tests run: 9, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 1.786 s <<< FAILURE! - in com.example.controller.ReaderControllerTest
+testShowReaders  Time elapsed: 0.081 s  <<< ERROR!
 javax.servlet.ServletException: Circular view path [readers]: would dispatch back to the current handler URL [/readers] again. Check your ViewResolver setup! (Hint: This may be the result of an unspecified view, due to default view name generation.)
 	at com.example.controller.ReaderControllerTest.testShowReaders(ReaderControllerTest.java:28)
 

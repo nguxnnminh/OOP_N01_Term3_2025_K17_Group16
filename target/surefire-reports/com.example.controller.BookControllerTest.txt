@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.example.controller.BookControllerTest
--------------------------------------------------------------------------------
-Tests run: 9, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.219 s <<< FAILURE! - in com.example.controller.BookControllerTest
-testShowBooks  Time elapsed: 0.003 s  <<< ERROR!
-javax.servlet.ServletException: Circular view path [books]: would dispatch back to the current handler URL [/books] again. Check your ViewResolver setup! (Hint: This may be the result of an unspecified view, due to default view name generation.)
-	at com.example.controller.BookControllerTest.testShowBooks(BookControllerTest.java:28)
-
