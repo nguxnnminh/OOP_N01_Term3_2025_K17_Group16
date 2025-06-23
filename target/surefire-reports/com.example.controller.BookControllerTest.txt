@@ -1,0 +1,36 @@
+-------------------------------------------------------------------------------
+Test set: com.example.controller.BookControllerTest
+-------------------------------------------------------------------------------
+Tests run: 9, Failures: 7, Errors: 1, Skipped: 0, Time elapsed: 0.244 s <<< FAILURE! - in com.example.controller.BookControllerTest
+testDeleteBook_InvalidId  Time elapsed: 0.002 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'error' expected:<Sách không tồn tại> but was:<Lỗi khi xóa sách: null>
+	at com.example.controller.BookControllerTest.testDeleteBook_InvalidId(BookControllerTest.java:109)
+
+testDeleteBook_ValidId  Time elapsed: 0.017 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'success' expected:<Xóa sách thành công> but was:<null>
+	at com.example.controller.BookControllerTest.testDeleteBook_ValidId(BookControllerTest.java:101)
+
+testShowBooks  Time elapsed: 0.023 s  <<< ERROR!
+javax.servlet.ServletException: Circular view path [books]: would dispatch back to the current handler URL [/books] again. Check your ViewResolver setup! (Hint: This may be the result of an unspecified view, due to default view name generation.)
+	at com.example.controller.BookControllerTest.testShowBooks(BookControllerTest.java:28)
+
+testShowEditBookForm_ValidId  Time elapsed: 0.043 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<302>
+	at com.example.controller.BookControllerTest.testShowEditBookForm_ValidId(BookControllerTest.java:60)
+
+testShowEditBookForm_InvalidId  Time elapsed: 0.032 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'error' expected:<Sách không tồn tại> but was:<Lỗi khi hiển thị form sửa sách: null>
+	at com.example.controller.BookControllerTest.testShowEditBookForm_InvalidId(BookControllerTest.java:71)
+
+testAddBook_Valid  Time elapsed: 0.021 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'success' expected:<Thêm sách thành công> but was:<null>
+	at com.example.controller.BookControllerTest.testAddBook_Valid(BookControllerTest.java:43)
+
+testUpdateBook_Valid  Time elapsed: 0.02 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'success' expected:<Cập nhật sách thành công> but was:<null>
+	at com.example.controller.BookControllerTest.testUpdateBook_Valid(BookControllerTest.java:82)
+
+testUpdateBook_InvalidId  Time elapsed: 0.041 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'error' expected:<Sách không tồn tại> but was:<Vui lòng điền đầy đủ thông tin sách>
+	at com.example.controller.BookControllerTest.testUpdateBook_InvalidId(BookControllerTest.java:93)
+

@@ -1,0 +1,48 @@
+-------------------------------------------------------------------------------
+Test set: com.example.controller.BorrowRecordControllerTest
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 10, Errors: 1, Skipped: 0, Time elapsed: 2.187 s <<< FAILURE! - in com.example.controller.BorrowRecordControllerTest
+testDeleteBorrowRecord_ValidId  Time elapsed: 1.569 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'success' expected:<Xóa phiếu mượn thành công> but was:<null>
+	at com.example.controller.BorrowRecordControllerTest.testDeleteBorrowRecord_ValidId(BorrowRecordControllerTest.java:162)
+
+testUpdateBorrowRecord_InvalidId  Time elapsed: 0.125 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'error' expected:<Phiếu mượn không tồn tại> but was:<Lỗi khi cập nhật phiếu mượn: null>
+	at com.example.controller.BorrowRecordControllerTest.testUpdateBorrowRecord_InvalidId(BorrowRecordControllerTest.java:154)
+
+testAddBorrowRecord_InvalidId  Time elapsed: 0.033 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'error' expected:<Vui lòng điền đầy đủ ID phiếu mượn, mã sách và mã độc giả> but was:<Lỗi khi thêm phiếu mượn: Vui lòng điền đầy đủ ID phiếu mượn, mã sách và mã độc giả>
+	at com.example.controller.BorrowRecordControllerTest.testAddBorrowRecord_InvalidId(BorrowRecordControllerTest.java:73)
+
+testAddBorrowRecord_BookNotExist  Time elapsed: 0.038 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'error' expected:<Sách không tồn tại trong thư viện> but was:<Lỗi khi thêm phiếu mượn: null>
+	at com.example.controller.BorrowRecordControllerTest.testAddBorrowRecord_BookNotExist(BorrowRecordControllerTest.java:86)
+
+testAddBorrowRecord_BookBorrowed  Time elapsed: 0.055 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'success' expected:<Thêm phiếu mượn thành công> but was:<null>
+	at com.example.controller.BorrowRecordControllerTest.testAddBorrowRecord_BookBorrowed(BorrowRecordControllerTest.java:100)
+
+testShowEditBorrowRecordForm_ValidId  Time elapsed: 0.047 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<302>
+	at com.example.controller.BorrowRecordControllerTest.testShowEditBorrowRecordForm_ValidId(BorrowRecordControllerTest.java:117)
+
+testAddBorrowRecord_Valid  Time elapsed: 0.053 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'success' expected:<Thêm phiếu mượn thành công> but was:<null>
+	at com.example.controller.BorrowRecordControllerTest.testAddBorrowRecord_Valid(BorrowRecordControllerTest.java:60)
+
+testShowEditBorrowRecordForm_InvalidId  Time elapsed: 0.057 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'error' expected:<Phiếu mượn không tồn tại> but was:<Lỗi khi hiển thị form sửa phiếu mượn: null>
+	at com.example.controller.BorrowRecordControllerTest.testShowEditBorrowRecordForm_InvalidId(BorrowRecordControllerTest.java:128)
+
+testDeleteBorrowRecord_InvalidId  Time elapsed: 0.039 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'error' expected:<Phiếu mượn không tồn tại> but was:<Lỗi khi xóa phiếu mượn: null>
+	at com.example.controller.BorrowRecordControllerTest.testDeleteBorrowRecord_InvalidId(BorrowRecordControllerTest.java:170)
+
+testShowBorrowRecords  Time elapsed: 0.05 s  <<< ERROR!
+javax.servlet.ServletException: Circular view path [borrow-records]: would dispatch back to the current handler URL [/borrow-records] again. Check your ViewResolver setup! (Hint: This may be the result of an unspecified view, due to default view name generation.)
+	at com.example.controller.BorrowRecordControllerTest.testShowBorrowRecords(BorrowRecordControllerTest.java:43)
+
+testUpdateBorrowRecord_Valid  Time elapsed: 0.041 s  <<< FAILURE!
+java.lang.AssertionError: Flash attribute 'success' expected:<Cập nhật phiếu mượn thành công> but was:<null>
+	at com.example.controller.BorrowRecordControllerTest.testUpdateBorrowRecord_Valid(BorrowRecordControllerTest.java:141)
+

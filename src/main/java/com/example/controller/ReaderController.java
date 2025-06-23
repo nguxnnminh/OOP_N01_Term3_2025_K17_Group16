@@ -60,7 +60,6 @@ public class ReaderController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Lỗi khi thêm độc giả: " + e.getMessage());
         } finally {
-            redirectAttributes.addFlashAttribute("reader", null);
             System.out.println("Hoàn tất thao tác thêm độc giả");
         }
 
@@ -104,7 +103,6 @@ public class ReaderController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Lỗi khi cập nhật độc giả: " + e.getMessage());
         } finally {
-            redirectAttributes.addFlashAttribute("reader", null);
             System.out.println("Hoàn tất thao tác cập nhật độc giả");
         }
 
@@ -124,7 +122,6 @@ public class ReaderController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Lỗi khi xóa độc giả: " + e.getMessage());
         } finally {
-            redirectAttributes.addFlashAttribute("reader", null);
             System.out.println("Hoàn tất thao tác xóa độc giả");
         }
 

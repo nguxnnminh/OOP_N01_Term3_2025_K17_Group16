@@ -35,7 +35,7 @@
             </div>
             <div class="form-group">
                 <label for="birthDate">Ngày sinh:</label>
-                <input type="text" th:field="*{birthDate}" id="birthDate" class="form-control" placeholder="YYYY-MM-DD"/>
+                <input type="text" th:field="*{birthDate}" id="birthDate" class="form-control" placeholder="DD-MM-YYYY"/>
             </div>
             <button type="submit" class="btn btn-primary">Thêm độc giả</button>
         </form>
@@ -63,7 +63,7 @@
             </div>
             <div class="form-group">
                 <label for="birthDate">Ngày sinh:</label>
-                <input type="text" th:field="*{birthDate}" id="birthDate" class="form-control" placeholder="YYYY-MM-DD"/>
+                <input type="text" th:field="*{birthDate}" id="birthDate" class="form-control" placeholder="DD-MM-YYYY"/>
             </div>
             <button type="submit" class="btn btn-warning">Cập nhật độc giả</button>
             <a th:href="@{/readers}" class="btn btn-secondary ml-2">Hủy</a>
