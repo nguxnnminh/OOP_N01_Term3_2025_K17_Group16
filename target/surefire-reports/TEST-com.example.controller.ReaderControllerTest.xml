@@ -140,7 +140,7 @@ Hoàn tất thao tác xóa độc giả
 18:18:43.908 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - Mapped to com.example.controller.ReaderController#updateReader(Reader, RedirectAttributes)
 Hoàn tất thiết lập ngày sinh
 Hoàn tất thiết lập CCCD
-Hoàn tất thiết lập mã độc giả
+Hoàn tất thiết lập mã sinh viên
 Hoàn tất thiết lập tên độc giả
 Hoàn tất thiết lập số điện thoại
 Hoàn tất thao tác cập nhật độc giả
@@ -288,7 +288,7 @@ javax.servlet.ServletException: Circular view path [readers]: would dispatch bac
 18:18:43.978 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - Mapped to com.example.controller.ReaderController#updateReader(Reader, RedirectAttributes)
 Hoàn tất thiết lập ngày sinh
 Hoàn tất thiết lập CCCD
-Hoàn tất thiết lập mã độc giả
+Hoàn tất thiết lập mã sinh viên
 Hoàn tất thiết lập tên độc giả
 Hoàn tất thiết lập số điện thoại
 Hoàn tất thao tác cập nhật độc giả
@@ -297,7 +297,7 @@ Hoàn tất thao tác cập nhật độc giả
 ]]></system-out>
   </testcase>
   <testcase name="testAddReader_InvalidId" classname="com.example.controller.ReaderControllerTest" time="0.016">
-    <failure message="Flash attribute &apos;error&apos; expected:&lt;Vui lòng điền đầy đủ mã độc giả, tên và CCCD&gt; but was:&lt;Lỗi khi thêm độc giả: Vui lòng điền đầy đủ mã độc giả, tên và CCCD&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Flash attribute 'error' expected:<Vui lòng điền đầy đủ mã độc giả, tên và CCCD> but was:<Lỗi khi thêm độc giả: Vui lòng điền đầy đủ mã độc giả, tên và CCCD>
+    <failure message="Flash attribute &apos;error&apos; expected:&lt;Vui lòng điền đầy đủ mã sinh viên, tên và CCCD&gt; but was:&lt;Lỗi khi thêm độc giả: Vui lòng điền đầy đủ mã sinh viên, tên và CCCD&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Flash attribute 'error' expected:<Vui lòng điền đầy đủ mã sinh viên, tên và CCCD> but was:<Lỗi khi thêm độc giả: Vui lòng điền đầy đủ mã sinh viên, tên và CCCD>
 	at com.example.controller.ReaderControllerTest.testAddReader_InvalidId(ReaderControllerTest.java:58)
 ]]></failure>
     <system-out><![CDATA[18:18:43.983 [main] DEBUG _org.springframework.web.servlet.HandlerMapping.Mappings - 
@@ -322,7 +322,7 @@ Hoàn tất thao tác cập nhật độc giả
 18:18:43.993 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - Mapped to com.example.controller.ReaderController#addReader(Reader, RedirectAttributes)
 Hoàn tất thiết lập ngày sinh
 Hoàn tất thiết lập CCCD
-Hoàn tất thiết lập mã độc giả
+Hoàn tất thiết lập mã sinh viên
 Hoàn tất thiết lập tên độc giả
 Hoàn tất thiết lập số điện thoại
 Hoàn tất thao tác thêm độc giả
@@ -356,7 +356,7 @@ Hoàn tất thao tác thêm độc giả
 18:18:44.011 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - Mapped to com.example.controller.ReaderController#addReader(Reader, RedirectAttributes)
 Hoàn tất thiết lập ngày sinh
 Hoàn tất thiết lập CCCD
-Hoàn tất thiết lập mã độc giả
+Hoàn tất thiết lập mã sinh viên
 Hoàn tất thiết lập tên độc giả
 Hoàn tất thiết lập số điện thoại
 Hoàn tất thao tác thêm độc giả

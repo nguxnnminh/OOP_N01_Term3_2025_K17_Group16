@@ -11,7 +11,7 @@ java.lang.AssertionError: Flash attribute 'error' expected:<Phiếu mượn khô
 	at com.example.controller.BorrowRecordControllerTest.testUpdateBorrowRecord_InvalidId(BorrowRecordControllerTest.java:154)
 
 testAddBorrowRecord_InvalidId  Time elapsed: 0.033 s  <<< FAILURE!
-java.lang.AssertionError: Flash attribute 'error' expected:<Vui lòng điền đầy đủ ID phiếu mượn, mã sách và mã độc giả> but was:<Lỗi khi thêm phiếu mượn: Vui lòng điền đầy đủ ID phiếu mượn, mã sách và mã độc giả>
+java.lang.AssertionError: Flash attribute 'error' expected:<Vui lòng điền đầy đủ ID phiếu mượn, mã sách và mã sinh viên> but was:<Lỗi khi thêm phiếu mượn: Vui lòng điền đầy đủ ID phiếu mượn, mã sách và mã sinh viên>
 	at com.example.controller.BorrowRecordControllerTest.testAddBorrowRecord_InvalidId(BorrowRecordControllerTest.java:73)
 
 testAddBorrowRecord_BookNotExist  Time elapsed: 0.038 s  <<< FAILURE!

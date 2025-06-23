@@ -36,7 +36,7 @@ public class ReaderController {
 
             return "readers";
         } catch (Exception e) {
-            model.addAttribute("error", "Lỗi khi hiển thị danh sách độc giả: " + e.getMessage());
+            model.addAttribute("error", "Lỗi khi hiển thị z: " + e.getMessage());
             return "readers";
         } finally {
             System.out.println("Hoàn tất hiển thị danh sách độc giả");
@@ -48,7 +48,7 @@ public class ReaderController {
                             RedirectAttributes redirectAttributes) {
         try {
             if (reader.getId().isBlank() || reader.getName().isBlank() || reader.getCccd().isBlank()) {
-                throw new IllegalArgumentException("Vui lòng điền đầy đủ mã độc giả, tên và CCCD");
+                throw new IllegalArgumentException("Vui lòng điền đầy đủ mã sinh viên, tên và CCCD");
             }
 
             if (readerRepo.existsById(reader.getId())) {
@@ -91,7 +91,7 @@ public class ReaderController {
             if (updatedReader.getId().isBlank() ||
                 updatedReader.getName().isBlank() ||
                 updatedReader.getCccd().isBlank()) {
-                throw new IllegalArgumentException("Vui lòng điền đầy đủ mã độc giả, tên và CCCD");
+                throw new IllegalArgumentException("Vui lòng điền đầy đủ mã sinh viên, tên và CCCD");
             }
 
             if (!readerRepo.existsById(updatedReader.getId())) {

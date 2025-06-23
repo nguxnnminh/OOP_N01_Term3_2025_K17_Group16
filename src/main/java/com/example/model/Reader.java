@@ -53,7 +53,7 @@ public class Reader implements Serializable {
     // Setter
     public void setId(String id) {
         this.id = id;
-        System.out.println("Hoàn tất thiết lập mã độc giả");
+        System.out.println("Hoàn tất thiết lập mã sinh viên");
     }
 
     public void setName(String name) {

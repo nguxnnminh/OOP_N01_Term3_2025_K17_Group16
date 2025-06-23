@@ -62,7 +62,7 @@
 </head>
 <body>
 <header>
-    <h1>Danh sách Sách</h1>
+    <h1>Quản lý Sách</h1>
 </header>
 
 <div class="container">
@@ -72,7 +72,7 @@
 
     <!-- Form thêm hoặc cập nhật sách -->
     <div class="card-form mb-4">
-        <h4>Thêm Sách Mới</h4> <!-- Thay bằng h4 để đồng nhất cỡ chữ -->
+        <h4>Thêm Sách mới</h4> <!-- Thay bằng h4 để đồng nhất cỡ chữ -->
         <form th:object="${book}" th:action="${#strings.isEmpty(book.id) ? '/books/add' : '/books/update'}" method="post" class="row g-3">
             <div class="col-md-3">
                 <label for="id" class="form-label">Mã sách:</label>
@@ -101,7 +101,7 @@
 
     <!-- Form tìm kiếm -->
     <div class="card-form mb-4">
-        <h4>Tìm kiếm sách</h4> <!-- Thay bằng h4 để đồng nhất cỡ chữ -->
+        <h4>Tìm kiếm Sách</h4> <!-- Thay bằng h4 để đồng nhất cỡ chữ -->
         <form class="search-form mt-3" method="get" th:action="@{/books}">
             <input type="text" name="searchTitle" class="form-control me-2" placeholder="Nhập tiêu đề cần tìm" th:value="${searchTitle}">
             <button type="submit" class="btn btn-custom">Tìm kiếm</button>
@@ -140,16 +140,16 @@
 
     <!-- Liên kết điều hướng -->
     <div class="d-flex justify-content-between">
-        <a th:href="@{/}" class="btn btn-secondary">Quay về trang chủ</a>
+        <a th:href="@{/}" class="btn btn-secondary">Quay về Trang chủ</a>
         <div>
-            <a th:href="@{/readers}" class="btn btn-info me-2">Xem danh sách độc giả</a>
-            <a th:href="@{/borrow-records}" class="btn btn-info">Xem danh sách phiếu mượn</a>
+            <a th:href="@{/readers}" class="btn btn-info me-2">Xem danh sách Độc giả</a>
+            <a th:href="@{/borrow-records}" class="btn btn-info">Xem danh sách Phiếu mượn</a>
         </div>
     </div>
 </div>
 
 <footer>
-    <p>© 2025 Nhóm 16 - Hệ thống quản lý thư viện</p>
+    <p>© 2025 Nhóm 16 - Hệ thống quản lý thư viện Đại học Phenikaa</p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>

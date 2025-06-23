@@ -23,7 +23,7 @@ java.lang.AssertionError: Flash attribute 'success' expected:<Cập nhật độ
 	at com.example.controller.ReaderControllerTest.testUpdateReader_Valid(ReaderControllerTest.java:88)
 
 testAddReader_InvalidId  Time elapsed: 0.016 s  <<< FAILURE!
-java.lang.AssertionError: Flash attribute 'error' expected:<Vui lòng điền đầy đủ mã độc giả, tên và CCCD> but was:<Lỗi khi thêm độc giả: Vui lòng điền đầy đủ mã độc giả, tên và CCCD>
+java.lang.AssertionError: Flash attribute 'error' expected:<Vui lòng điền đầy đủ mã sinh viên, tên và CCCD> but was:<Lỗi khi thêm độc giả: Vui lòng điền đầy đủ mã sinh viên, tên và CCCD>
 	at com.example.controller.ReaderControllerTest.testAddReader_InvalidId(ReaderControllerTest.java:58)
 
 testAddReader_Valid  Time elapsed: 0.023 s  <<< FAILURE!

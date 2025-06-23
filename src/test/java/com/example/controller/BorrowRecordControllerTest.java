@@ -70,7 +70,7 @@ public class BorrowRecordControllerTest {
                 .param("returnDate", ""))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/borrow-records"))
-                .andExpect(flash().attribute("error", "Vui lòng điền đầy đủ ID phiếu mượn, mã sách và mã độc giả"));
+                .andExpect(flash().attribute("error", "Vui lòng điền đầy đủ ID phiếu mượn, mã sách và mã sinh viên"));
     }
 
     @Test
