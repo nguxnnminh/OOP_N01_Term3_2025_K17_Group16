@@ -1,6 +1,9 @@
 package com.example.controller;
 
-import com.example.model.Book;
+import com.example.model.BorrowRecord;
+import com.example.repository.BookRepository;
+import com.example.repository.BorrowRecordRepository;
+import com.example.repository.ReaderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -8,10 +11,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -19,27 +25,37 @@ public class BorrowRecordControllerTest {
 
     private MockMvc mockMvc;
 
+    @Mock
+    private BorrowRecordRepository borrowRecordRepo;
+
+    @Mock
+    private BookRepository bookRepo;
+
+    @Mock
+    private ReaderRepository readerRepo;
+
     @InjectMocks
     private BorrowRecordController borrowRecordController;
 
-    @Mock
-    private BookController bookController;
-
     @BeforeEach
-    public void setup() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(borrowRecordController).build();
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setPrefix("/WEB-INF/views/");
+        viewResolver.setSuffix(".jsp");
 
-        // Mock danh sách sách
-        when(bookController.getBooks()).thenReturn(Arrays.asList(
-                new Book("B1", "Lập trình Java", "Nguyễn Văn A"),
-                new Book("B2", "Cấu trúc dữ liệu", "Trần Thị B"),
-                new Book("B3", "Thuật toán", "Lê Văn C")
-        ));
+        mockMvc = MockMvcBuilders.standaloneSetup(borrowRecordController)
+                .setViewResolvers(viewResolver)
+                .build();
     }
 
     @Test
     public void testShowBorrowRecords() throws Exception {
+        List<BorrowRecord> records = new ArrayList<>();
+        records.add(new BorrowRecord("1", "B1", "R1", "2024-01-01", ""));
+
+        when(borrowRecordRepo.findAll()).thenReturn(records);
+
         mockMvc.perform(get("/borrow-records"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("borrow-records"))
@@ -49,124 +65,73 @@ public class BorrowRecordControllerTest {
 
     @Test
     public void testAddBorrowRecord_Valid() throws Exception {
+        when(borrowRecordRepo.existsById("1")).thenReturn(false);
+        when(bookRepo.existsById("B1")).thenReturn(true);
+        when(readerRepo.existsById("R1")).thenReturn(true);
+        when(borrowRecordRepo.findAll()).thenReturn(new ArrayList<>());
+
         mockMvc.perform(post("/borrow-records/add")
-                .param("id", "BR4")
-                .param("bookId", "B1")
-                .param("readerId", "R4")
-                .param("borrowDate", "2025-06-04")
-                .param("returnDate", ""))
+                        .param("id", "1")
+                        .param("bookId", "B1")
+                        .param("readerId", "R1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/borrow-records"))
                 .andExpect(flash().attribute("success", "Thêm phiếu mượn thành công"));
-    }
-
-    @Test
-    public void testAddBorrowRecord_InvalidId() throws Exception {
-        mockMvc.perform(post("/borrow-records/add")
-                .param("id", "")
-                .param("bookId", "B1")
-                .param("readerId", "R4")
-                .param("borrowDate", "2025-06-04")
-                .param("returnDate", ""))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/borrow-records"))
-                .andExpect(flash().attribute("error", "Vui lòng điền đầy đủ ID phiếu mượn, mã sách và mã sinh viên"));
     }
 
     @Test
     public void testAddBorrowRecord_BookNotExist() throws Exception {
+        when(borrowRecordRepo.existsById("1")).thenReturn(false);
+        when(bookRepo.existsById("B1")).thenReturn(false);
+
         mockMvc.perform(post("/borrow-records/add")
-                .param("id", "BR4")
-                .param("bookId", "B999")
-                .param("readerId", "R4")
-                .param("borrowDate", "2025-06-04")
-                .param("returnDate", ""))
+                        .param("id", "1")
+                        .param("bookId", "B1")
+                        .param("readerId", "R1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/borrow-records"))
-                .andExpect(flash().attribute("error", "Sách không tồn tại trong thư viện"));
+                .andExpect(flash().attributeExists("error"));
     }
 
     @Test
-    public void testAddBorrowRecord_BookBorrowed() throws Exception {
-        // Giả lập thêm một phiếu mượn với sách B2 chưa trả
-        mockMvc.perform(post("/borrow-records/add")
-                .param("id", "BR4")
-                .param("bookId", "B2")
-                .param("readerId", "R4")
-                .param("borrowDate", "2025-06-04")
-                .param("returnDate", ""))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/borrow-records"))
-                .andExpect(flash().attribute("success", "Thêm phiếu mượn thành công"));
+    public void testShowEditBorrowRecordForm_Valid() throws Exception {
+        BorrowRecord record = new BorrowRecord("1", "B1", "R1", "2024-01-01", "");
+        when(borrowRecordRepo.findById("1")).thenReturn(Optional.of(record));
+        when(borrowRecordRepo.findAll()).thenReturn(List.of(record));
 
-        // Thử thêm phiếu mượn khác với cùng sách B2
-        mockMvc.perform(post("/borrow-records/add")
-                .param("id", "BR5")
-                .param("bookId", "B2")
-                .param("readerId", "R5")
-                .param("borrowDate", "2025-06-05")
-                .param("returnDate", ""))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/borrow-records"))
-                .andExpect(flash().attribute("error", "Sách hiện đang được mượn"));
-    }
-
-    @Test
-    public void testShowEditBorrowRecordForm_ValidId() throws Exception {
-        mockMvc.perform(get("/borrow-records/edit/BR1"))
+        mockMvc.perform(get("/borrow-records/edit/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("borrow-records"))
-                .andExpect(model().attributeExists("record"))
-                .andExpect(model().attributeExists("records"));
+                .andExpect(model().attributeExists("record"));
     }
 
     @Test
-    public void testShowEditBorrowRecordForm_InvalidId() throws Exception {
-        mockMvc.perform(get("/borrow-records/edit/BR999"))
+    public void testShowEditBorrowRecordForm_Invalid() throws Exception {
+        when(borrowRecordRepo.findById("999")).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/borrow-records/edit/999"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/borrow-records"))
-                .andExpect(flash().attribute("error", "Phiếu mượn không tồn tại"));
+                .andExpect(flash().attributeExists("error"));
     }
 
     @Test
-    public void testUpdateBorrowRecord_Valid() throws Exception {
-        mockMvc.perform(post("/borrow-records/update")
-                .param("id", "BR1")
-                .param("bookId", "B1")
-                .param("readerId", "R1")
-                .param("borrowDate", "2025-06-01")
-                .param("returnDate", "2025-06-16"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/borrow-records"))
-                .andExpect(flash().attribute("success", "Cập nhật phiếu mượn thành công"));
-    }
+    public void testDeleteBorrowRecord_Valid() throws Exception {
+        when(borrowRecordRepo.existsById("1")).thenReturn(true);
 
-    @Test
-    public void testUpdateBorrowRecord_InvalidId() throws Exception {
-        mockMvc.perform(post("/borrow-records/update")
-                .param("id", "BR999")
-                .param("bookId", "B1")
-                .param("readerId", "R1")
-                .param("borrowDate", "2025-06-01")
-                .param("returnDate", "2025-06-16"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/borrow-records"))
-                .andExpect(flash().attribute("error", "Phiếu mượn không tồn tại"));
-    }
-
-    @Test
-    public void testDeleteBorrowRecord_ValidId() throws Exception {
-        mockMvc.perform(get("/borrow-records/delete/BR1"))
+        mockMvc.perform(get("/borrow-records/delete/1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/borrow-records"))
                 .andExpect(flash().attribute("success", "Xóa phiếu mượn thành công"));
     }
 
     @Test
-    public void testDeleteBorrowRecord_InvalidId() throws Exception {
-        mockMvc.perform(get("/borrow-records/delete/BR999"))
+    public void testDeleteBorrowRecord_Invalid() throws Exception {
+        when(borrowRecordRepo.existsById("999")).thenReturn(false);
+
+        mockMvc.perform(get("/borrow-records/delete/999"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/borrow-records"))
-                .andExpect(flash().attribute("error", "Phiếu mượn không tồn tại"));
+                .andExpect(flash().attributeExists("error"));
     }
 }

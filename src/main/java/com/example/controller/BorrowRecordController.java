@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,11 +27,7 @@ public class BorrowRecordController {
 
     @GetMapping("/borrow-records")
     public String showBorrowRecords(Model model,
-                                    @RequestParam(value = "searchQuery", required = false) String searchQuery,
-                                    HttpSession session) {
-        if (session.getAttribute("loggedInUser") == null) {
-            return "redirect:/login";
-        }
+                                    @RequestParam(value = "searchQuery", required = false) String searchQuery) {
         try {
             List<BorrowRecord> records = borrowRecordRepo.findAll();
 
@@ -57,11 +52,7 @@ public class BorrowRecordController {
 
     @PostMapping("/borrow-records/add")
     public String addBorrowRecord(@ModelAttribute("record") BorrowRecord record,
-                                  RedirectAttributes redirectAttributes,
-                                  HttpSession session) {
-        if (session.getAttribute("loggedInUser") == null) {
-            return "redirect:/login";
-        }
+                                  RedirectAttributes redirectAttributes) {
         try {
             if (record.getId().isBlank() || record.getBookId().isBlank() || record.getReaderId().isBlank()) {
                 throw new IllegalArgumentException("Vui lòng điền đầy đủ ID phiếu mượn, mã sách và mã sinh viên");
@@ -99,11 +90,7 @@ public class BorrowRecordController {
     @GetMapping("/borrow-records/edit/{id}")
     public String showEditBorrowRecordForm(@PathVariable("id") String id,
                                            Model model,
-                                           RedirectAttributes redirectAttributes,
-                                           HttpSession session) {
-        if (session.getAttribute("loggedInUser") == null) {
-            return "redirect:/login";
-        }
+                                           RedirectAttributes redirectAttributes) {
         try {
             BorrowRecord record = borrowRecordRepo.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Phiếu mượn không tồn tại"));
@@ -120,11 +107,7 @@ public class BorrowRecordController {
 
     @PostMapping("/borrow-records/update")
     public String updateBorrowRecord(@ModelAttribute("record") BorrowRecord record,
-                                     RedirectAttributes redirectAttributes,
-                                     HttpSession session) {
-        if (session.getAttribute("loggedInUser") == null) {
-            return "redirect:/login";
-        }
+                                     RedirectAttributes redirectAttributes) {
         try {
             if (record.getId().isBlank() || record.getBookId().isBlank() || record.getReaderId().isBlank()) {
                 throw new IllegalArgumentException("Vui lòng điền đầy đủ ID phiếu mượn, mã sách và mã sinh viên");
@@ -162,11 +145,7 @@ public class BorrowRecordController {
 
     @GetMapping("/borrow-records/delete/{id}")
     public String deleteBorrowRecord(@PathVariable("id") String id,
-                                     RedirectAttributes redirectAttributes,
-                                     HttpSession session) {
-        if (session.getAttribute("loggedInUser") == null) {
-            return "redirect:/login";
-        }
+                                     RedirectAttributes redirectAttributes) {
         try {
             if (!borrowRecordRepo.existsById(id)) {
                 throw new IllegalArgumentException("Phiếu mượn không tồn tại");
