@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.model.BorrowRecord;
+import com.example.model.Book;
 import com.example.repository.BookRepository;
 import com.example.repository.BorrowRecordRepository;
 import com.example.repository.ReaderRepository;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -62,20 +64,23 @@ public class BorrowRecordController {
                 throw new IllegalArgumentException("ID phiếu mượn đã tồn tại");
             }
 
-            if (!bookRepo.existsById(record.getBookId())) {
+            Optional<Book> bookOptional = bookRepo.findById(record.getBookId());
+            if (!bookOptional.isPresent()) {
                 throw new IllegalArgumentException("Sách không tồn tại trong thư viện");
+            }
+
+            Book book = bookOptional.get();
+            if (book.isBorrowed()) {
+                throw new IllegalArgumentException("Sách hiện đang được mượn");
             }
 
             if (!readerRepo.existsById(record.getReaderId())) {
                 throw new IllegalArgumentException("Độc giả không tồn tại trong thư viện");
             }
 
-            boolean isBookBorrowed = borrowRecordRepo.findAll().stream()
-                    .anyMatch(r -> r.getBookId().equals(record.getBookId()) &&
-                            (r.getReturnDate() == null || r.getReturnDate().isBlank()));
-            if (isBookBorrowed) {
-                throw new IllegalArgumentException("Sách hiện đang được mượn");
-            }
+            // Cập nhật trạng thái sách thành đã mượn
+            book.setBorrowed(true);
+            bookRepo.save(book);
 
             borrowRecordRepo.save(record);
             redirectAttributes.addFlashAttribute("success", "Thêm phiếu mượn thành công");
@@ -117,20 +122,46 @@ public class BorrowRecordController {
                 throw new IllegalArgumentException("Phiếu mượn không tồn tại");
             }
 
-            if (!bookRepo.existsById(record.getBookId())) {
+            Optional<Book> bookOptional = bookRepo.findById(record.getBookId());
+            if (!bookOptional.isPresent()) {
                 throw new IllegalArgumentException("Sách không tồn tại");
+            }
+
+            Book book = bookOptional.get();
+            Optional<BorrowRecord> existingRecord = borrowRecordRepo.findById(record.getId());
+            if (!existingRecord.get().getBookId().equals(record.getBookId())) {
+                // Nếu đổi sang sách khác, kiểm tra sách mới
+                if (book.isBorrowed()) {
+                    throw new IllegalArgumentException("Sách hiện đang được mượn");
+                }
+                // Cập nhật trạng thái sách cũ thành chưa mượn
+                Optional<Book> oldBookOptional = bookRepo.findById(existingRecord.get().getBookId());
+                if (oldBookOptional.isPresent()) {
+                    Book oldBook = oldBookOptional.get();
+                    oldBook.setBorrowed(false);
+                    bookRepo.save(oldBook);
+                }
+                // Cập nhật trạng thái sách mới thành đã mượn
+                book.setBorrowed(true);
+                bookRepo.save(book);
             }
 
             if (!readerRepo.existsById(record.getReaderId())) {
                 throw new IllegalArgumentException("Độc giả không tồn tại");
             }
 
-            boolean isBookBorrowed = borrowRecordRepo.findAll().stream()
-                    .anyMatch(r -> !r.getId().equals(record.getId()) &&
-                            r.getBookId().equals(record.getBookId()) &&
-                            (r.getReturnDate() == null || r.getReturnDate().isBlank()));
-            if (isBookBorrowed) {
-                throw new IllegalArgumentException("Sách hiện đang được mượn bởi phiếu khác");
+            // Cập nhật trạng thái trả sách
+            if (record.getReturnDate() != null && !record.getReturnDate().isBlank() &&
+                (existingRecord.get().getReturnDate() == null || existingRecord.get().getReturnDate().isBlank())) {
+                book.setBorrowed(false);
+                bookRepo.save(book);
+            } else if ((record.getReturnDate() == null || record.getReturnDate().isBlank()) &&
+                      existingRecord.get().getReturnDate() != null && !existingRecord.get().getReturnDate().isBlank()) {
+                if (book.isBorrowed()) {
+                    throw new IllegalArgumentException("Sách hiện đang được mượn");
+                }
+                book.setBorrowed(true);
+                bookRepo.save(book);
             }
 
             borrowRecordRepo.save(record);
@@ -149,6 +180,16 @@ public class BorrowRecordController {
         try {
             if (!borrowRecordRepo.existsById(id)) {
                 throw new IllegalArgumentException("Phiếu mượn không tồn tại");
+            }
+
+            Optional<BorrowRecord> record = borrowRecordRepo.findById(id);
+            if (record.isPresent() && (record.get().getReturnDate() == null || record.get().getReturnDate().isBlank())) {
+                Optional<Book> book = bookRepo.findById(record.get().getBookId());
+                if (book.isPresent()) {
+                    Book b = book.get();
+                    b.setBorrowed(false);
+                    bookRepo.save(b);
+                }
             }
 
             borrowRecordRepo.deleteById(id);

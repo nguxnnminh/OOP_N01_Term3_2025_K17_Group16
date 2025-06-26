@@ -12,8 +12,9 @@ public class Book implements Serializable {
     private String title;
     private String author;
     private String genre;
+    private boolean isBorrowed; // Trạng thái sách: true (đã mượn), false (chưa mượn)
 
-    // Bắt buộc: constructor không tham số cho JPA
+    // Constructor không tham số cho JPA
     public Book() {
     }
 
@@ -23,6 +24,7 @@ public class Book implements Serializable {
         this.title = title;
         this.author = author;
         this.genre = "";
+        this.isBorrowed = false;
     }
 
     // Constructor có 4 tham số
@@ -31,6 +33,7 @@ public class Book implements Serializable {
         this.title = title;
         this.author = author;
         this.genre = genre;
+        this.isBorrowed = false;
     }
 
     // Getters
@@ -50,6 +53,10 @@ public class Book implements Serializable {
         return genre;
     }
 
+    public boolean isBorrowed() {
+        return isBorrowed;
+    }
+
     // Setters
     public void setId(String id) {
         this.id = id;
@@ -67,6 +74,10 @@ public class Book implements Serializable {
         this.genre = genre;
     }
 
+    public void setBorrowed(boolean borrowed) {
+        this.isBorrowed = borrowed;
+    }
+
     @Override
     public String toString() {
         return "Sách{" +
@@ -74,6 +85,7 @@ public class Book implements Serializable {
                 ", Tiêu đề='" + title + '\'' +
                 ", Tác giả='" + author + '\'' +
                 ", Thể loại='" + genre + '\'' +
+                ", Trạng thái='" + (isBorrowed ? "Đã mượn" : "Chưa mượn") + '\'' +
                 '}';
     }
 }

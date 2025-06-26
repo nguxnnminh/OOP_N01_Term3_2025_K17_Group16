@@ -2,6 +2,8 @@ package com.example.controller;
 
 import com.example.model.Book;
 import com.example.repository.BookRepository;
+import com.example.repository.BorrowRecordRepository;
+import com.example.repository.ReaderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,13 +19,43 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private BorrowRecordRepository borrowRecordRepository;
+
+    @Autowired
+    private ReaderRepository readerRepository;
+
     public List<Book> getBooks() {
         return bookRepository.findAll();
     }
 
     @GetMapping("/")
-    public String showHomePage() {
-        return "index";
+    public String showHomePage(Model model) {
+        try {
+            // Tổng số sách
+            long totalBooks = bookRepository.count();
+            // Số sách đang mượn
+            long borrowedBooks = bookRepository.countByIsBorrowedTrue();
+            // Số sách chưa mượn
+            long availableBooks = totalBooks - borrowedBooks;
+            // Số phiếu mượn
+            long totalBorrowRecords = borrowRecordRepository.count();
+            // Số độc giả
+            long totalReaders = readerRepository.count();
+
+            model.addAttribute("totalBooks", totalBooks);
+            model.addAttribute("borrowedBooks", borrowedBooks);
+            model.addAttribute("availableBooks", availableBooks);
+            model.addAttribute("totalBorrowRecords", totalBorrowRecords);
+            model.addAttribute("totalReaders", totalReaders);
+
+            return "index";
+        } catch (Exception e) {
+            model.addAttribute("error", "Lỗi khi hiển thị trang chủ: " + e.getMessage());
+            return "index";
+        } finally {
+            System.out.println("Hoàn tất hiển thị trang chủ");
+        }
     }
 
     @GetMapping("/books")
@@ -61,6 +93,7 @@ public class BookController {
                 throw new IllegalArgumentException("ID sách đã tồn tại");
             }
 
+            book.setBorrowed(false);
             bookRepository.save(book);
             redirectAttributes.addFlashAttribute("success", "Thêm sách thành công");
         } catch (IllegalArgumentException e) {
@@ -108,6 +141,8 @@ public class BookController {
                 throw new IllegalArgumentException("Sách không tồn tại");
             }
 
+            Optional<Book> existingBook = bookRepository.findById(updatedBook.getId());
+            updatedBook.setBorrowed(existingBook.get().isBorrowed());
             bookRepository.save(updatedBook);
             redirectAttributes.addFlashAttribute("success", "Cập nhật sách thành công");
         } catch (IllegalArgumentException e) {
@@ -125,6 +160,11 @@ public class BookController {
         try {
             if (!bookRepository.existsById(id)) {
                 throw new IllegalArgumentException("Sách không tồn tại");
+            }
+
+            Optional<Book> book = bookRepository.findById(id);
+            if (book.isPresent() && book.get().isBorrowed()) {
+                throw new IllegalArgumentException("Không thể xóa sách đang được mượn");
             }
 
             bookRepository.deleteById(id);

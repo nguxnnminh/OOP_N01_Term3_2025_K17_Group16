@@ -72,7 +72,7 @@
 
     <!-- Form thêm hoặc cập nhật sách -->
     <div class="card-form mb-4">
-        <h4>Thêm Sách mới</h4> <!-- Thay bằng h4 để đồng nhất cỡ chữ -->
+        <h4>Thêm Sách mới</h4>
         <form th:object="${book}" th:action="${#strings.isEmpty(book.id) ? '/books/add' : '/books/update'}" method="post" class="row g-3">
             <div class="col-md-3">
                 <label for="id" class="form-label">Mã sách:</label>
@@ -101,7 +101,7 @@
 
     <!-- Form tìm kiếm -->
     <div class="card-form mb-4">
-        <h4>Tìm kiếm Sách</h4> <!-- Thay bằng h4 để đồng nhất cỡ chữ -->
+        <h4>Tìm kiếm Sách</h4>
         <form class="search-form mt-3" method="get" th:action="@{/books}">
             <input type="text" name="searchTitle" class="form-control me-2" placeholder="Nhập tiêu đề cần tìm" th:value="${searchTitle}">
             <button type="submit" class="btn btn-custom">Tìm kiếm</button>
@@ -111,7 +111,7 @@
 
     <!-- Bảng danh sách sách -->
     <div class="card-table">
-        <h4>Danh sách Sách</h4> <!-- Thay bằng h4 để đồng nhất cỡ chữ -->
+        <h4>Danh sách Sách</h4>
         <table class="table table-bordered mt-3">
             <thead class="table-dark">
                 <tr>
@@ -119,6 +119,7 @@
                     <th>Tiêu đề</th>
                     <th>Tác giả</th>
                     <th>Thể loại</th>
+                    <th>Trạng thái</th>
                     <th>Thao tác</th>
                 </tr>
             </thead>
@@ -128,6 +129,7 @@
                     <td th:text="${b.title}"></td>
                     <td th:text="${b.author}"></td>
                     <td th:text="${b.genre}"></td>
+                    <td th:text="${b.isBorrowed() ? 'Đã mượn' : 'Chưa mượn'}"></td>
                     <td>
                         <a th:href="@{/books/edit/{id}(id=${b.id})}" class="btn btn-warning btn-sm">Chỉnh sửa</a>
                         <a th:href="@{/books/delete/{id}(id=${b.id})}" class="btn btn-danger btn-sm"
