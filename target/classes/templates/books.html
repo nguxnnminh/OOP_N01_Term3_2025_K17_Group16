@@ -4,155 +4,199 @@
     <meta charset="UTF-8">
     <title>Quản lý Sách</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #e0f7fa, #fff);
-            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .sidebar {
+            width: 240px;
+            background-color: #004d40;
+            color: white;
             display: flex;
             flex-direction: column;
-        }
-        header {
-            background-color: #00796b;
-            color: white;
             padding: 20px 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+        .sidebar h2 {
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        .container {
-            flex: 1;
-            padding-top: 40px;
-        }
-        .card-form, .card-table {
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             margin-bottom: 30px;
+            font-size: 1.5rem;
+        }
+        .nav-link {
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            transition: background 0.3s;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background-color: #00695c;
+            text-decoration: none;
+        }
+        .nav-link i {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            height: 100vh;
+            max-width: 100%;
+        }
+        .content-wrapper {
+            flex: 1;
             padding: 20px;
-            background: #fff;
+            overflow-y: auto;
+        }
+        .card-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
         .btn-custom {
             background-color: #00796b;
             color: white;
-            border-radius: 50px;
+            border-radius: 30px;
         }
         .btn-custom:hover {
             background-color: #004d40;
         }
-        footer {
-            background-color: #004d40;
-            color: white;
-            text-align: center;
-            padding: 15px 0;
-            margin-top: 40px;
-        }
-        /* Điều chỉnh form tìm kiếm để sát ra ngoài và nút sát bên */
         .search-form {
             display: flex;
-            align-items: center;
-            width: 100%;
+            gap: 10px;
+            flex-wrap: wrap;
         }
-        .search-form .form-control {
-            flex: 1; /* Kéo dài thanh tìm kiếm để lấp đầy khoảng trống */
-            margin-right: 10px;
-            max-width: none; /* Loại bỏ giới hạn max-width */
+        table thead {
+            background-color: #00796b;
+            color: white;
         }
-        .search-form .btn {
-            margin-left: 10px; /* Giữ khoảng cách giữa nút */
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            color: #777;
+            font-size: 0.9rem;
+            background-color: #f0f2f5;
         }
     </style>
 </head>
 <body>
-<header>
-    <h1>Quản lý Sách</h1>
-</header>
 
-<div class="container">
-    <!-- Thông báo -->
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-
-    <!-- Form thêm hoặc cập nhật sách -->
-    <div class="card-form mb-4">
-        <h4>Thêm Sách mới</h4>
-        <form th:object="${book}" th:action="${#strings.isEmpty(book.id) ? '/books/add' : '/books/update'}" method="post" class="row g-3">
-            <div class="col-md-3">
-                <label for="id" class="form-label">Mã sách:</label>
-                <input type="text" th:field="*{id}" id="id" class="form-control" th:readonly="${!#strings.isEmpty(book.id)}" placeholder="Mã sách"/>
-            </div>
-            <div class="col-md-3">
-                <label for="title" class="form-label">Tiêu đề:</label>
-                <input type="text" th:field="*{title}" id="title" class="form-control" placeholder="Tiêu đề sách"/>
-            </div>
-            <div class="col-md-3">
-                <label for="author" class="form-label">Tác giả:</label>
-                <input type="text" th:field="*{author}" id="author" class="form-control" placeholder="Tên tác giả"/>
-            </div>
-            <div class="col-md-3">
-                <label for="genre" class="form-label">Thể loại:</label>
-                <input type="text" th:field="*{genre}" id="genre" class="form-control" placeholder="Thể loại"/>
-            </div>
-            <div class="col-12 mt-3">
-                <button type="submit" class="btn btn-custom">
-                    <span th:text="${#strings.isEmpty(book.id) ? 'Thêm sách' : 'Cập nhật sách'}"></span>
-                </button>
-                <a th:if="${!#strings.isEmpty(book.id)}" th:href="@{/books}" class="btn btn-secondary ms-2">Hủy</a>
-            </div>
-        </form>
-    </div>
-
-    <!-- Form tìm kiếm -->
-    <div class="card-form mb-4">
-        <h4>Tìm kiếm Sách</h4>
-        <form class="search-form mt-3" method="get" th:action="@{/books}">
-            <input type="text" name="searchTitle" class="form-control me-2" placeholder="Nhập tiêu đề cần tìm" th:value="${searchTitle}">
-            <button type="submit" class="btn btn-custom">Tìm kiếm</button>
-            <a th:href="@{/books}" class="btn btn-outline-secondary ms-2">Hiện tất cả</a>
-        </form>
-    </div>
-
-    <!-- Bảng danh sách sách -->
-    <div class="card-table">
-        <h4>Danh sách Sách</h4>
-        <table class="table table-bordered mt-3">
-            <thead class="table-dark">
-                <tr>
-                    <th>Mã sách</th>
-                    <th>Tiêu đề</th>
-                    <th>Tác giả</th>
-                    <th>Thể loại</th>
-                    <th>Trạng thái</th>
-                    <th>Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="b : ${books}">
-                    <td th:text="${b.id}"></td>
-                    <td th:text="${b.title}"></td>
-                    <td th:text="${b.author}"></td>
-                    <td th:text="${b.genre}"></td>
-                    <td th:text="${b.isBorrowed() ? 'Đã mượn' : 'Chưa mượn'}"></td>
-                    <td>
-                        <a th:href="@{/books/edit/{id}(id=${b.id})}" class="btn btn-warning btn-sm">Chỉnh sửa</a>
-                        <a th:href="@{/books/delete/{id}(id=${b.id})}" class="btn btn-danger btn-sm"
-                           onclick="return confirm('Bạn có chắc chắn muốn xóa sách này?')">Xóa</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Liên kết điều hướng -->
-    <div class="d-flex justify-content-between">
-        <a th:href="@{/}" class="btn btn-secondary">Quay về Trang chủ</a>
-        <div>
-            <a th:href="@{/readers}" class="btn btn-info me-2">Xem danh sách Độc giả</a>
-            <a th:href="@{/borrow-records}" class="btn btn-info">Xem danh sách Phiếu mượn</a>
-        </div>
-    </div>
+<div class="sidebar">
+    <h2><i class="fas fa-book-reader"></i> Thư viện</h2>
+    <a th:href="@{/}" class="nav-link"><i class="fas fa-chart-pie"></i> Tổng quan</a>
+    <a th:href="@{/books}" class="nav-link"><i class="fas fa-book"></i> Quản lý Sách</a>
+    <a th:href="@{/readers}" class="nav-link"><i class="fas fa-users"></i> Quản lý Độc giả</a>
+    <a th:href="@{/borrow-records}" class="nav-link"><i class="fas fa-file-alt"></i> Phiếu mượn</a>
 </div>
 
-<footer>
-    <p>© 2025 Nhóm 16 - Hệ thống quản lý thư viện Đại học Phenikaa</p>
-</footer>
+<div class="main-content">
+    <div class="content-wrapper">
+
+        <!-- Thông báo -->
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+        <!-- Form thêm hoặc cập nhật sách -->
+        <div class="card-section">
+            <h4 th:if="${#strings.isEmpty(book.id)}">Thêm Sách mới</h4>
+            <h4 th:if="${!#strings.isEmpty(book.id)}">Cập nhật thông tin Sách</h4>
+            <form th:object="${book}" th:action="${#strings.isEmpty(book.id) ? '/books/add' : '/books/update'}" method="post" class="row g-3 mt-3">
+                <div class="col-md-3">
+                    <label for="id" class="form-label">Mã sách:</label>
+                    <input type="text" th:field="*{id}" id="id" class="form-control" th:readonly="${!#strings.isEmpty(book.id)}" placeholder="Mã sách">
+                </div>
+                <div class="col-md-3">
+                    <label for="title" class="form-label">Tiêu đề:</label>
+                    <input type="text" th:field="*{title}" id="title" class="form-control" placeholder="Tiêu đề sách">
+                </div>
+                <div class="col-md-3">
+                    <label for="author" class="form-label">Tác giả:</label>
+                    <input type="text" th:field="*{author}" id="author" class="form-control" placeholder="Tên tác giả">
+                </div>
+                <div class="col-md-3">
+                    <label for="genre" class="form-label">Thể loại:</label>
+                    <input type="text" th:field="*{genre}" id="genre" class="form-control" placeholder="Thể loại">
+                </div>
+                <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-custom">
+                        <span th:text="${#strings.isEmpty(book.id) ? 'Thêm sách' : 'Cập nhật sách'}"></span>
+                    </button>
+                    <a th:if="${!#strings.isEmpty(book.id)}" th:href="@{/books}" class="btn btn-secondary ms-2">Hủy</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Form tìm kiếm -->
+        <div class="card-section">
+            <h4>Tìm kiếm Sách</h4>
+            <form class="search-form mt-3" method="get" th:action="@{/books}">
+                <input type="text" name="searchTitle" class="form-control" placeholder="Nhập tiêu đề cần tìm" th:value="${searchTitle}">
+                <button type="submit" class="btn btn-custom">Tìm kiếm</button>
+                <a th:href="@{/books}" class="btn btn-outline-secondary">Hiện tất cả</a>
+            </form>
+        </div>
+
+        <!-- Bảng danh sách sách -->
+        <div class="card-section">
+            <h4>Danh sách Sách</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered mt-3">
+                    <thead>
+                    <tr>
+                        <th>Mã sách</th>
+                        <th>Tiêu đề</th>
+                        <th>Tác giả</th>
+                        <th>Thể loại</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="b : ${books}">
+                        <td th:text="${b.id}"></td>
+                        <td th:text="${b.title}"></td>
+                        <td th:text="${b.author}"></td>
+                        <td th:text="${b.genre}"></td>
+                        <td th:text="${b.isBorrowed() ? 'Đã mượn' : 'Chưa mượn'}"></td>
+                        <td>
+                            <a th:href="@{/books/edit/{id}(id=${b.id})}" class="btn btn-warning btn-sm">Chỉnh sửa</a>
+                            <a th:href="@{/books/delete/{id}(id=${b.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa sách này?')">Xóa</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Điều hướng nhanh -->
+        <div class="d-flex justify-content-between">
+            <a th:href="@{/}" class="btn btn-secondary">Về Trang chủ</a>
+            <div>
+                <a th:href="@{/readers}" class="btn btn-info me-2">Xem danh sách Độc giả</a>
+                <a th:href="@{/borrow-records}" class="btn btn-info">Xem danh sách Phiếu mượn</a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        © 2025 Nhóm 16 - Hệ thống quản lý thư viện Đại học Phenikaa
+    </footer>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

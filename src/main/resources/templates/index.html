@@ -2,157 +2,183 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Quản lý Thư viện - Trang chủ</title>
+    <title>Thư viện - Tổng quan</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #e0f7fa, #fff);
-            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .sidebar {
+            width: 240px;
+            background-color: #004d40;
+            color: white;
             display: flex;
             flex-direction: column;
-        }
-        header {
-            background-color: #00796b;
-            color: white;
             padding: 20px 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+        .sidebar h2 {
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            font-size: 1.5rem;
         }
-        .container {
+        .nav-link {
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            transition: background 0.3s;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background-color: #00695c;
+            text-decoration: none;
+        }
+        .nav-link i {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
             flex: 1;
-            padding-top: 20px;
+            height: 100vh;
+            max-width: 100%;
         }
-        .card {
-            transition: transform 0.3s, box-shadow 0.3s;
+        .content-wrapper {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .card-section {
+            background: white;
+            padding: 20px;
             border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .stats-card {
+            flex: 1 1 180px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+        .stats-card:hover {
+            transform: translateY(-3px);
+        }
+        .stats-card h5 {
+            color: #00796b;
+            margin-bottom: 10px;
         }
         .btn-custom {
             background-color: #00796b;
             color: white;
-            border-radius: 50px;
+            border-radius: 30px;
+            padding: 10px 20px;
         }
         .btn-custom:hover {
             background-color: #004d40;
         }
         footer {
-            background-color: #004d40;
-            color: white;
             text-align: center;
             padding: 15px 0;
-            margin-top: 50px;
-        }
-        .stats-card {
-            background-color: #f8f9fa;
-            margin-bottom: 20px;
-        }
-        .stats-card h5 {
-            color: #00796b;
+            color: #777;
+            font-size: 0.9rem;
+            background-color: #f0f2f5;
         }
     </style>
 </head>
 <body>
-<header>
-    <h1>Hệ thống Quản lý Thư viện</h1>
-    <p>Ứng dụng quản lý sách, độc giả và phiếu mượn hiện đại</p>
-</header>
 
-<div class="container">
-    <!-- Hiển thị thông báo lỗi nếu có -->
-    <div th:if="${error}" class="alert alert-danger text-center" role="alert">
-        <p th:text="${error}"></p>
-    </div>
-
-    <!-- Phần thống kê tổng quan -->
-    <h2 class="text-center mb-4">Tổng quan thống kê</h2>
-    <div class="row justify-content-center">
-        <div class="col-md-4 mb-3">
-            <div class="card stats-card text-center shadow">
-                <div class="card-body">
-                    <h5 class="card-title">Tổng số sách</h5>
-                    <p class="card-text" th:text="${totalBooks}"></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card stats-card text-center shadow">
-                <div class="card-body">
-                    <h5 class="card-title">Số sách đang mượn</h5>
-                    <p class="card-text" th:text="${borrowedBooks}"></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card stats-card text-center shadow">
-                <div class="card-body">
-                    <h5 class="card-title">Số sách chưa mượn</h5>
-                    <p class="card-text" th:text="${availableBooks}"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-md-6 mb-3">
-            <div class="card stats-card text-center shadow">
-                <div class="card-body">
-                    <h5 class="card-title">Tổng số độc giả</h5>
-                    <p class="card-text" th:text="${totalReaders}"></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 mb-3">
-            <div class="card stats-card text-center shadow">
-                <div class="card-body">
-                    <h5 class="card-title">Tổng số phiếu mượn</h5>
-                    <p class="card-text" th:text="${totalBorrowRecords}"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Phần quản lý -->
-    <h2 class="text-center mb-4">Chức năng quản lý</h2>
-    <div class="row justify-content-center">
-        <div class="col-md-4 mb-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <h4 class="card-title">Quản lý Sách</h4>
-                    <p class="card-text">Kiểm tra, thêm, sửa, xóa sách trong thư viện</p>
-                    <a th:href="@{/books}" class="btn btn-custom">Xem danh sách sách</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <h4 class="card-title">Quản lý Độc giả</h4>
-                    <p class="card-text">Theo dõi thông tin độc giả và cập nhật dễ dàng</p>
-                    <a th:href="@{/readers}" class="btn btn-custom">Xem danh sách độc giả</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <h4 class="card-title">Quản lý Phiếu mượn</h4>
-                    <p class="card-text">Thêm, kiểm tra, chỉnh sửa, xóa phiếu mượn sách</p>
-                    <a th:href="@{/borrow-records}" class="btn btn-custom">Xem danh sách phiếu mượn</a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="sidebar">
+    <h2><i class="fas fa-book-reader"></i> Thư viện</h2>
+    <a th:href="@{/}" class="nav-link"><i class="fas fa-chart-pie"></i> Tổng quan</a>
+    <a th:href="@{/books}" class="nav-link"><i class="fas fa-book"></i> Quản lý Sách</a>
+    <a th:href="@{/readers}" class="nav-link"><i class="fas fa-users"></i> Quản lý Độc giả</a>
+    <a th:href="@{/borrow-records}" class="nav-link"><i class="fas fa-file-alt"></i> Phiếu mượn</a>
 </div>
 
-<footer>
-    <p>© 2025 Nhóm 16 - Hệ thống quản lý thư viện Đại học Phenikaa</p>
-</footer>
+<div class="main-content">
+    <div class="content-wrapper">
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <!-- Thông báo -->
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+        <!-- Thống kê tổng quan -->
+        <div class="card-section">
+            <h4>Tổng quan thống kê</h4>
+            <div class="stats-grid mt-3">
+                <div class="stats-card">
+                    <h5>Tổng số sách</h5>
+                    <h3 th:text="${totalBooks}">0</h3>
+                </div>
+                <div class="stats-card">
+                    <h5>Sách đang mượn</h5>
+                    <h3 th:text="${borrowedBooks}">0</h3>
+                </div>
+                <div class="stats-card">
+                    <h5>Sách chưa mượn</h5>
+                    <h3 th:text="${availableBooks}">0</h3>
+                </div>
+                <div class="stats-card">
+                    <h5>Tổng phiếu mượn</h5>
+                    <h3 th:text="${totalBorrowRecords}">0</h3>
+                </div>
+                <div class="stats-card">
+                    <h5>Tổng số độc giả</h5>
+                    <h3 th:text="${totalReaders}">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Các chức năng chính -->
+        <div class="card-section">
+            <h4>Chức năng quản lý</h4>
+            <div class="stats-grid mt-3">
+                <div class="stats-card">
+                    <h5>Quản lý Sách</h5>
+                    <p>Kiểm tra, thêm, sửa, xóa sách trong thư viện</p>
+                    <a th:href="@{/books}" class="btn btn-custom mt-2">Xem danh sách</a>
+                </div>
+                <div class="stats-card">
+                    <h5>Quản lý Độc giả</h5>
+                    <p>Theo dõi và cập nhật thông tin độc giả</p>
+                    <a th:href="@{/readers}" class="btn btn-custom mt-2">Xem danh sách</a>
+                </div>
+                <div class="stats-card">
+                    <h5>Quản lý Phiếu mượn</h5>
+                    <p>Thêm, sửa, xóa phiếu mượn sách</p>
+                    <a th:href="@{/borrow-records}" class="btn btn-custom mt-2">Xem danh sách</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        © 2025 Nhóm 16 - Hệ thống quản lý thư viện Đại học Phenikaa
+    </footer>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.model.Book;
 import com.example.repository.BookRepository;
+import com.example.model.BorrowRecord;
 import com.example.repository.BorrowRecordRepository;
 import com.example.repository.ReaderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +33,10 @@ public class BookController {
     @GetMapping("/")
     public String showHomePage(Model model) {
         try {
-            // Tổng số sách
             long totalBooks = bookRepository.count();
-            // Số sách đang mượn
             long borrowedBooks = bookRepository.countByIsBorrowedTrue();
-            // Số sách chưa mượn
             long availableBooks = totalBooks - borrowedBooks;
-            // Số phiếu mượn
             long totalBorrowRecords = borrowRecordRepository.count();
-            // Số độc giả
             long totalReaders = readerRepository.count();
 
             model.addAttribute("totalBooks", totalBooks);
@@ -61,12 +57,17 @@ public class BookController {
     @GetMapping("/books")
     public String showBooks(Model model, @RequestParam(value = "searchTitle", required = false) String searchTitle) {
         try {
+            if (searchTitle == null) {
+                searchTitle = "";
+            }
+
             List<Book> filteredBooks;
-            if (searchTitle != null && !searchTitle.trim().isEmpty()) {
+            if (!searchTitle.trim().isEmpty()) {
                 filteredBooks = bookRepository.findByTitleContainingIgnoreCase(searchTitle.trim());
             } else {
                 filteredBooks = bookRepository.findAll();
             }
+
             model.addAttribute("books", filteredBooks);
             model.addAttribute("searchTitle", searchTitle);
             model.addAttribute("book", new Book("", "", "", ""));
@@ -162,9 +163,10 @@ public class BookController {
                 throw new IllegalArgumentException("Sách không tồn tại");
             }
 
-            Optional<Book> book = bookRepository.findById(id);
-            if (book.isPresent() && book.get().isBorrowed()) {
-                throw new IllegalArgumentException("Không thể xóa sách đang được mượn");
+            List<BorrowRecord> borrowRecords = borrowRecordRepository.findByBookId(id);
+            System.out.println("Borrow records for book " + id + ": " + borrowRecords.size());
+            if (!borrowRecords.isEmpty()) {
+                throw new IllegalArgumentException("Sách đang được mượn, không thể xóa");
             }
 
             bookRepository.deleteById(id);

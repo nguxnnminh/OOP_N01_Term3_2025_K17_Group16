@@ -1,7 +1,9 @@
 package com.example.controller;
 
 import com.example.model.Reader;
+import com.example.model.BorrowRecord;
 import com.example.repository.ReaderRepository;
+import com.example.repository.BorrowRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +18,12 @@ public class ReaderController {
     @Autowired
     private ReaderRepository readerRepo;
 
+    @Autowired
+    private BorrowRecordRepository borrowRecordRepo;
+
     @GetMapping("/readers")
     public String showReaders(Model model,
-                              @RequestParam(value = "searchName", required = false) String searchName) {
+                             @RequestParam(value = "searchName", required = false) String searchName) {
         try {
             List<Reader> filteredReaders;
             if (searchName != null && !searchName.trim().isEmpty()) {
@@ -36,7 +41,7 @@ public class ReaderController {
 
             return "readers";
         } catch (Exception e) {
-            model.addAttribute("error", "Lỗi khi hiển thị z: " + e.getMessage());
+            model.addAttribute("error", "Lỗi khi hiển thị danh sách độc giả: " + e.getMessage());
             return "readers";
         } finally {
             System.out.println("Hoàn tất hiển thị danh sách độc giả");
@@ -68,7 +73,7 @@ public class ReaderController {
 
     @GetMapping("/readers/edit/{id}")
     public String showEditReaderForm(@PathVariable("id") String id,
-                                     Model model, RedirectAttributes redirectAttributes) {
+                                    Model model, RedirectAttributes redirectAttributes) {
         try {
             Reader reader = readerRepo.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Độc giả không tồn tại"));
@@ -86,7 +91,7 @@ public class ReaderController {
 
     @PostMapping("/readers/update")
     public String updateReader(@ModelAttribute("reader") Reader updatedReader,
-                               RedirectAttributes redirectAttributes) {
+                              RedirectAttributes redirectAttributes) {
         try {
             if (updatedReader.getId().isBlank() ||
                 updatedReader.getName().isBlank() ||
@@ -111,15 +116,25 @@ public class ReaderController {
 
     @GetMapping("/readers/delete/{id}")
     public String deleteReader(@PathVariable("id") String id,
-                               RedirectAttributes redirectAttributes) {
+                              RedirectAttributes redirectAttributes) {
         try {
             if (!readerRepo.existsById(id)) {
                 throw new IllegalArgumentException("Độc giả không tồn tại");
             }
 
+            List<BorrowRecord> borrowRecords = borrowRecordRepo.findByReaderId(id);
+            System.out.println("Borrow records for reader " + id + ": " + borrowRecords.size());
+            if (!borrowRecords.isEmpty()) {
+                throw new IllegalArgumentException("Độc giả đang mượn sách, không thể xóa");
+            }
+
             readerRepo.deleteById(id);
             redirectAttributes.addFlashAttribute("success", "Xóa độc giả thành công");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
         } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
             redirectAttributes.addFlashAttribute("error", "Lỗi khi xóa độc giả: " + e.getMessage());
         } finally {
             System.out.println("Hoàn tất thao tác xóa độc giả");
@@ -128,7 +143,6 @@ public class ReaderController {
         return "redirect:/readers";
     }
 
-    // Cho phép các controller khác gọi để lấy danh sách độc giả
     public List<Reader> getReaders() {
         return readerRepo.findAll();
     }

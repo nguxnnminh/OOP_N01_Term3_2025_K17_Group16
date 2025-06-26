@@ -1,28 +1,39 @@
 package com.example.controller;
 
 import com.example.model.Book;
+import com.example.model.BorrowRecord;
 import com.example.repository.BookRepository;
+import com.example.repository.BorrowRecordRepository;
+import com.example.repository.ReaderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.ui.Model;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.util.*;
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class BookControllerTest {
+
+    private MockMvc mockMvc;
 
     @Mock
     private BookRepository bookRepository;
 
     @Mock
-    private Model model;
+    private BorrowRecordRepository borrowRecordRepository;
 
     @Mock
-    private RedirectAttributes redirectAttributes;
+    private ReaderRepository readerRepository;
 
     @InjectMocks
     private BookController bookController;
@@ -30,96 +41,136 @@ public class BookControllerTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setPrefix("/WEB-INF/views/");
+        viewResolver.setSuffix(".jsp");
+
+        mockMvc = MockMvcBuilders.standaloneSetup(bookController)
+                .setViewResolvers(viewResolver)
+                .build();
     }
 
     @Test
-    public void testShowBooks() {
-        when(bookRepository.findAll()).thenReturn(Arrays.asList(new Book("1", "Title", "Author", "Genre")));
-        String view = bookController.showBooks(model, null);
-        assertEquals("books", view);
-        verify(model).addAttribute(eq("books"), anyList());
+    public void testShowBooks_NoSearch() throws Exception {
+        when(bookRepository.findAll()).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(get("/books"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("books"))
+                .andExpect(model().attributeExists("books"))
+                .andExpect(model().attributeExists("searchTitle"))
+                .andExpect(model().attributeExists("book"));
     }
 
     @Test
-    public void testAddBook_Valid() {
-        Book book = new Book("1", "Title", "Author", "Genre");
-        when(bookRepository.existsById("1")).thenReturn(false);
-        String view = bookController.addBook(book, redirectAttributes);
-        assertEquals("redirect:/books", view);
-        verify(redirectAttributes).addFlashAttribute(eq("success"), eq("Thêm sách thành công"));
+    public void testShowBooks_WithSearch() throws Exception {
+        when(bookRepository.findByTitleContainingIgnoreCase("Java")).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(get("/books").param("searchTitle", "Java"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("books"))
+                .andExpect(model().attributeExists("books"))
+                .andExpect(model().attributeExists("searchTitle"))
+                .andExpect(model().attributeExists("book"));
     }
 
     @Test
-    public void testAddBook_MissingFields() {
-        Book book = new Book("", "", "", "");
-        String view = bookController.addBook(book, redirectAttributes);
-        assertEquals("redirect:/books", view);
-        verify(redirectAttributes).addFlashAttribute(eq("error"), contains("Vui lòng điền đầy đủ thông tin"));
+    public void testAddBook_Valid() throws Exception {
+        when(bookRepository.existsById("B1")).thenReturn(false);
+
+        mockMvc.perform(post("/books/add")
+                        .param("id", "B1")
+                        .param("title", "Java Basics")
+                        .param("author", "John Doe")
+                        .param("genre", "Programming"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/books"))
+                .andExpect(flash().attribute("success", "Thêm sách thành công"));
     }
 
     @Test
-    public void testAddBook_DuplicateId() {
-        Book book = new Book("1", "Title", "Author", "Genre");
-        when(bookRepository.existsById("1")).thenReturn(true);
-        String view = bookController.addBook(book, redirectAttributes);
-        assertEquals("redirect:/books", view);
-        verify(redirectAttributes).addFlashAttribute(eq("error"), contains("ID sách đã tồn tại"));
+    public void testAddBook_ExistId() throws Exception {
+        when(bookRepository.existsById("B1")).thenReturn(true);
+
+        mockMvc.perform(post("/books/add")
+                        .param("id", "B1")
+                        .param("title", "Java Basics")
+                        .param("author", "John Doe")
+                        .param("genre", "Programming"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/books"))
+                .andExpect(flash().attributeExists("error"));
     }
 
     @Test
-    public void testShowEditBookForm_ValidId() {
-        Book book = new Book("1", "Title", "Author", "Genre");
-        when(bookRepository.findById("1")).thenReturn(Optional.of(book));
-        when(bookRepository.findAll()).thenReturn(Collections.singletonList(book));
+    public void testShowEditBookForm_Valid() throws Exception {
+        Book book = new Book("B1", "Java Basics", "John Doe", "Programming");
+        when(bookRepository.findById("B1")).thenReturn(Optional.of(book));
+        when(bookRepository.findAll()).thenReturn(List.of(book));
 
-        String view = bookController.showEditBookForm("1", model, redirectAttributes);
-        assertEquals("books", view);
-        verify(model).addAttribute(eq("book"), eq(book));
+        mockMvc.perform(get("/books/edit/B1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("books"))
+                .andExpect(model().attributeExists("book"));
     }
 
     @Test
-    public void testShowEditBookForm_InvalidId() {
-        when(bookRepository.findById("99")).thenReturn(Optional.empty());
-        String view = bookController.showEditBookForm("99", model, redirectAttributes);
-        assertEquals("redirect:/books", view);
-        verify(redirectAttributes).addFlashAttribute(eq("error"), contains("Sách không tồn tại"));
+    public void testShowEditBookForm_Invalid() throws Exception {
+        when(bookRepository.findById("999")).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/books/edit/999"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/books"))
+                .andExpect(flash().attributeExists("error"));
     }
 
     @Test
-    public void testUpdateBook_Valid() {
-        Book book = new Book("1", "Title", "Author", "Genre");
+    public void testUpdateBook_Valid() throws Exception {
+        Book existingBook = new Book("B1", "Old Title", "Old Author", "Old Genre");
+        existingBook.setBorrowed(true);
 
-        when(bookRepository.existsById("1")).thenReturn(true);
-        when(bookRepository.findById("1")).thenReturn(Optional.of(book));
+        when(bookRepository.existsById("B1")).thenReturn(true);
+        when(bookRepository.findById("B1")).thenReturn(Optional.of(existingBook));
 
-        String view = bookController.updateBook(book, redirectAttributes);
-        assertEquals("redirect:/books", view);
-        verify(redirectAttributes).addFlashAttribute(eq("success"), eq("Cập nhật sách thành công"));
+        mockMvc.perform(post("/books/update")
+                        .param("id", "B1")
+                        .param("title", "New Title")
+                        .param("author", "New Author")
+                        .param("genre", "New Genre"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/books"))
+                .andExpect(flash().attribute("success", "Cập nhật sách thành công"));
     }
 
     @Test
-    public void testUpdateBook_InvalidId() {
-        Book book = new Book("99", "Title", "Author", "Genre");
-        when(bookRepository.existsById("99")).thenReturn(false);
+    public void testDeleteBook_Valid() throws Exception {
+        when(bookRepository.existsById("B1")).thenReturn(true);
+        when(borrowRecordRepository.findByBookId("B1")).thenReturn(new ArrayList<>());
 
-        String view = bookController.updateBook(book, redirectAttributes);
-        assertEquals("redirect:/books", view);
-        verify(redirectAttributes).addFlashAttribute(eq("error"), eq("Sách không tồn tại"));
+        mockMvc.perform(get("/books/delete/B1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/books"))
+                .andExpect(flash().attribute("success", "Xóa sách thành công"));
     }
 
     @Test
-    public void testDeleteBook_ValidId() {
-        when(bookRepository.existsById("1")).thenReturn(true);
-        String view = bookController.deleteBook("1", redirectAttributes);
-        assertEquals("redirect:/books", view);
-        verify(redirectAttributes).addFlashAttribute(eq("success"), eq("Xóa sách thành công"));
+    public void testDeleteBook_NotExist() throws Exception {
+        when(bookRepository.existsById("B1")).thenReturn(false);
+
+        mockMvc.perform(get("/books/delete/B1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/books"))
+                .andExpect(flash().attributeExists("error"));
     }
 
     @Test
-    public void testDeleteBook_InvalidId() {
-        when(bookRepository.existsById("99")).thenReturn(false);
-        String view = bookController.deleteBook("99", redirectAttributes);
-        assertEquals("redirect:/books", view);
-        verify(redirectAttributes).addFlashAttribute(eq("error"), eq("Sách không tồn tại"));
+    public void testDeleteBook_BookBorrowed() throws Exception {
+        when(bookRepository.existsById("B1")).thenReturn(true);
+        when(borrowRecordRepository.findByBookId("B1")).thenReturn(List.of(new BorrowRecord()));
+
+        mockMvc.perform(get("/books/delete/B1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/books"))
+                .andExpect(flash().attributeExists("error"));
     }
 }
