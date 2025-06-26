@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.model.BorrowRecord;
+import com.example.model.Book;
 import com.example.repository.BookRepository;
 import com.example.repository.BorrowRecordRepository;
 import com.example.repository.ReaderRepository;
@@ -65,8 +66,12 @@ public class BorrowRecordControllerTest {
 
     @Test
     public void testAddBorrowRecord_Valid() throws Exception {
+        Book book = new Book();
+        book.setId("B1");
+        book.setBorrowed(false);
+
         when(borrowRecordRepo.existsById("1")).thenReturn(false);
-        when(bookRepo.existsById("B1")).thenReturn(true);
+        when(bookRepo.findById("B1")).thenReturn(Optional.of(book));
         when(readerRepo.existsById("R1")).thenReturn(true);
         when(borrowRecordRepo.findAll()).thenReturn(new ArrayList<>());
 
@@ -82,7 +87,26 @@ public class BorrowRecordControllerTest {
     @Test
     public void testAddBorrowRecord_BookNotExist() throws Exception {
         when(borrowRecordRepo.existsById("1")).thenReturn(false);
-        when(bookRepo.existsById("B1")).thenReturn(false);
+        when(bookRepo.findById("B1")).thenReturn(Optional.empty());
+
+        mockMvc.perform(post("/borrow-records/add")
+                        .param("id", "1")
+                        .param("bookId", "B1")
+                        .param("readerId", "R1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/borrow-records"))
+                .andExpect(flash().attributeExists("error"));
+    }
+
+    @Test
+    public void testAddBorrowRecord_BookAlreadyBorrowed() throws Exception {
+        Book book = new Book();
+        book.setId("B1");
+        book.setBorrowed(true);
+
+        when(borrowRecordRepo.existsById("1")).thenReturn(false);
+        when(bookRepo.findById("B1")).thenReturn(Optional.of(book));
+        when(readerRepo.existsById("R1")).thenReturn(true);
 
         mockMvc.perform(post("/borrow-records/add")
                         .param("id", "1")
@@ -117,7 +141,10 @@ public class BorrowRecordControllerTest {
 
     @Test
     public void testDeleteBorrowRecord_Valid() throws Exception {
+        BorrowRecord record = new BorrowRecord("1", "B1", "R1", "2024-01-01", "");
         when(borrowRecordRepo.existsById("1")).thenReturn(true);
+        when(borrowRecordRepo.findById("1")).thenReturn(Optional.of(record));
+        when(bookRepo.findById("B1")).thenReturn(Optional.of(new Book()));
 
         mockMvc.perform(get("/borrow-records/delete/1"))
                 .andExpect(status().is3xxRedirection())
