@@ -131,6 +131,10 @@
                     <label for="genre" class="form-label">Thể loại:</label>
                     <input type="text" th:field="*{genre}" id="genre" class="form-control" placeholder="Thể loại">
                 </div>
+                <div class="col-md-3">
+                    <label for="totalQuantity" class="form-label">Số lượng:</label>
+                    <input type="number" th:field="*{totalQuantity}" id="qtotalQuantity" class="form-control" min="0" placeholder="Số lượng sách">
+                </div>
                 <div class="col-12 mt-3">
                     <button type="submit" class="btn btn-custom">
                         <span th:text="${#strings.isEmpty(book.id) ? 'Thêm sách' : 'Cập nhật sách'}"></span>
@@ -161,7 +165,7 @@
                         <th>Tiêu đề</th>
                         <th>Tác giả</th>
                         <th>Thể loại</th>
-                        <th>Trạng thái</th>
+                        <th>Số lượng sách</th>
                         <th>Thao tác</th>
                     </tr>
                     </thead>
@@ -171,7 +175,7 @@
                         <td th:text="${b.title}"></td>
                         <td th:text="${b.author}"></td>
                         <td th:text="${b.genre}"></td>
-                        <td th:text="${b.isBorrowed() ? 'Đã mượn' : 'Chưa mượn'}"></td>
+                        <td th:text="${b.totalQuantity}"></td>
                         <td>
                             <a th:href="@{/books/edit/{id}(id=${b.id})}" class="btn btn-warning btn-sm">Chỉnh sửa</a>
                             <a th:href="@{/books/delete/{id}(id=${b.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa sách này?')">Xóa</a>

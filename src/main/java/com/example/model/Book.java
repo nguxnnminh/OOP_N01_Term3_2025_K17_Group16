@@ -12,31 +12,27 @@ public class Book implements Serializable {
     private String title;
     private String author;
     private String genre;
-    private boolean isBorrowed; // Trạng thái sách: true (đã mượn), false (chưa mượn)
+    private int totalQuantity;  // Tổng số lượng sách ban đầu (quản lý theo đầu sách)
 
-    // Constructor không tham số cho JPA
     public Book() {
     }
 
-    // Constructor có 3 tham số
-    public Book(String id, String title, String author) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.genre = "";
-        this.isBorrowed = false;
-    }
-
-    // Constructor có 4 tham số
     public Book(String id, String title, String author, String genre) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.genre = genre;
-        this.isBorrowed = false;
+        this.totalQuantity = 0;
     }
 
-    // Getters
+    public Book(String id, String title, String author, String genre, int totalQuantity) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.totalQuantity = totalQuantity;
+    }
+
     public String getId() {
         return id;
     }
@@ -53,11 +49,10 @@ public class Book implements Serializable {
         return genre;
     }
 
-    public boolean isBorrowed() {
-        return isBorrowed;
+    public int getTotalQuantity() {
+        return totalQuantity;
     }
 
-    // Setters
     public void setId(String id) {
         this.id = id;
     }
@@ -74,8 +69,8 @@ public class Book implements Serializable {
         this.genre = genre;
     }
 
-    public void setBorrowed(boolean borrowed) {
-        this.isBorrowed = borrowed;
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 
     @Override
@@ -85,7 +80,7 @@ public class Book implements Serializable {
                 ", Tiêu đề='" + title + '\'' +
                 ", Tác giả='" + author + '\'' +
                 ", Thể loại='" + genre + '\'' +
-                ", Trạng thái='" + (isBorrowed ? "Đã mượn" : "Chưa mượn") + '\'' +
+                ", Tổng số lượng=" + totalQuantity +
                 '}';
     }
 }

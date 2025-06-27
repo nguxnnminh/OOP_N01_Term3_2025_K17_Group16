@@ -123,6 +123,28 @@
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
         <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
+        <!-- Các chức năng chính -->
+        <div class="card-section">
+            <h4>Chức năng quản lý</h4>
+            <div class="stats-grid mt-3">
+                <div class="stats-card">
+                    <h5>Quản lý Sách</h5>
+                    <p>Kiểm tra, thêm, sửa, xóa sách trong thư viện</p>
+                    <a th:href="@{/books}" class="btn btn-custom mt-2">Xem danh sách</a>
+                </div>
+                <div class="stats-card">
+                    <h5>Quản lý Độc giả</h5>
+                    <p>Theo dõi và cập nhật thông tin độc giả</p>
+                    <a th:href="@{/readers}" class="btn btn-custom mt-2">Xem danh sách</a>
+                </div>
+                <div class="stats-card">
+                    <h5>Quản lý Phiếu mượn</h5>
+                    <p>Thêm, sửa, xóa phiếu mượn sách</p>
+                    <a th:href="@{/borrow-records}" class="btn btn-custom mt-2">Xem danh sách</a>
+                </div>
+            </div>
+        </div>
+
         <!-- Thống kê tổng quan -->
         <div class="card-section">
             <h4>Tổng quan thống kê</h4>
@@ -150,25 +172,29 @@
             </div>
         </div>
 
-        <!-- Các chức năng chính -->
         <div class="card-section">
-            <h4>Chức năng quản lý</h4>
-            <div class="stats-grid mt-3">
-                <div class="stats-card">
-                    <h5>Quản lý Sách</h5>
-                    <p>Kiểm tra, thêm, sửa, xóa sách trong thư viện</p>
-                    <a th:href="@{/books}" class="btn btn-custom mt-2">Xem danh sách</a>
-                </div>
-                <div class="stats-card">
-                    <h5>Quản lý Độc giả</h5>
-                    <p>Theo dõi và cập nhật thông tin độc giả</p>
-                    <a th:href="@{/readers}" class="btn btn-custom mt-2">Xem danh sách</a>
-                </div>
-                <div class="stats-card">
-                    <h5>Quản lý Phiếu mượn</h5>
-                    <p>Thêm, sửa, xóa phiếu mượn sách</p>
-                    <a th:href="@{/borrow-records}" class="btn btn-custom mt-2">Xem danh sách</a>
-                </div>
+            <h4>Thống kê từng mã sách</h4>
+            <div class="table-responsive mt-3">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Mã sách</th>
+                            <th>Tiêu đề</th>
+                            <th>Tổng số lượng</th>
+                            <th>Đã mượn</th>
+                            <th>Còn lại</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="stat : ${bookStats}">
+                            <td th:text="${stat.id}"></td>
+                            <td th:text="${stat.title}"></td>
+                            <td th:text="${stat.total}"></td>
+                            <td th:text="${stat.borrowed}"></td>
+                            <td th:text="${stat.available}"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 

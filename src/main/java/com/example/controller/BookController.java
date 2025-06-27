@@ -1,8 +1,8 @@
 package com.example.controller;
 
 import com.example.model.Book;
-import com.example.repository.BookRepository;
 import com.example.model.BorrowRecord;
+import com.example.repository.BookRepository;
 import com.example.repository.BorrowRecordRepository;
 import com.example.repository.ReaderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class BookController {
@@ -33,17 +33,37 @@ public class BookController {
     @GetMapping("/")
     public String showHomePage(Model model) {
         try {
-            long totalBooks = bookRepository.count();
-            long borrowedBooks = bookRepository.countByIsBorrowedTrue();
-            long availableBooks = totalBooks - borrowedBooks;
-            long totalBorrowRecords = borrowRecordRepository.count();
+            List<Book> books = bookRepository.findAll();
+            long totalBooks = books.stream().mapToLong(Book::getTotalQuantity).sum();
+
+            long totalBorrowRecords = borrowRecordRepository.count();  // Số sách đang mượn
             long totalReaders = readerRepository.count();
+
+            long borrowedBooks = totalBorrowRecords;
+            long availableBooks = totalBooks - borrowedBooks;
+
+            List<Map<String, Object>> bookStats = new ArrayList<>();
+
+            for (Book book : books) {
+                long currentlyBorrowed = borrowRecordRepository.findByBookId(book.getId()).size();
+                long available = book.getTotalQuantity() - currentlyBorrowed;
+
+                Map<String, Object> stat = new HashMap<>();
+                stat.put("id", book.getId());
+                stat.put("title", book.getTitle());
+                stat.put("total", book.getTotalQuantity());
+                stat.put("borrowed", currentlyBorrowed);
+                stat.put("available", available);
+
+                bookStats.add(stat);
+            }
 
             model.addAttribute("totalBooks", totalBooks);
             model.addAttribute("borrowedBooks", borrowedBooks);
             model.addAttribute("availableBooks", availableBooks);
             model.addAttribute("totalBorrowRecords", totalBorrowRecords);
             model.addAttribute("totalReaders", totalReaders);
+            model.addAttribute("bookStats", bookStats);
 
             return "index";
         } catch (Exception e) {
@@ -57,9 +77,7 @@ public class BookController {
     @GetMapping("/books")
     public String showBooks(Model model, @RequestParam(value = "searchTitle", required = false) String searchTitle) {
         try {
-            if (searchTitle == null) {
-                searchTitle = "";
-            }
+            if (searchTitle == null) searchTitle = "";
 
             List<Book> filteredBooks;
             if (!searchTitle.trim().isEmpty()) {
@@ -70,7 +88,7 @@ public class BookController {
 
             model.addAttribute("books", filteredBooks);
             model.addAttribute("searchTitle", searchTitle);
-            model.addAttribute("book", new Book("", "", "", ""));
+            model.addAttribute("book", new Book());
             return "books";
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi khi hiển thị danh sách sách: " + e.getMessage());
@@ -94,7 +112,10 @@ public class BookController {
                 throw new IllegalArgumentException("ID sách đã tồn tại");
             }
 
-            book.setBorrowed(false);
+            if (book.getTotalQuantity() < 0) {
+                throw new IllegalArgumentException("Tổng số lượng sách phải >= 0");
+            }
+
             bookRepository.save(book);
             redirectAttributes.addFlashAttribute("success", "Thêm sách thành công");
         } catch (IllegalArgumentException e) {
@@ -142,8 +163,10 @@ public class BookController {
                 throw new IllegalArgumentException("Sách không tồn tại");
             }
 
-            Optional<Book> existingBook = bookRepository.findById(updatedBook.getId());
-            updatedBook.setBorrowed(existingBook.get().isBorrowed());
+            if (updatedBook.getTotalQuantity() < 0) {
+                throw new IllegalArgumentException("Tổng số lượng sách phải >= 0");
+            }
+
             bookRepository.save(updatedBook);
             redirectAttributes.addFlashAttribute("success", "Cập nhật sách thành công");
         } catch (IllegalArgumentException e) {
@@ -163,8 +186,10 @@ public class BookController {
                 throw new IllegalArgumentException("Sách không tồn tại");
             }
 
-            List<BorrowRecord> borrowRecords = borrowRecordRepository.findByBookId(id);
-            System.out.println("Borrow records for book " + id + ": " + borrowRecords.size());
+            List<BorrowRecord> borrowRecords = borrowRecordRepository.findByBookId(id).stream()
+                    .filter(r -> r.getReturnDate() == null || r.getReturnDate().isBlank())
+                    .collect(Collectors.toList());
+
             if (!borrowRecords.isEmpty()) {
                 throw new IllegalArgumentException("Sách đang được mượn, không thể xóa");
             }

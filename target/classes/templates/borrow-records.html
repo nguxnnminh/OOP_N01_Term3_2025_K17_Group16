@@ -129,11 +129,11 @@
                 </div>
                 <div class="col-md-2">
                     <label for="borrowDate" class="form-label">Ngày mượn:</label>
-                    <input type="text" th:field="*{borrowDate}" id="borrowDate" class="form-control" placeholder="DD-MM-YYYY">
+                    <input type="date" th:field="*{borrowDate}" id="borrowDate" class="form-control">
                 </div>
                 <div class="col-md-2">
                     <label for="returnDate" class="form-label">Ngày trả:</label>
-                    <input type="text" th:field="*{returnDate}" id="returnDate" class="form-control" placeholder="DD-MM-YYYY">
+                    <input type="date" th:field="*{returnDate}" id="returnDate" class="form-control">
                 </div>
                 <div class="col-12 mt-3">
                     <button type="submit" class="btn btn-custom">
@@ -146,7 +146,7 @@
 
         <!-- Form tìm kiếm -->
         <div class="card-section">
-            <h4>Tìm kiếm Phiếu mượn theo mã sinh viên</h4>
+            <h4>Tìm kiếm Phiếu mượn</h4>
             <form class="search-form mt-3" method="get" th:action="@{/borrow-records}">
                 <input type="text" name="searchQuery" class="form-control" placeholder="Nhập mã sinh viên cần tìm" th:value="${searchQuery}">
                 <button type="submit" class="btn btn-custom">Tìm kiếm</button>
