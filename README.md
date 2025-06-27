@@ -15,7 +15,6 @@
 - Quản lý sách: Thêm, sửa, xóa, tìm kiếm theo tiêu đề.
 - Quản lý độc giả: Thêm, sửa, xóa, tìm kiếm theo tên.
 - Quản lý phiếu mượn: Thêm, sửa, xóa, tìm kiếm theo mã độc giả.
-- Xác thực phiên đơn giản (phiên bản hiện tại chưa có đăng nhập).
 - Kiểm tra tồn kho: Đảm bảo sách có sẵn trước khi tạo phiếu mượn.
 
 ## Thiết Kế Cơ Sở Dữ Liệu
