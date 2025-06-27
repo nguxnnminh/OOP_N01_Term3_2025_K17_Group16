@@ -1,84 +1,209 @@
-## Project nhóm 16
+# HỆ THỐNG QUẢN LÝ THƯ VIỆN
 
-## Thành viên trong  nhóm
-- Nguyễn Nhật Minh 23010847 
-- Phạm Văn Minh 23010550 
-- Phạm Ngọc Tiến 23010010
+Ứng dụng web quản lý thư viện được phát triển với Spring Boot MVC, Thymeleaf và MySQL, cho phép quản lý sách, độc giả và phiếu mượn thông qua giao diện trực quan.
 
-## Mô tả đối tượng
-1. Book – Quản lý thông tin sách
-- Thuộc tính: id, title, author
-- Phương thức: toString, getId, setTitle, setAuthor, v.v.
-2. Reader – Người mượn sách
-- Thuộc tính: id, name, phone, cccd, birthDate
-- Phương thức: toString, getId, setName, setPhone, v.v.
-3. User – Tài khoản đăng nhập
-- Thuộc tính: username, password
-- Phương thức: getUsername, getPassword, setPassword, v.v.
-4. BorrowRecord – Phiếu mượn sách
-- Thuộc tính: id, bookId, readerId, borrowDate, returnDate
-- Phương thức: toString, getId, setBorrowDate, setReturnDate, v.v.
+## Thông Tin Dự Án
 
-## Xây dựng ứng dụng: LibraryManagement (Hệ thống quản lý thư viện)
+- Tên dự án: Hệ Thống Quản Lý Thư Viện Đại học Phenikaa
+- Nhóm thực hiện: Nhóm 16 - Khóa K17
+- Trường: Đại học Phenikaa
+- Học kỳ: Học kỳ 3 - Năm 2025
 
-- Giao diện: Java Spring Boot
-- Lưu trữ dữ liệu: File nhị phân .data sử dụng ObjectOutputStream và ObjectInputStream.
-- Chức năng quản lý:
-1. Quản lý sách
-2. Quản lý người mượn
-3. Quản lý tài khoản người dùng
-4. Quản lý phiếu mượn
-## Cụ thể
-1 Quản lý sách
-+ Thêm, sửa, xoá sách
-+ Hiển thị danh sách sách
-  
-2 Quản lý người mượn
-+ Thêm, sửa, xoá người mượn
-+ Hiển thị danh sách người mượn
-  
-3 Quản lý tài khoản
-+ Đăng ký người dùng mới
-+ Đăng nhập hệ thống
-+ Cập nhật, xoá tài khoản
-  
-4 Quản lý phiếu mượn
-+ Thêm, sửa, xoá phiếu mượn sách
-+ Hiển thị danh sách phiếu mượn
+## Tính Năng Chính
 
-## Các đặc điểm nổi bật
-- Hệ thống lưu trữ dữ liệu cục bộ qua file
-- Đăng nhập, đăng ký an toàn
-- Menu điều khiển dễ sử dụng
-- Dữ liệu tự động lưu lại sau mỗi thao tác
+- Tổng quan giao diện: Thống kê tổng số sách, sách đang mượn, sách còn lại, tổng số độc giả, tổng số phiếu mượn.
+- Quản lý sách: Thêm, sửa, xóa, tìm kiếm theo tiêu đề.
+- Quản lý độc giả: Thêm, sửa, xóa, tìm kiếm theo tên.
+- Quản lý phiếu mượn: Thêm, sửa, xóa, tìm kiếm theo mã độc giả.
+- Xác thực phiên đơn giản (phiên bản hiện tại chưa có đăng nhập).
+- Kiểm tra tồn kho: Đảm bảo sách có sẵn trước khi tạo phiếu mượn.
 
-## Link Project Repo
-[GitHub Repo](https://github.com/nguxnnminh/OOP_N01_Term3_2025_K17_Group16)
+## Thiết Kế Cơ Sở Dữ Liệu
 
-## Link README
-[README.md](https://github.com/nguxnnminh/OOP_N01_Term3_2025_K17_Group16/edit/main/README.md)
+**1. Reader (Độc giả)**
+- id: String - Mã định danh độc giả (Mã sinh viên)
+- name: String - Họ và tên
+- cccd: String - Số CCCD
+- phone: String - Số điện thoại
+- birthDate: String - Ngày sinh
 
-![activitydiagram](https://github.com/user-attachments/assets/4a5eb344-b6cc-4f95-98fd-dfa8e37559dc)
+**2. Book (Sách)**
+- id: String - Mã định danh sách
+- title: String - Tiêu đề sách
+- author: String - Tác giả
+- genre: String - Thể loại
+- totalQuantity: Integer - Tổng số lượng sách trong kho
 
-![usecase](https://github.com/user-attachments/assets/fb57b19f-a93e-438b-a3d9-6b95259525ea)
+**3. BorrowRecord (Phiếu mượn)**
+- id: String - Mã định danh phiếu mượn
+- bookId: String - Mã sách (khóa ngoại)
+- readerId: String - Mã độc giả (khóa ngoại)
+- borrowDate: String - Ngày mượn
+- returnDate: String - Ngày trả (có thể để trống nếu chưa trả)
 
-## ✅ Chức năng chính nhóm thực hiện:
+## Công Nghệ Sử Dụng
 
-### Thống kê danh sách sách đang được mượn và hiển thị chi tiết
+- Frontend: HTML, Thymeleaf
+- Backend: Java, Spring Boot 2.7.18, Hibernate (Spring Data JPA)
+- Cơ sở dữ liệu: MySQL
+- Kiểm thử: JUnit 5, Mockito
+- Quản lý biến môi trường: dotenv-java
+- Quản lý mã nguồn: Git, GitHub
+- IDE sử dụng: IntelliJ IDEA, Eclipse
 
-#### Các bước thực hiện:
+## Kiến Trúc Dự Án
 
-1. Lấy toàn bộ danh sách phiếu mượn
-2. Kiểm tra ngày trả > ngày hiện tại => đang được mượn
-3. Thêm vào danh sách hiển thị
-4. In tổng số lượng và thông tin sách + người mượn
+- Mô hình: MVC (Model - View - Controller)
+- Controller: Xử lý yêu cầu HTTP
+- Model: Các lớp thực thể Book, Reader, BorrowRecord
+- Repository: Giao diện JPA kết nối với cơ sở dữ liệu
+- Ứng dụng chính: OOPApplication khởi chạy hệ thống
 
-#### Phân công công việc:
+## Cấu Trúc Thư Mục
+```text
+OOP_NO1_Term3_2025_K17_Group16/
+├── src/
+│ ├── main/
+│ │ ├── java/com/example/
+│ │ │ ├── controller/
+│ │ │ │ ├── BookController.java
+│ │ │ │ ├── ReaderController.java
+│ │ │ │ └── BorrowRecordController.java
+│ │ │ ├── model/
+│ │ │ │ ├── Book.java
+│ │ │ │ ├── Reader.java
+│ │ │ │ └── BorrowRecord.java
+│ │ │ ├── repository/
+│ │ │ │ ├── BookRepository.java
+│ │ │ │ ├── ReaderRepository.java
+│ │ │ │ └── BorrowRecordRepository.java
+│ │ │ └── OOPApplication.java
+│ │ └── resources/
+│ │ ├── templates/
+│ │ │ ├── index.html
+│ │ │ ├── books.html
+│ │ │ ├── readers.html
+│ │ │ └── borrow-records.html
+│ │ └── application.properties
+│ └── test/
+│ └── java/com/example/controller/
+│ ├── BookControllerTest.java
+│ ├── ReaderControllerTest.java
+│ └── BorrowRecordControllerTest.java
+├── target/ (Tự động sinh bởi Maven)
+├── pom.xml (Cấu hình Maven)
+└── README.md
+```
+## Mô Hình Và Chức Năng
 
-- **Sinh viên A**: Lọc các phiếu mượn chưa đến hạn trả
-- **Sinh viên B**: Lấy thông tin sách và bạn đọc từ phiếu mượn
-- **Sinh viên C**: Tính tổng số sách đang mượn, in báo cáo
-- **Cả nhóm**: Kiểm thử, tạo lưu đồ, viết README
+**Reader (Độc giả)**
+- Thêm độc giả
+- Sửa thông tin
+- Xóa độc giả (nếu không có phiếu mượn liên quan)
+- Tìm kiếm theo tên
+- Hiển thị danh sách
 
-#### Lưu đồ thuật toán:
-![luudo](https://github.com/user-attachments/assets/af41dc49-9b7d-40bb-919f-4ba40c68c2f8)
+**Book (Sách)**
+- Thêm sách
+- Sửa thông tin
+- Xóa sách (nếu không có phiếu mượn liên quan)
+- Tìm kiếm theo tiêu đề
+- Hiển thị danh sách
+
+**BorrowRecord (Phiếu mượn)**
+- Thêm phiếu mượn (kiểm tra sách còn tồn kho)
+- Sửa thông tin phiếu mượn
+- Xóa phiếu mượn
+- Tìm kiếm theo mã độc giả
+- Hiển thị danh sách
+
+## Sơ Đồ Tổng Quan
+
+- Class Diagram: Mối quan hệ giữa các lớp Book, Reader, BorrowRecord và các Repository, Controller tương ứng
+![Class Diagram](images/classdiagram.png)
+- Sơ đồ ERD: Quan hệ dữ liệu giữa bảng Book, Reader và BorrowRecord
+![ERD](images/erd.png)
+- Behavioral Diagram:
+  - Sequence Diagram: Thêm sách, thêm độc giả, thêm phiếu mượn
+![Book](images/sequencebook.png)
+
+![Reader](images/sequencereader.png)
+
+![BorrowRecord](images/sequenceborrowrecord.png)
+  - Use Case Diagram: Quản lý sách, độc giả, phiếu mượn
+
+![Use Case](images/usecase.png)
+
+## Xử Lý Lỗi Và Kiểm Thử
+
+- Xử lý ngoại lệ với try-catch (ví dụ: sách hết, độc giả không tồn tại)
+- Kiểm thử bằng JUnit và Mockito:
+  - Hiển thị danh sách
+  - Thêm, sửa, xóa sách, độc giả, phiếu mượn
+  - Các trường hợp lỗi: thiếu thông tin, mã trùng, sách không còn tồn kho
+
+## Hướng Dẫn Cài Đặt
+
+**Yêu cầu:**
+- JDK 11 trở lên
+- MySQL 8.0 trở lên
+- IDE: IntelliJ IDEA hoặc Eclipse
+
+**Cài đặt:**
+
+1. Clone dự án:
+```text
+git clone https://github.com/<your-repo>/OOP_NO1_Term3_2025_K17_Group16.git
+cd OOP_NO1_Term3_2025_K17_Group16
+```
+2. Cấu hình cơ sở dữ liệu:
+- Tạo database MySQL (ví dụ: `library_db`)
+- Tạo `src/main/resources/application.properties`:
+```text
+spring.datasource.url=jdbc:mysql://localhost:3306/library_db
+spring.datasource.username=<tên người dùng>
+spring.datasource.password=<mật khẩu>
+spring.jpa.hibernate.ddl-auto=update
+```
+3. Cấu hình biến môi trường:
+- Tạo file `.env` tại thư mục gốc:
+```text
+DB_PASSWORD=<mật khẩu database>
+```
+4. Build và chạy ứng dụng:
+```text
+mvn clean install
+mvn spring-boot:run
+```
+5. Truy cập ứng dụng tại: https://oop-n01-term3-2025-k17-group16.onrender.com/
+
+6. Chạy kiểm thử:
+## Thành Viên Nhóm
+
+- Nguyễn Nhật Minh - 23010847 (*)
+- Phạm Văn Minh - 23010550
+- Phạm Ngọc Tiến - 23010010
+
+## Phân Công Công Việc
+
+| Thành viên       | Phân công                       | Chi tiết                          |
+|------------------|---------------------------------|------------------------------------|
+| Nguyễn Nhật Minh | Khởi tạo dự án, Dashboard, Book| Cấu trúc dự án, quản lý sách      |
+| Phạm Văn Minh | Reader                         | Quản lý độc giả (CRUD, tìm kiếm)  |
+| Phạm Ngọc Tiến | BorrowRecord                   | Quản lý phiếu mượn, kiểm tra tồn kho |
+
+## Tài Liệu Tham Khảo
+
+- Tài liệu Spring Boot
+- Tài liệu Thymeleaf
+- Tài liệu MySQL
+- Tài liệu Hibernate ORM
+- Maven Repository
+- Java Documentation
+- Tài liệu Git
+
+## Phát Triển Trong Tương Lai
+
+- Thêm tính năng đăng nhập, phân quyền
+- Tích hợp xuất báo cáo PDF hoặc Excel
+- Cải thiện giao diện với CSS, JavaScript (biểu đồ thống kê)
