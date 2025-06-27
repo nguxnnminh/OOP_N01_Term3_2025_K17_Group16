@@ -1,4 +1,4 @@
-# HỆ THỐNG QUẢN LÝ THƯ VIỆN
+# HỆ THỐNG QUẢN LÝ THƯ VIỆN ĐẠI HỌC PHENIKAA
 
 Ứng dụng web quản lý thư viện được phát triển với Spring Boot MVC, Thymeleaf và MySQL, cho phép quản lý sách, độc giả và phiếu mượn thông qua giao diện trực quan.
 
@@ -21,7 +21,7 @@
 ## Thiết Kế Cơ Sở Dữ Liệu
 
 **1. Reader (Độc giả)**
-- id: String - Mã định danh độc giả (Mã sinh viên)
+- id: String - Mã định danh độc giả (mã sinh viên)
 - name: String - Họ và tên
 - cccd: String - Số CCCD
 - phone: String - Số điện thoại
@@ -39,7 +39,7 @@
 - bookId: String - Mã sách (khóa ngoại)
 - readerId: String - Mã độc giả (khóa ngoại)
 - borrowDate: String - Ngày mượn
-- returnDate: String - Ngày trả (có thể để trống nếu chưa trả)
+- returnDate: String - Ngày trả (ngày độc giả hẹn trả)
 
 ## Công Nghệ Sử Dụng
 
@@ -111,10 +111,10 @@ OOP_NO1_Term3_2025_K17_Group16/
 - Hiển thị danh sách
 
 **BorrowRecord (Phiếu mượn)**
-- Thêm phiếu mượn (kiểm tra sách còn tồn kho)
+- Thêm phiếu mượn (mỗi phiếu tương ứng với 1 sách được mượn)
 - Sửa thông tin phiếu mượn
 - Xóa phiếu mượn
-- Tìm kiếm theo mã độc giả
+- Tìm kiếm theo mã độc giả (mã sinh viên)
 - Hiển thị danh sách
 
 ## Sơ Đồ Tổng Quan
