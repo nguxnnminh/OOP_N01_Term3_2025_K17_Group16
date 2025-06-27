@@ -133,7 +133,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="totalQuantity" class="form-label">Số lượng:</label>
-                    <input type="number" th:field="*{totalQuantity}" id="qtotalQuantity" class="form-control" min="0" placeholder="Số lượng sách">
+                    <input type="number" th:field="*{totalQuantity}" id="totalQuantity" class="form-control" min="0" placeholder="Số lượng sách">
                 </div>
                 <div class="col-12 mt-3">
                     <button type="submit" class="btn btn-custom">
@@ -177,8 +177,13 @@
                         <td th:text="${b.genre}"></td>
                         <td th:text="${b.totalQuantity}"></td>
                         <td>
-                            <a th:href="@{/books/edit/{id}(id=${b.id})}" class="btn btn-warning btn-sm">Chỉnh sửa</a>
-                            <a th:href="@{/books/delete/{id}(id=${b.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa sách này?')">Xóa</a>
+                            <a th:href="@{/books/edit/{id}(id=${b.id})}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-pen"></i> Chỉnh sửa
+                            </a>
+                            <a th:href="@{/books/delete/{id}(id=${b.id})}" class="btn btn-danger btn-sm"
+                               onclick="return confirm('Bạn có chắc chắn muốn xóa sách này?')">
+                                <i class="fas fa-trash"></i> Xóa
+                            </a>
                         </td>
                     </tr>
                     </tbody>

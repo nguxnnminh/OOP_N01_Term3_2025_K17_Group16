@@ -50,36 +50,50 @@ public class BookControllerTest {
                 .build();
     }
 
+    // -------- Test Trang Chủ ----------
     @Test
-    public void testShowBooks_NoSearch() throws Exception {
+    public void testShowHomePage() throws Exception {
         Book book = new Book("B1", "Java Basics", "John Doe", "Programming");
         book.setTotalQuantity(10);
 
         when(bookRepository.findAll()).thenReturn(List.of(book));
+        when(borrowRecordRepository.count()).thenReturn(1L);
+        when(readerRepository.count()).thenReturn(1L);
+        when(borrowRecordRepository.findByBookId("B1")).thenReturn(List.of(new BorrowRecord()));
+
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"))
+                .andExpect(model().attributeExists("totalBooks"))
+                .andExpect(model().attributeExists("borrowedBooks"))
+                .andExpect(model().attributeExists("availableBooks"))
+                .andExpect(model().attributeExists("totalBorrowRecords"))
+                .andExpect(model().attributeExists("totalReaders"))
+                .andExpect(model().attributeExists("bookStats"));
+    }
+
+    // -------- Test Danh Sách Sách ----------
+    @Test
+    public void testShowBooks_NoSearch() throws Exception {
+        when(bookRepository.findAll()).thenReturn(List.of(new Book()));
 
         mockMvc.perform(get("/books"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("books"))
-                .andExpect(model().attributeExists("books"))
-                .andExpect(model().attributeExists("searchTitle"))
-                .andExpect(model().attributeExists("book"));
+                .andExpect(model().attributeExists("books", "searchTitle", "book"));
     }
 
     @Test
     public void testShowBooks_WithSearch() throws Exception {
-        Book book = new Book("B1", "Java Basics", "John Doe", "Programming");
-        book.setTotalQuantity(10);
-
-        when(bookRepository.findByTitleContainingIgnoreCase("Java")).thenReturn(List.of(book));
+        when(bookRepository.findByTitleContainingIgnoreCase("Java")).thenReturn(List.of(new Book()));
 
         mockMvc.perform(get("/books").param("searchTitle", "Java"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("books"))
-                .andExpect(model().attributeExists("books"))
-                .andExpect(model().attributeExists("searchTitle"))
-                .andExpect(model().attributeExists("book"));
+                .andExpect(model().attributeExists("books", "searchTitle", "book"));
     }
 
+    // -------- Test Thêm Sách ----------
     @Test
     public void testAddBook_Valid() throws Exception {
         when(bookRepository.existsById("B1")).thenReturn(false);
@@ -111,6 +125,20 @@ public class BookControllerTest {
     }
 
     @Test
+    public void testAddBook_MissingData() throws Exception {
+        mockMvc.perform(post("/books/add")
+                        .param("id", "")
+                        .param("title", "")
+                        .param("author", "")
+                        .param("genre", "")
+                        .param("totalQuantity", "5"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/books"))
+                .andExpect(flash().attributeExists("error"));
+    }
+
+    // -------- Test Sửa Sách ----------
+    @Test
     public void testShowEditBookForm_Valid() throws Exception {
         Book book = new Book("B1", "Java Basics", "John Doe", "Programming");
         book.setTotalQuantity(10);
@@ -121,12 +149,11 @@ public class BookControllerTest {
         mockMvc.perform(get("/books/edit/B1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("books"))
-                .andExpect(model().attributeExists("book"))
-                .andExpect(model().attributeExists("books"));
+                .andExpect(model().attributeExists("book", "books"));
     }
 
     @Test
-    public void testShowEditBookForm_Invalid() throws Exception {
+    public void testShowEditBookForm_NotExist() throws Exception {
         when(bookRepository.findById("999")).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/books/edit/999"))
@@ -141,15 +168,31 @@ public class BookControllerTest {
 
         mockMvc.perform(post("/books/update")
                         .param("id", "B1")
-                        .param("title", "New Title")
+                        .param("title", "Updated")
                         .param("author", "New Author")
                         .param("genre", "New Genre")
-                        .param("totalQuantity", "7"))
+                        .param("totalQuantity", "5"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/books"))
                 .andExpect(flash().attribute("success", "Cập nhật sách thành công"));
     }
 
+    @Test
+    public void testUpdateBook_MissingData() throws Exception {
+        when(bookRepository.existsById("B1")).thenReturn(true);
+
+        mockMvc.perform(post("/books/update")
+                        .param("id", "B1")
+                        .param("title", "")
+                        .param("author", "")
+                        .param("genre", "")
+                        .param("totalQuantity", "5"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/books"))
+                .andExpect(flash().attributeExists("error"));
+    }
+
+    // -------- Test Xóa Sách ----------
     @Test
     public void testDeleteBook_Valid() throws Exception {
         when(bookRepository.existsById("B1")).thenReturn(true);

@@ -177,8 +177,12 @@
                         <td th:text="${r.phone}"></td>
                         <td th:text="${r.birthDate}"></td>
                         <td>
-                            <a th:href="@{/readers/edit/{id}(id=${r.id})}" class="btn btn-warning btn-sm">Chỉnh sửa</a>
-                            <a th:href="@{/readers/delete/{id}(id=${r.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa độc giả này?')">Xóa</a>
+                            <a th:href="@{/readers/edit/{id}(id=${r.id})}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Chỉnh sửa
+                            </a>
+                            <a th:href="@{/readers/delete/{id}(id=${r.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa độc giả này?')">
+                                <i class="fas fa-trash-alt"></i> Xóa
+                            </a>
                         </td>
                     </tr>
                     </tbody>
