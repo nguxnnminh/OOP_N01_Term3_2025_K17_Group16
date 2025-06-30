@@ -159,10 +159,11 @@ cd OOP_NO1_Term3_2025_K17_Group16
 - Tạo database MySQL (ví dụ: `library_db`)
 - Tạo `src/main/resources/application.properties`:
 ```text
-spring.datasource.url=jdbc:mysql://localhost:3306/library_db
-spring.datasource.username=<tên người dùng>
-spring.datasource.password=<mật khẩu>
-spring.jpa.hibernate.ddl-auto=update
+spring.datasource.mysql-18bb6e04-nminh1811.c.aivencloud.com:13137/defaultdb?sslMode=REQUIRED
+datasource.username=avnadmin spring.
+datasource. password=${ DB_PASSWORD}
+spring.jpa. hibernate.ddl-auto=update
+spring. thymeleaf.cache=false0.
 ```
 3. Cấu hình biến môi trường:
 - Tạo file `.env` tại thư mục gốc:
